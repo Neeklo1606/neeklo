@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CaseMedia;
-use App\Models\Case as CaseModel;
+use App\Models\CaseModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -16,26 +16,60 @@ class CaseController extends Controller
     /** Список кейсов (публичный, для сайта) */
     public function index(): JsonResponse
     {
-        $cases = CaseModel::with('media')
-            ->orderBy('year', 'desc')
-            ->orderBy('title')
-            ->get();
+        try {
+            $cases = CaseModel::with('media')
+                ->orderBy('year', 'desc')
+                ->orderBy('title')
+                ->get();
 
-        $data = $cases->map(fn ($c) => [
-            'id' => $c->id,
-            'slug' => $c->slug,
-            'title' => $c->title,
-            'category' => $c->category,
-            'year' => $c->year,
-            'featured' => $c->featured,
-            'description' => $c->description,
-            'meta' => $c->meta,
-            'cover' => $c->cover,
-            'video' => $c->video,
-            'gallery' => $c->gallery_images,
-        ]);
+            $data = $cases->map(function ($c) {
+                try {
+                    return [
+                        'id' => $c->id,
+                        'slug' => $c->slug,
+                        'title' => $c->title,
+                        'category' => $c->category,
+                        'year' => $c->year,
+                        'featured' => $c->featured,
+                        'description' => $c->description,
+                        'meta' => $c->meta,
+                        'cover' => $c->cover ?? null,
+                        'video' => $c->video ?? null,
+                        'gallery' => $c->gallery_images ?? [],
+                    ];
+                } catch (\Exception $e) {
+                    Log::error('Error mapping case', [
+                        'case_id' => $c->id,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                    return [
+                        'id' => $c->id,
+                        'slug' => $c->slug ?? '',
+                        'title' => $c->title ?? '',
+                        'category' => $c->category ?? '',
+                        'year' => $c->year ?? null,
+                        'featured' => $c->featured ?? false,
+                        'description' => $c->description ?? '',
+                        'meta' => $c->meta ?? [],
+                        'cover' => null,
+                        'video' => null,
+                        'gallery' => [],
+                    ];
+                }
+            });
 
-        return response()->json(['data' => $data]);
+            return response()->json(['data' => $data]);
+        } catch (\Exception $e) {
+            Log::error('CaseController@index error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json([
+                'error' => 'Ошибка загрузки кейсов',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /** Кейс по slug (публичный) */

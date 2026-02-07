@@ -586,7 +586,7 @@ const routes = [
                 path: '',
                 name: 'admin.dashboard',
                 component: () => import('./pages/admin/Dashboard.vue'),
-                meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Главная' },
+                meta: { requiresAuth: true, title: 'Главная' },
             },
             {
                 path: 'media',
@@ -810,14 +810,15 @@ router.beforeEach(async (to, from, next) => {
         
         if (!hasRole) {
             // Пользователь не имеет нужной роли
-            console.log('❌ Router Guard - No required role, redirecting to /', {
+            console.log('❌ Router Guard - No required role, redirecting to /admin', {
                 route: to.path,
                 requiredRoles,
                 userRoles,
                 userHasRoles: !!store.state.user?.roles,
                 userRolesCount: store.state.user?.roles?.length || 0,
             });
-            next('/');
+            // Редиректим на dashboard вместо корня, чтобы избежать бесконечного цикла
+            next('/admin');
             return;
         } else {
             console.log('✅ Router Guard - Role check passed', {

@@ -1,0 +1,76 @@
+# CI: build Admin (Vue) + React frontend, run PHP checks
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, sqlite
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install PHP dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Copy env and generate key
+        run: |
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          touch database/database.sqlite
+
+      - name: Run migrations
+        run: php artisan migrate --force --no-interaction
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+
+      - name: Setup Node (root - Admin build)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install root deps and build Admin
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: true
+
+      - name: Install frontend deps and build React
+        run: |
+          cd frontend && npm ci && npm run build
+        env:
+          CI: true
+
+      - name: Verify builds exist
+        run: |
+          test -d public/build/assets && echo "Admin build OK"
+          test -f public/frontend/index.html && echo "React build OK"
+
+      - name: PHP Stan / syntax (optional)
+        run: php -l artisan && php artisan route:list --columns=method,uri,name 2>/dev/null | head -5
+        continue-on-error: true

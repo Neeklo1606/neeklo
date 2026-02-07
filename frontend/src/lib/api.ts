@@ -201,9 +201,7 @@ export async function updateCase(id: number, v: Partial<{ slug: string; title: s
   const d = await r.json();
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true, data: d.data };
-}
-
-/** Загрузить медиа (админ). type: 'image' | 'video' */
+}/** Загрузить медиа (админ). type: 'image' | 'video' */
 export async function uploadCaseMedia(caseId: number, file: File, type: 'image' | 'video'): Promise<{ success: boolean; data?: any; message?: string }> {
   const fd = new FormData();
   fd.append('file', file);
@@ -216,9 +214,7 @@ export async function uploadCaseMedia(caseId: number, file: File, type: 'image' 
   const d = await r.json();
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true, data: d.data };
-}
-
-/** Удалить медиа (админ) */
+}/** Удалить медиа (админ) */
 export async function deleteCaseMedia(mediaId: number): Promise<{ success: boolean; message?: string }> {
   const r = await fetch(apiV1(`/cases/media/${mediaId}`), {
     method: 'DELETE',
@@ -227,9 +223,7 @@ export async function deleteCaseMedia(mediaId: number): Promise<{ success: boole
   const d = await r.json();
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true };
-}
-
-/** Изменить порядок медиа (админ). order — массив id. */
+}/** Изменить порядок медиа (админ). order — массив id. */
 export async function reorderCaseMedia(caseId: number, order: number[]): Promise<{ success: boolean; message?: string }> {
   const r = await fetch(apiV1(`/cases/${caseId}/media/reorder`), {
     method: 'POST',

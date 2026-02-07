@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CaseModel;
 
 class CaseMedia extends Model
 {
@@ -16,7 +17,7 @@ class CaseMedia extends Model
 
     public function case(): BelongsTo
     {
-        return $this->belongsTo(Case::class, 'case_id');
+        return $this->belongsTo(CaseModel::class, 'case_id');
     }
 
     /** URL для доступа к файлу (storage/app/public) */

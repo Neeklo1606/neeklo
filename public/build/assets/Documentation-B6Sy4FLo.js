@@ -1,4 +1,4 @@
-import{_ as d,c as l,a as i,e as p,n as g,t as a,F as c,q as u,o as e}from"./admin-DjQGoEOB.js";const h={name:"Documentation",data(){return{activeSection:"overview",refreshing:!1,sections:[{id:"overview",title:"Обзор системы"},{id:"api",title:"API Endpoints"},{id:"admin",title:"Админ-панель"},{id:"deployment",title:"Деплой"}],documentation:{overview:`
+import{_ as d,c as l,a as i,e as p,n as g,t as a,F as c,q as u,o as e}from"./admin-DOA7xmQH.js";const h={name:"Documentation",data(){return{activeSection:"overview",refreshing:!1,sections:[{id:"overview",title:"Обзор системы"},{id:"api",title:"API Endpoints"},{id:"admin",title:"Админ-панель"},{id:"deployment",title:"Деплой"}],documentation:{overview:`
                     <h2>Обзор системы</h2>
                     <p>Backend система для Telegram Mini App приложений на базе Laravel 11.</p>
 

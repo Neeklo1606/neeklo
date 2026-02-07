@@ -117,21 +117,9 @@ export default defineConfig(({ mode }) => ({
           });
         },
       },
-      // Проксирование для Laravel Vite ресурсов (только для /resources, не для /@vite)
-      // /@vite - это внутренние пути React Vite, их не нужно проксировать
-      '/resources': {
-        target: 'http://127.0.0.1:5173',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path,
-      },
-      // Проксирование для node_modules из Laravel Vite
-      '/node_modules': {
-        target: 'http://127.0.0.1:5173',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path,
-      },
+      // Проксирование для Laravel Vite ресурсов (только для админки, не для React)
+      // Убираем прокси для /resources и /node_modules - они не нужны для React приложения
+      // React Vite сам обрабатывает свои зависимости через /node_modules/.vite/deps/
     },
   },
   plugins: [

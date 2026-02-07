@@ -1,0 +1,73 @@
+# Deploy: build artifacts and optionally trigger deploy on server
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'tech-audit/**'
+
+jobs:
+  build-and-prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, sqlite
+
+      - name: Install PHP dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
+
+      - name: Copy env (production template)
+        run: cp .env.example .env && php artisan key:generate --no-interaction 2>/dev/null || true
+
+      - name: Build Admin (Vue)
+        run: npm ci && npm run build
+        env:
+          CI: true
+
+      - name: Build React frontend
+        run: cd frontend && npm ci && npm run build
+        env:
+          CI: true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: |
+            public/build
+            public/frontend
+            vendor
+            bootstrap/cache
+          retention-days: 1
+
+  # Optional: deploy to server via SSH (enable by adding DEPLOY_* secrets)
+  deploy-remote:
+    needs: build-and-prepare
+    runs-on: ubuntu-latest
+    if: ${{ vars.DEPLOY_ENABLED == 'true' }}
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH || '/var/www/neeklo' }}
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            npm ci && npm run build
+            cd frontend && npm ci && npm run build
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
