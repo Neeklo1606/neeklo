@@ -135,9 +135,7 @@ export async function sendTelegramMessage(data: {
   };
 }
 
-// --- Cases API (публичные и админ) ---
-
-const getAuthHeaders = (): Record<string, string> => {
+// --- Cases API (публичные и админ) ---const getAuthHeaders = (): Record<string, string> => {
   const t = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
   if (t) return { Authorization: `Bearer ${t}` };
   return {};

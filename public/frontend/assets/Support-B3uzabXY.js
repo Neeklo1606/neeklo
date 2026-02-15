@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:public/frontend/assets/Support-B3uzabXY.js
-import{j as t}from"./motion-vendor-BDjNjK_3.js";import{p as s,g as o}from"./products-D4wmSXpS.js";import"./react-vendor-BPADj-9C.js";import"./ui-vendor-DApkxKmO.js";function m(){const e=s.find(r=>r.slug==="support");return e?t.jsx(o,{data:e}):t.jsx("div",{className:"min-h-screen bg-background flex items-center justify-center",children:t.jsx("p",{className:"text-muted-foreground",children:"Страница не найдена"})})}export{m as default};
-========
-import{j as t}from"./motion-vendor-BDjNjK_3.js";import{p as s,g as o}from"./products-BtLrzWUU.js";import"./react-vendor-BPADj-9C.js";import"./ui-vendor-BGpQ7DQh.js";function m(){const e=s.find(r=>r.slug==="support");return e?t.jsx(o,{data:e}):t.jsx("div",{className:"min-h-screen bg-background flex items-center justify-center",children:t.jsx("p",{className:"text-muted-foreground",children:"Страница не найдена"})})}export{m as default};
->>>>>>>> 0bf34bcd46ec62015eae93e46fabcd8e077abdd9:public/frontend/assets/Support-DIIazprN.js

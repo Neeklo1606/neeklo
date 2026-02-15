@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:public/frontend/assets/Automation-P6eqPn8X.js
-import{j as t}from"./motion-vendor-BDjNjK_3.js";import{p as o,g as a}from"./products-D4wmSXpS.js";import"./react-vendor-BPADj-9C.js";import"./ui-vendor-DApkxKmO.js";function u(){const e=o.find(r=>r.slug==="automation");return e?t.jsx(a,{data:e}):t.jsx("div",{className:"min-h-screen bg-background flex items-center justify-center",children:t.jsx("p",{className:"text-muted-foreground",children:"Страница не найдена"})})}export{u as default};
-========
-import{j as t}from"./motion-vendor-BDjNjK_3.js";import{p as o,g as a}from"./products-BtLrzWUU.js";import"./react-vendor-BPADj-9C.js";import"./ui-vendor-BGpQ7DQh.js";function u(){const e=o.find(r=>r.slug==="automation");return e?t.jsx(a,{data:e}):t.jsx("div",{className:"min-h-screen bg-background flex items-center justify-center",children:t.jsx("p",{className:"text-muted-foreground",children:"Страница не найдена"})})}export{u as default};
->>>>>>>> 0bf34bcd46ec62015eae93e46fabcd8e077abdd9:public/frontend/assets/Automation-B75poF2K.js

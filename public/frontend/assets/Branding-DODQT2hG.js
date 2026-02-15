@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:public/frontend/assets/Branding-DODQT2hG.js
-import{j as e}from"./motion-vendor-BDjNjK_3.js";import{p as n,g as s}from"./products-D4wmSXpS.js";import"./react-vendor-BPADj-9C.js";import"./ui-vendor-DApkxKmO.js";function c(){const r=n.find(t=>t.slug==="branding");return r?e.jsx(s,{data:r}):e.jsx("div",{className:"min-h-screen bg-background flex items-center justify-center",children:e.jsx("p",{className:"text-muted-foreground",children:"Страница не найдена"})})}export{c as default};
-========
-import{j as e}from"./motion-vendor-BDjNjK_3.js";import{p as n,g as s}from"./products-BtLrzWUU.js";import"./react-vendor-BPADj-9C.js";import"./ui-vendor-BGpQ7DQh.js";function c(){const r=n.find(t=>t.slug==="branding");return r?e.jsx(s,{data:r}):e.jsx("div",{className:"min-h-screen bg-background flex items-center justify-center",children:e.jsx("p",{className:"text-muted-foreground",children:"Страница не найдена"})})}export{c as default};
->>>>>>>> 0bf34bcd46ec62015eae93e46fabcd8e077abdd9:public/frontend/assets/Branding-BZCZjCA3.js
