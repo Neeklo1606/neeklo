@@ -121,6 +121,56 @@
           }
         }
       ]
+    },
+    {
+      "slug": "work",
+      "title": "Портфолио",
+      "template": "default",
+      "status": "published",
+      "locale": "ru",
+      "seo": {
+        "seo_title": "Портфолио — Neeklo Studio",
+        "seo_description": "Кейсы и проекты."
+      },
+      "blocks": [
+        { "type": "hero", "is_enabled": true, "position": 0, "data": { "title": "Наши проекты", "subtitle": "Кейсы, которыми мы гордимся." } },
+        { "type": "cases_grid", "is_enabled": true, "position": 1, "data": {} }
+      ]
+    },
+    {
+      "slug": "case-studies",
+      "title": "Кейсы",
+      "template": "default",
+      "status": "published",
+      "locale": "ru",
+      "seo": { "seo_title": "Кейсы", "seo_description": "Портфолио." },
+      "blocks": [
+        { "type": "hero", "is_enabled": true, "position": 0, "data": { "title": "Кейсы", "subtitle": "Избранные проекты" } }
+      ]
+    },
+    {
+      "slug": "blog",
+      "title": "Блог",
+      "template": "default",
+      "status": "published",
+      "locale": "ru",
+      "seo": { "seo_title": "Блог", "seo_description": "Статьи и разборы." },
+      "blocks": [
+        { "type": "hero", "is_enabled": true, "position": 0, "data": { "title": "Блог", "subtitle": "Полезно для бизнеса" } },
+        { "type": "posts_grid", "is_enabled": true, "position": 1, "data": {} }
+      ]
+    },
+    {
+      "slug": "contact",
+      "title": "Контакты",
+      "template": "default",
+      "status": "published",
+      "locale": "ru",
+      "seo": { "seo_title": "Контакты", "seo_description": "Свяжитесь с нами." },
+      "blocks": [
+        { "type": "hero", "is_enabled": true, "position": 0, "data": { "title": "Контакты", "subtitle": "Форма и способы связи" } },
+        { "type": "contact_form", "is_enabled": true, "position": 1, "data": {} }
+      ]
     }
   ],
   "services": [
