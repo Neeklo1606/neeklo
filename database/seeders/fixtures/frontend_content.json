@@ -1,0 +1,327 @@
+{
+  "pages": [
+    {
+      "slug": "home",
+      "title": "Главная",
+      "template": "home",
+      "status": "published",
+      "locale": "ru",
+      "seo": {
+        "seo_title": "Neeklo Studio — Сайты, чат боты и видео для роста бизнеса",
+        "seo_description": "Готовые решения под ключ за 7–14 дней. Сайты, Telegram-боты, AI-видео и Mini App.",
+        "og": {
+          "image": "https://neeklo.studio/og-image.png",
+          "url": "https://neeklo.studio/"
+        }
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "is_enabled": true,
+          "position": 0,
+          "data": {
+            "title": "Создание сайтов, Mini App и AI видео",
+            "subtitle": "Готовые digital-решения для бизнеса",
+            "cta_text": "Узнать стоимость",
+            "scroll_target": "cases"
+          }
+        },
+        {
+          "type": "video_cases_slider",
+          "is_enabled": true,
+          "position": 1,
+          "data": {
+            "title": "Кейсы",
+            "section_id": "cases",
+            "use_featured_cases": true
+          }
+        },
+        {
+          "type": "skrutic_selector",
+          "is_enabled": true,
+          "position": 2,
+          "data": {
+            "section_id": "selector",
+            "steps": {
+              "1": { "title": "Что хотите сделать?", "options": ["Сайт", "Бот", "Видео", "Не знаю"] },
+              "2": { "title": "Для какой задачи?", "options": ["Заявки", "Продажи", "Имидж", "Автоматизация"] },
+              "3": { "title": "Насколько срочно?", "options": ["Срочно", "Можно подождать"] }
+            },
+            "telegram_link": "https://t.me/neeklo_manager"
+          }
+        },
+        {
+          "type": "ready_solutions",
+          "is_enabled": true,
+          "position": 3,
+          "data": {
+            "title": "Готовые решения",
+            "subtitle": "Цена и сроки — сразу. Без скрытых платежей.",
+            "section_id": "products",
+            "solutions": [
+              { "slug": "website", "title": "Сайт для бизнеса", "price": "от 120 000 ₽", "duration": "7–10 дней" },
+              { "slug": "telegram-bot", "title": "Telegram-бот", "price": "от 90 000 ₽", "duration": "5–7 дней" },
+              { "slug": "ai-video", "title": "Видео для продаж", "price": "от 60 000 ₽", "duration": "3–5 дней" },
+              { "slug": "mini-app", "title": "Mini App", "price": "от 150 000 ₽", "duration": "10–14 дней" }
+            ]
+          }
+        },
+        {
+          "type": "news_section",
+          "is_enabled": true,
+          "position": 4,
+          "data": {
+            "title": "Полезно для бизнеса",
+            "subtitle": "Разборы, кейсы и практические советы",
+            "blog_link": "/blog",
+            "article_slugs": ["ai-agents-for-business", "telegram-mini-app-roi", "chat-bots-leads-sales"]
+          }
+        },
+        {
+          "type": "contact_form",
+          "is_enabled": true,
+          "position": 5,
+          "data": {
+            "section_id": "contact",
+            "title": "Свяжитесь с нами"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "title": "Услуги",
+      "template": "default",
+      "status": "published",
+      "locale": "ru",
+      "seo": {
+        "seo_title": "Услуги — Neeklo Studio | Сайты, боты, AI-видео",
+        "seo_description": "Каталог услуг: разработка сайтов, Telegram-ботов, AI-ассистентов и AI-видео. Цены и сроки прозрачно.",
+        "og": {
+          "image": "https://neeklo.ru/og-services.jpg",
+          "url": "https://neeklo.ru/services"
+        }
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "is_enabled": true,
+          "position": 0,
+          "data": {
+            "title": "Услуги",
+            "subtitle": "Выберите услугу и узнайте стоимость"
+          }
+        },
+        {
+          "type": "services_grid",
+          "is_enabled": true,
+          "position": 1,
+          "data": {
+            "service_ids": ["website", "telegram-bot", "mini-app", "mobile-app", "ai-agent", "ai-video", "automation", "branding", "crm", "ecosystem", "support", "consulting"]
+          }
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "slug": "web-sites",
+      "title": "Веб-сайты и лендинги",
+      "short": "Современные адаптивные сайты с фокусом на конверсию",
+      "body": "Устаревший сайт не приносит заявки. Решение: анализ ЦА, UX, адаптивная вёрстка, SEO, интеграция с CRM.",
+      "status": "published",
+      "position": 1,
+      "price_from": "80000",
+      "seo_title": "Веб-сайты и лендинги | Neeklo Studio",
+      "seo_description": "Разработка сайтов и лендингов под ключ."
+    },
+    {
+      "slug": "telegram-bots",
+      "title": "Telegram-боты",
+      "short": "Сценарии под бизнес и автоматизацию процессов",
+      "body": "Менеджеры тратят время на однотипные вопросы. Решение: автоматические ответы, приём заявок, интеграция с CRM.",
+      "status": "published",
+      "position": 2,
+      "price_from": "30000",
+      "seo_title": "Telegram-боты | Neeklo Studio",
+      "seo_description": "Разработка чат-ботов для бизнеса."
+    },
+    {
+      "slug": "ai-agent",
+      "title": "AI-агент для бизнеса",
+      "short": "Голосовые и текстовые ассистенты для оптимизации",
+      "body": "AI-ассистент на сайте, голосовой бот, обучение на данных, интеграция с CRM.",
+      "status": "published",
+      "position": 3,
+      "price_from": "150000",
+      "seo_title": "AI-агент | Neeklo Studio",
+      "seo_description": "Умные ассистенты для бизнеса."
+    },
+    {
+      "slug": "ai-video",
+      "title": "Генерация видео в нейросетях",
+      "short": "Создание рекламных и обучающих роликов с помощью AI",
+      "body": "Генерация видео, AI-аватары, озвучка нейросетями, адаптация под соцсети.",
+      "status": "published",
+      "position": 4,
+      "price_from": "30000",
+      "seo_title": "AI-видео | Neeklo Studio",
+      "seo_description": "Видеоконтент с нейросетями."
+    },
+    {
+      "slug": "branding",
+      "title": "Брендинг и айдентика",
+      "short": "Логотип, фирменный стиль и визуальная система",
+      "body": "Разработка логотипа, фирменные цвета и шрифты, гайдлайн, носители.",
+      "status": "published",
+      "position": 5,
+      "price_from": "60000",
+      "seo_title": "Брендинг | Neeklo Studio",
+      "seo_description": "Айдентика и фирменный стиль."
+    }
+  ],
+  "case_studies": [
+    {
+      "slug": "povuzam",
+      "title": "ПОВУЗАМ — платформа экскурсий для вузов",
+      "client": "Федеральный проект",
+      "industry": "Образование",
+      "problem": "Создать платформу записи школьников на экскурсии в вузы.",
+      "solution": "Модульный фронтенд на Vue.js с адаптивным интерфейсом.",
+      "result": "Полноценная SaaS-платформа для вузов с автоматизацией всех процессов.",
+      "body": "Создание платформы записи школьников на экскурсии в вузы с полной автоматизацией процессов.",
+      "status": "published",
+      "published_at": "2024-01-15",
+      "seo_title": "Кейс ПОВУЗАМ | Neeklo Studio",
+      "seo_description": "Платформа экскурсий для вузов — автоматизация заявок."
+    },
+    {
+      "slug": "batnorton",
+      "title": "BatNorton — интернет-магазин полного цикла",
+      "client": "BatNorton",
+      "industry": "Retail",
+      "problem": "Перезапустить устаревшую e-commerce систему.",
+      "solution": "Кастомный интернет-магазин с гибкой архитектурой.",
+      "result": "Готовый масштабируемый интернет-магазин.",
+      "body": "Перезапуск e-commerce системы с миграцией 10-летней базы данных.",
+      "status": "published",
+      "published_at": "2024-02-01",
+      "seo_title": "Кейс BatNorton | Neeklo Studio",
+      "seo_description": "Миграция и модернизация интернет-магазина."
+    }
+  ],
+  "posts": [
+    {
+      "slug": "ai-agents-for-business",
+      "title": "AI-агенты для бизнеса: как автоматизировать рутину и увеличить продажи",
+      "excerpt": "Разбираем, что такое AI-агенты, где они дают быстрый ROI и как внедрить первого агента за 2–4 недели. Кейсы и метрики.",
+      "body": "AI-агент — это система на базе нейросетей, которая понимает контекст, принимает решения и может выполнять действия...",
+      "status": "published",
+      "published_at": "2024-11-18",
+      "seo_title": "AI-агенты для бизнеса: внедрение, кейсы и ROI | Neeklo Studio",
+      "seo_description": "Как AI-агенты автоматизируют рутину и увеличивают продажи.",
+      "author_email": "hello@neeklo.studio"
+    },
+    {
+      "slug": "telegram-mini-app-roi",
+      "title": "Telegram Mini App: когда окупается и как измерить ROI",
+      "excerpt": "Разбираем, в каких задачах Mini App выигрывает у лендингов и мобильных приложений.",
+      "body": "Mini App — это мини-приложение внутри Telegram: открывается по ссылке, работает в браузере...",
+      "status": "published",
+      "published_at": "2024-11-12",
+      "seo_title": "Telegram Mini App: ROI и окупаемость | Neeklo Studio",
+      "seo_description": "Когда Mini App выгоднее лендинга и приложения.",
+      "author_email": "hello@neeklo.studio"
+    }
+  ],
+  "menus": [
+    {
+      "key": "header",
+      "title": "Верхнее меню",
+      "items": [
+        { "label": "Услуги", "type": "url", "url": "/services" },
+        { "label": "Портфолио", "type": "url", "url": "/work" },
+        { "label": "О нас", "type": "url", "url": "/about" },
+        { "label": "Контакты", "type": "url", "url": "/contact" }
+      ]
+    },
+    {
+      "key": "mobile",
+      "title": "Мобильное меню",
+      "items": [
+        { "label": "Главная", "type": "url", "url": "/" },
+        { "label": "Услуги", "type": "url", "url": "/services" },
+        { "label": "Кейсы", "type": "url", "url": "/work" },
+        { "label": "Процесс", "type": "url", "url": "/process" },
+        { "label": "О нас", "type": "url", "url": "/about" },
+        { "label": "Контакты", "type": "url", "url": "/contact" }
+      ]
+    },
+    {
+      "key": "footer_products",
+      "title": "Продукты (подвал)",
+      "items": [
+        { "label": "Разработка сайтов", "type": "url", "url": "/products/website" },
+        { "label": "Telegram-боты и Mini Apps", "type": "url", "url": "/products/telegram-bot" },
+        { "label": "AI-видео", "type": "url", "url": "/products/ai-video" },
+        { "label": "AI-ассистент", "type": "url", "url": "/products/ai-agent" }
+      ]
+    },
+    {
+      "key": "footer_company",
+      "title": "Компания (подвал)",
+      "items": [
+        { "label": "О нас", "type": "url", "url": "/about" },
+        { "label": "Кейсы", "type": "url", "url": "/cases" },
+        { "label": "Продукты", "type": "url", "url": "/products" },
+        { "label": "Процесс", "type": "url", "url": "/process" },
+        { "label": "Контакты", "type": "url", "url": "/contact" }
+      ]
+    }
+  ],
+  "settings": [
+    { "group": "contacts", "key": "email", "value": ["hello@neeklo.studio"] },
+    { "group": "contacts", "key": "phones", "value": ["+7 (999) 123-45-67"] },
+    { "group": "contacts", "key": "address", "value": ["Москва, Россия"] },
+    { "group": "contacts", "key": "inn", "value": ["263514478429"] },
+    { "group": "social", "key": "telegram", "value": ["https://t.me/neeklo"] },
+    { "group": "social", "key": "instagram", "value": ["https://instagram.com/neeklo"] },
+    { "group": "social", "key": "linkedin", "value": ["https://linkedin.com/company/neeklo"] },
+    { "group": "social", "key": "youtube", "value": ["https://youtube.com/@neeklo"] },
+    { "group": "company", "key": "default_title", "value": ["Neeklo Studio"] },
+    { "group": "company", "key": "tagline", "value": ["Цифровая студия нового поколения"] },
+    { "group": "company", "key": "working_hours", "value": ["Пн-Пт: 10:00 – 19:00", "Заявки 24/7"] },
+    { "group": "seo", "key": "default_title", "value": ["Neeklo Studio — Сайты, чат боты и видео"] },
+    { "group": "seo", "key": "default_description", "value": ["Готовые digital-решения для бизнеса. Запуск за 7–14 дней."] }
+  ],
+  "taxonomies": [
+    { "type": "category", "slug": "web", "title": "Web", "description": null, "parent_slug": null, "position": 0 },
+    { "type": "category", "slug": "ai", "title": "AI", "description": null, "parent_slug": null, "position": 1 },
+    { "type": "category", "slug": "ai-video", "title": "AI-Video", "description": null, "parent_slug": null, "position": 2 },
+    { "type": "category", "slug": "tg-bot", "title": "TG-Bot", "description": null, "parent_slug": null, "position": 3 },
+    { "type": "category", "slug": "mini-app", "title": "Mini-App", "description": null, "parent_slug": null, "position": 4 },
+    { "type": "category", "slug": "video", "title": "Video", "description": null, "parent_slug": null, "position": 5 },
+    { "type": "category", "slug": "branding", "title": "Branding", "description": null, "parent_slug": null, "position": 6 },
+    { "type": "category", "slug": "consulting", "title": "Consulting", "description": null, "parent_slug": null, "position": 7 },
+    { "type": "tag", "slug": "laravel", "title": "Laravel", "description": null, "parent_slug": null, "position": 0 },
+    { "type": "tag", "slug": "vue", "title": "Vue.js", "description": null, "parent_slug": null, "position": 1 },
+    { "type": "industry", "slug": "development", "title": "Разработка", "description": null, "parent_slug": null, "position": 0 },
+    { "type": "industry", "slug": "retail", "title": "Retail", "description": null, "parent_slug": null, "position": 1 },
+    { "type": "industry", "slug": "education", "title": "Образование", "description": null, "parent_slug": null, "position": 2 }
+  ],
+  "links": {
+    "case_studies": {
+      "povuzam": ["web"],
+      "batnorton": ["web"],
+      "mnka": ["web"],
+      "glamping": ["web"]
+    },
+    "services": {
+      "web-sites": ["development", "web"],
+      "telegram-bots": ["development", "tg-bot"],
+      "ai-agent": ["ai"],
+      "ai-video": ["ai", "ai-video"],
+      "branding": ["branding"]
+    }
+  }
+}
