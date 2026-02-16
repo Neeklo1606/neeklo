@@ -18,9 +18,10 @@ const labelBase = "text-sm font-medium text-white/70 mb-2 block";
 
 interface ContactFormModernProps {
   onSuccess?: () => void;
+  title?: string;
 }
 
-export function ContactFormModern({ onSuccess }: ContactFormModernProps) {
+export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [showEmail, setShowEmail] = useState(false);
@@ -79,7 +80,7 @@ export function ContactFormModern({ onSuccess }: ContactFormModernProps) {
           {/* Заголовок */}
           <div className="space-y-1">
             <h2 className="text-xl sm:text-2xl font-semibold text-white">
-              Давайте познакомимся
+              {title ?? "Давайте познакомимся"}
             </h2>
             <p className="text-sm text-white/70">
               Расскажите о задаче — мы подготовим предложение

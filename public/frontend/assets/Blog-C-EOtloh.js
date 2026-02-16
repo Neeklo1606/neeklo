@@ -1,0 +1,1 @@
+import{j as o}from"./motion-vendor-BDjNjK_3.js";import{C as t}from"./index-DSpOx7Wv.js";import"./react-vendor-BPADj-9C.js";import"./products-BQxcE2KP.js";import"./ui-vendor-CLuw_zuZ.js";import"./query-vendor-DZdZBpgz.js";const e=()=>o.jsx(t,{slug:"blog"});export{e as default};

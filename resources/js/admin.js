@@ -517,7 +517,10 @@ const store = createStore({
                 const response = await axios.get('/api/notifications');
                 commit('SET_NOTIFICATIONS', response.data.notifications);
             } catch (error) {
-                console.error('Notifications fetch error:', error);
+                // 401 — не логируем в консоль (токен истёк/невалиден, глобальный interceptor очистит сессию)
+                if (error.response?.status !== 401) {
+                    console.error('Notifications fetch error:', error);
+                }
             }
         },
         toggleTheme({ commit, state }) {
@@ -649,6 +652,25 @@ const routes = [
                 component: () => import('./pages/admin/Bots.vue'),
                 meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Боты' },
             },
+            // CMS
+            { path: 'pages', name: 'admin.pages', component: () => import('./pages/admin/cms/Pages.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Страницы' } },
+            { path: 'pages/create', name: 'admin.pages.create', component: () => import('./pages/admin/cms/PageEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Новая страница' } },
+            { path: 'pages/:id', name: 'admin.pages.edit', component: () => import('./pages/admin/cms/PageEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Редактирование страницы' } },
+            { path: 'services', name: 'admin.services', component: () => import('./pages/admin/cms/Services.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Услуги' } },
+            { path: 'services/create', name: 'admin.services.create', component: () => import('./pages/admin/cms/ServiceEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Новая услуга' } },
+            { path: 'services/:id', name: 'admin.services.edit', component: () => import('./pages/admin/cms/ServiceEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Редактирование услуги' } },
+            { path: 'case-studies', name: 'admin.case-studies', component: () => import('./pages/admin/cms/CaseStudies.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Кейс-стади' } },
+            { path: 'case-studies/create', name: 'admin.case-studies.create', component: () => import('./pages/admin/cms/CaseStudyEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Новый кейс-стади' } },
+            { path: 'case-studies/:id', name: 'admin.case-studies.edit', component: () => import('./pages/admin/cms/CaseStudyEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Редактирование кейс-стади' } },
+            { path: 'posts', name: 'admin.posts', component: () => import('./pages/admin/cms/Posts.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Посты' } },
+            { path: 'posts/create', name: 'admin.posts.create', component: () => import('./pages/admin/cms/PostEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Новый пост' } },
+            { path: 'posts/:id', name: 'admin.posts.edit', component: () => import('./pages/admin/cms/PostEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Редактирование поста' } },
+            { path: 'taxonomies', name: 'admin.taxonomies', component: () => import('./pages/admin/cms/Taxonomies.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Таксономии' } },
+            { path: 'menus', name: 'admin.menus', component: () => import('./pages/admin/cms/Menus.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Меню' } },
+            { path: 'menus/:id', name: 'admin.menus.edit', component: () => import('./pages/admin/cms/MenuEdit.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Редактирование меню' } },
+            { path: 'settings-cms', name: 'admin.settings-cms', component: () => import('./pages/admin/cms/SettingsCms.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Настройки CMS' } },
+            { path: 'leads', name: 'admin.leads', component: () => import('./pages/admin/cms/Leads.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Лиды' } },
+            { path: 'leads/:id', name: 'admin.leads.show', component: () => import('./pages/admin/cms/LeadShow.vue'), meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Просмотр лида' } },
         ],
     },
 ];
@@ -809,16 +831,15 @@ router.beforeEach(async (to, from, next) => {
         });
         
         if (!hasRole) {
-            // Пользователь не имеет нужной роли
-            console.log('❌ Router Guard - No required role, redirecting to /admin', {
+            // Пользователь авторизован, но без нужной роли — очищаем сессию и редирект на логин.
+            // Иначе на /login сработает "Already authenticated" → редирект на / → цикл.
+            console.log('❌ Router Guard - No required role, clearing session and redirecting to /login', {
                 route: to.path,
                 requiredRoles,
                 userRoles,
-                userHasRoles: !!store.state.user?.roles,
-                userRolesCount: store.state.user?.roles?.length || 0,
             });
-            // Редиректим на dashboard вместо корня, чтобы избежать бесконечного цикла
-            next('/admin');
+            store.commit('LOGOUT');
+            next('/login');
             return;
         } else {
             console.log('✅ Router Guard - Role check passed', {
@@ -942,12 +963,32 @@ if (typeof console !== 'undefined' && typeof window !== 'undefined') {
     };
 }
 
-// Set up axios defaults
+// Set up axios defaults (токен из store уже взят из localStorage при создании store)
 if (store.state.token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
 }
 
-// Инициализация пользователя при загрузке приложения
+// Request interceptor: всегда подставляем актуальный токен из localStorage (на случай истечения/обновления)
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+// Response interceptor: при 401 очищаем сессию (истёкший/невалидный токен)
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401 && store.state.token) {
+            store.commit('LOGOUT');
+        }
+        return Promise.reject(error);
+    }
+);
+
+// Единый блок инициализации пользователя при загрузке приложения
 if (store.state.token) {
     console.log('🔍 App initialization - Token found, fetching user...');
     store.dispatch('fetchUser').then(() => {
@@ -956,7 +997,6 @@ if (store.state.token) {
             roles: store.state.user?.roles,
             rolesCount: store.state.user?.roles?.length || 0,
         });
-        // Загружаем меню после загрузки пользователя
         store.dispatch('fetchMenu');
         store.dispatch('fetchNotifications');
     }).catch((error) => {
@@ -967,7 +1007,6 @@ if (store.state.token) {
 }
 
 // Инициализация темы при загрузке приложения
-// Применяем тему сразу, до монтирования приложения
 const savedTheme = localStorage.getItem('theme') || 'light';
 const html = document.documentElement;
 if (savedTheme === 'dark') {
@@ -979,27 +1018,7 @@ if (savedTheme === 'dark') {
     html.setAttribute('data-theme', 'light');
     html.style.colorScheme = 'light';
 }
-// Устанавливаем начальное состояние в store
 store.state.theme = savedTheme;
-
-// Initialize user and menu on app start
-if (store.state.token) {
-    console.log('🔍 App initialization - Token found, fetching user...');
-    store.dispatch('fetchUser').then(() => {
-        console.log('✅ App initialization - User fetched:', {
-            user: store.state.user,
-            roles: store.state.user?.roles,
-            rolesCount: store.state.user?.roles?.length || 0,
-        });
-        // Загружаем меню после загрузки пользователя
-        store.dispatch('fetchMenu');
-        store.dispatch('fetchNotifications');
-    }).catch((error) => {
-        console.error('❌ App initialization - Error fetching user:', error);
-    });
-} else {
-    console.log('⚠️ App initialization - No token found');
-}
 
 app.use(store);
 app.use(router);

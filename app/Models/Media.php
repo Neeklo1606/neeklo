@@ -6,6 +6,7 @@ use App\Models\Traits\Filterable;
 use App\Models\Traits\HasUserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -238,5 +239,45 @@ class Media extends Model
     public function scopeTemporary($query, bool $temporary = true)
     {
         return $query->where('temporary', $temporary);
+    }
+
+    /**
+     * Страницы, использующие этот медиафайл (через mediaables).
+     */
+    public function pages(): MorphToMany
+    {
+        return $this->morphedByMany(Page::class, 'mediable', 'mediaables')
+            ->withPivot(['collection', 'position', 'meta'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Посты, использующие этот медиафайл (через mediaables).
+     */
+    public function posts(): MorphToMany
+    {
+        return $this->morphedByMany(Post::class, 'mediable', 'mediaables')
+            ->withPivot(['collection', 'position', 'meta'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Услуги, использующие этот медиафайл (через mediaables).
+     */
+    public function services(): MorphToMany
+    {
+        return $this->morphedByMany(Service::class, 'mediable', 'mediaables')
+            ->withPivot(['collection', 'position', 'meta'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Кейсы (case_studies), использующие этот медиафайл (через mediaables).
+     */
+    public function caseStudies(): MorphToMany
+    {
+        return $this->morphedByMany(CaseStudy::class, 'mediable', 'mediaables')
+            ->withPivot(['collection', 'position', 'meta'])
+            ->withTimestamps();
     }
 }

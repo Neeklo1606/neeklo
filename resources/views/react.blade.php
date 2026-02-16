@@ -19,26 +19,28 @@
             if (preg_match_all('/<link[^>]+href\s*=\s*["\']([^"\']+\.css[^"\']*)["\'][^>]*>/i', $htmlContent, $cssMatches)) {
                 foreach ($cssMatches[1] as $cssPath) {
                     if (!str_contains($cssPath, 'fonts.googleapis')) {
-                        $cssFiles[] = str_starts_with($cssPath, '/') ? $cssPath : '/' . ltrim($cssPath, './');
+                        $p = str_starts_with($cssPath, '/') ? $cssPath : '/' . ltrim($cssPath, './');
+                        $cssFiles[] = str_starts_with($p, '/assets/') ? '/frontend' . $p : $p;
                     }
                 }
             }
             if (preg_match_all('/<script[^>]+src\s*=\s*["\']([^"\']+\.js[^"\']*)["\'][^>]*>/i', $htmlContent, $jsMatches)) {
                 foreach ($jsMatches[1] as $jsPath) {
                     if (!str_contains($jsPath, 'registerSW')) {
-                        $jsFiles[] = str_starts_with($jsPath, '/') ? $jsPath : '/' . ltrim($jsPath, './');
+                        $p = str_starts_with($jsPath, '/') ? $jsPath : '/' . ltrim($jsPath, './');
+                        $jsFiles[] = str_starts_with($p, '/assets/') ? '/frontend' . $p : $p;
                     }
                 }
             }
         }
         if (empty($jsFiles) && is_dir($assetsPath)) {
             foreach (glob($assetsPath . '/index-*.js') ?: [] as $file) {
-                $jsFiles[] = '/assets/' . basename($file);
+                $jsFiles[] = '/frontend/assets/' . basename($file);
             }
         }
         if (empty($cssFiles) && is_dir($assetsPath)) {
             foreach (glob($assetsPath . '/index-*.css') ?: [] as $file) {
-                $cssFiles[] = '/assets/' . basename($file);
+                $cssFiles[] = '/frontend/assets/' . basename($file);
             }
         }
         $useViteDev = (config('app.env') === 'local' && $viteDevUrl !== '' && empty($jsFiles));

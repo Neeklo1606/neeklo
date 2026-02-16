@@ -18,7 +18,11 @@ interface Solution {
   icon: LucideIcon;
 }
 
-const SOLUTIONS: Solution[] = [
+const SLUG_ICONS: Record<string, LucideIcon> = {
+  website: Globe, "telegram-bot": Bot, "ai-video": Video, "mini-app": Smartphone,
+  "miniapp": Smartphone, "ai-agent": Globe, "mobile-app": Smartphone,
+};
+const defaultSolutions: Solution[] = [
   {
     id: "website",
     title: "Сайт для бизнеса",
@@ -52,6 +56,23 @@ const SOLUTIONS: Solution[] = [
     icon: Smartphone,
   },
 ];
+
+function buildSolutions(cms?: Array<{ slug: string; title: string; price: string; duration: string }>): Solution[] {
+  if (!cms?.length) return defaultSolutions;
+  return cms.map((s) => {
+    const slug = s.slug.replace(/^products\//, "").toLowerCase();
+    const Icon = SLUG_ICONS[slug] ?? Globe;
+    const href = slug.startsWith("/") ? slug : `/products/${slug}`;
+    return {
+      id: slug,
+      title: s.title,
+      price: s.price,
+      duration: s.duration,
+      href,
+      icon: Icon,
+    };
+  });
+}
 
 // Solution Card — compact catalog style, equal height
 const SolutionCard = memo(function SolutionCard({
@@ -140,12 +161,20 @@ const SolutionCard = memo(function SolutionCard({
   );
 });
 
-export function ReadySolutions() {
+interface ReadySolutionsProps {
+  title?: string;
+  subtitle?: string;
+  sectionId?: string;
+  solutions?: Array<{ slug: string; title: string; price: string; duration: string }>;
+}
+
+export function ReadySolutions({ title, subtitle, sectionId, solutions: solutionsData }: ReadySolutionsProps = {}) {
   const isMobile = useMobile();
   const shouldReduceMotion = usePrefersReducedMotion();
+  const solutions = buildSolutions(solutionsData);
 
   return (
-    <section id="products" className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section id={sectionId ?? "products"} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
         {/* Header */}
         <motion.div
@@ -180,7 +209,7 @@ export function ReadySolutions() {
 
         {/* Solutions Grid: 2x2 mobile, 4 cols desktop */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-          {SOLUTIONS.map((solution, index) => (
+          {solutions.map((solution, index) => (
             <SolutionCard
               key={solution.id}
               solution={solution}

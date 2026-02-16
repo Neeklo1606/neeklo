@@ -276,7 +276,12 @@ const CaseCard = memo(function CaseCard({
   );
 });
 
-export function VideoCasesSlider() {
+interface VideoCasesSliderProps {
+  title?: string;
+  sectionId?: string;
+}
+
+export function VideoCasesSlider({ title, sectionId }: VideoCasesSliderProps = {}) {
   const navigate = useNavigate();
   const isMobile = useMobile();
   const shouldReduceMotion = usePrefersReducedMotion();
@@ -425,7 +430,7 @@ export function VideoCasesSlider() {
   }, [x, maxDrag, scrollAmount]);
 
   return (
-    <section className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
+    <section id={sectionId ?? "cases"} className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -436,7 +441,7 @@ export function VideoCasesSlider() {
         >
           <div>
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-              Видео-кейсы
+              {title ?? "Видео-кейсы"}
             </h2>
             <p className="text-sm text-muted-foreground mt-1 hidden md:block">
               Смотрите результаты наших проектов

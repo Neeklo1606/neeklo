@@ -24,20 +24,20 @@ class SupportMessageFactory extends Factory
         return [
             'id' => Str::uuid()->toString(),
             'ticket_id' => SupportTicket::factory(),
-            'sender' => fake()->randomElement(['local', 'crm']),
-            'message' => fake()->paragraph(),
+            'sender' => fake()->randomElement(['tma', 'crm']),
+            'body' => fake()->paragraph(),
             'attachments' => null,
             'created_at' => now(),
         ];
     }
 
     /**
-     * Indicate that the message is from local (admin).
+     * Indicate that the message is from TMA (admin).
      */
     public function fromLocal(): static
     {
         return $this->state(fn (array $attributes) => [
-            'sender' => 'local',
+            'sender' => 'tma',
         ]);
     }
 

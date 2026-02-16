@@ -43,10 +43,11 @@ class SupportIntegrationTest extends TestCase
 
         // Получаем токены из .env или используем тестовые
         $this->deployToken = env('DEPLOY_TOKEN', 'test-deploy-token-12345678901234567890');
-        $this->crmUrl = env('APP_CRM_URL', 'https://crm.siteaccess.ru/api/v1/ticket');
+        $crmBaseUrl = rtrim(preg_replace('#/api/.*$#', '', env('APP_CRM_URL', 'https://crm.siteaccess.ru/api/v1/ticket')), '/');
+        $this->crmUrl = $crmBaseUrl . '/api/v1/integration/tickets';
         
         config(['app.deploy_token' => $this->deployToken]);
-        config(['app.crm_url' => $this->crmUrl]);
+        config(['app.crm_url' => env('APP_CRM_URL', 'https://crm.siteaccess.ru/api/v1/ticket')]);
         config(['app.project_identifier' => env('APP_PROJECT_IDENTIFIER', 'tma')]);
         
         putenv("DEPLOY_TOKEN={$this->deployToken}");
@@ -78,16 +79,17 @@ class SupportIntegrationTest extends TestCase
             ]);
 
         // Проверяем что тикет создан
-        $ticket = SupportTicket::where('theme', 'Интеграционный тест')->first();
+        $ticket = SupportTicket::where('subject', 'Интеграционный тест')->first();
         $this->assertNotNull($ticket);
         $this->assertEquals('open', $ticket->status);
 
-        // Проверяем что был запрос к CRM
+        // Проверяем что был запрос к CRM (IntegrationService шлёт external_ticket_id и subject)
         Http::assertSent(function ($request) use ($ticket) {
+            $data = $request->data();
             return $request->url() === $this->crmUrl
                 && $request->hasHeader('Authorization', "Bearer {$this->deployToken}")
-                && $request['ticket_id'] === $ticket->id
-                && $request['theme'] === 'Интеграционный тест';
+                && ($data['external_ticket_id'] ?? null) === $ticket->id
+                && ($data['subject'] ?? null) === 'Интеграционный тест';
         });
     }
 
@@ -114,11 +116,11 @@ class SupportIntegrationTest extends TestCase
 
         $response->assertStatus(201);
 
-        $ticket = SupportTicket::where('theme', 'Тикет с файлами')->first();
+        $ticket = SupportTicket::where('subject', 'Тикет с файлами')->first();
         $this->assertNotNull($ticket);
 
         // Проверяем что файлы были отправлены в CRM
-        Http::assertSent(function ($request) use ($ticket) {
+        Http::assertSent(function ($request) {
             return $request->url() === $this->crmUrl
                 && isset($request['attachments'])
                 && is_array($request['attachments'])
@@ -154,7 +156,7 @@ class SupportIntegrationTest extends TestCase
                 'success' => true,
                 'data' => [
                     'sender' => 'crm',
-                    'message' => 'Ответ от CRM системы',
+                    'body' => 'Ответ от CRM системы',
                 ],
             ]);
 
@@ -163,7 +165,7 @@ class SupportIntegrationTest extends TestCase
             ->where('sender', 'crm')
             ->first();
         $this->assertNotNull($message);
-        $this->assertEquals('Ответ от CRM системы', $message->message);
+        $this->assertEquals('Ответ от CRM системы', $message->body);
         $this->assertNotNull($message->attachments);
     }
 

@@ -121,7 +121,9 @@ interface CaseCardProps {
 function CaseCard({ caseItem }: CaseCardProps) {
   const hasVideo = caseItem.coverVideo && caseItem.coverVideo.length > 0;
   const coverImage = caseItem.coverPoster
-    ? `/cases/${caseItem.coverPoster}`
+    ? (caseItem.coverPoster.startsWith('http') || caseItem.coverPoster.startsWith('/')
+        ? caseItem.coverPoster
+        : `/cases/${caseItem.coverPoster}`)
     : "/placeholder.svg";
 
   return (

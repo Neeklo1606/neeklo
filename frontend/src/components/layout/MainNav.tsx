@@ -1,29 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { usePublicBootstrap } from "@/hooks/usePublicBootstrap";
 import { BriefWizard } from "@/components/hero/BriefWizard";
 import logoLight from "@/assets/logo.png";
 import logoDark from "@/assets/logo-dark.png";
 
-// Desktop nav: Услуги, Портфолио, О нас, Контакты
-const navItems = [
+const DEFAULT_NAV_ITEMS = [
   { label: "Услуги", href: "/services", sectionId: "products" },
   { label: "Портфолио", href: "/work", sectionId: "cases" },
   { label: "О нас", href: "/about" },
   { label: "Контакты", href: "/contact" },
 ];
 
-// Burger menu (same four links)
-const burgerMenuItems = [
-  { label: "Услуги", href: "/services" },
-  { label: "Портфолио", href: "/work" },
-  { label: "О нас", href: "/about" },
-  { label: "Контакты", href: "/contact" },
-];
+function menuItemsToNav(items: Array<{ label: string; url?: string; children?: unknown[] }>): Array<{ label: string; href: string; sectionId?: string }> {
+  const sectionMap: Record<string, string> = { "/services": "products", "/work": "cases" };
+  return items
+    .filter((i) => !i.children?.length)
+    .map((i) => ({
+      label: i.label,
+      href: i.url ?? "#",
+      sectionId: sectionMap[i.url ?? ""],
+    }));
+}
 
 export const MainNav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -33,6 +36,21 @@ export const MainNav = () => {
   const location = useLocation();
   const shouldReduceMotion = usePrefersReducedMotion();
   const activeSection = useActiveSection();
+  const { data: bootstrap } = usePublicBootstrap();
+
+  const navItems = useMemo(() => {
+    const header = bootstrap?.menus?.header;
+    const items = header?.items;
+    if (items && Array.isArray(items) && items.length > 0) {
+      return menuItemsToNav(items as Array<{ label: string; url?: string; children?: unknown[] }>);
+    }
+    return DEFAULT_NAV_ITEMS;
+  }, [bootstrap]);
+
+  const burgerMenuItems = useMemo(
+    () => navItems.map(({ label, href }) => ({ label, href })),
+    [navItems]
+  );
 
   // Watch for dark mode changes (dark mode is default, light mode has 'light-mode' class)
   useEffect(() => {

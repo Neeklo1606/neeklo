@@ -135,7 +135,8 @@ export async function sendTelegramMessage(data: {
   };
 }
 
-// --- Cases API (публичные и админ) ---const getAuthHeaders = (): Record<string, string> => {
+// --- Cases API (публичные и админ) ---
+const getAuthHeaders = (): Record<string, string> => {
   const t = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
   if (t) return { Authorization: `Bearer ${t}` };
   return {};
@@ -170,6 +171,93 @@ export async function getCaseBySlug(slug: string): Promise<{ success: boolean; d
 }
 
 const apiV1 = (p: string) => (import.meta.env.VITE_API_URL || '/api').replace(/\/?$/, '') + '/v1' + p;
+
+const apiPublic = (p: string) => (import.meta.env.VITE_API_URL || '/api').replace(/\/?$/, '') + '/v1/public' + p;
+
+/** Public bootstrap: settings (contacts/social/seo) + menus (header/footer/mobile) */
+export async function getPublicBootstrap(params?: { locale?: string }): Promise<{
+  success: boolean;
+  data?: { settings: Record<string, Array<{ key: string; value: unknown[] }>>; menus: Record<string, { key: string; title: string; items: unknown[] }> };
+  message?: string;
+}> {
+  const url = params?.locale ? `${apiPublic('/bootstrap')}?locale=${encodeURIComponent(params.locale)}` : apiPublic('/bootstrap');
+  const r = await fetch(url, { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+/** Public page by slug */
+export async function getPublicPage(slug: string, params?: { locale?: string }): Promise<{
+  success: boolean;
+  data?: {
+    slug: string;
+    title: string;
+    seo_title?: string;
+    seo_description?: string;
+    og?: Record<string, string>;
+    blocks: Array<{ id: number; type: string; position: number; is_enabled: boolean; data: Record<string, unknown> }>;
+    media_collections?: Record<string, unknown[]>;
+  };
+  message?: string;
+}> {
+  const url = params?.locale ? `${apiPublic(`/pages/${encodeURIComponent(slug)}`)}?locale=${encodeURIComponent(params.locale)}` : apiPublic(`/pages/${encodeURIComponent(slug)}`);
+  const r = await fetch(url, { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+/** Public services index */
+export async function getPublicServices(params?: { per_page?: number }): Promise<{ success: boolean; data?: unknown[]; meta?: { pagination?: unknown }; message?: string }> {
+  const q = params?.per_page ? `?per_page=${params.per_page}` : '';
+  const r = await fetch(apiPublic(`/services${q}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data, meta: d.meta };
+}
+
+/** Public case-studies index */
+export async function getPublicCaseStudies(params?: { per_page?: number }): Promise<{ success: boolean; data?: unknown[]; meta?: { pagination?: unknown }; message?: string }> {
+  const q = params?.per_page ? `?per_page=${params.per_page}` : '';
+  const r = await fetch(apiPublic(`/case-studies${q}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data, meta: d.meta };
+}
+
+/** Public posts index */
+export async function getPublicPosts(params?: { per_page?: number }): Promise<{ success: boolean; data?: unknown[]; meta?: { pagination?: unknown }; message?: string }> {
+  const q = params?.per_page ? `?per_page=${params.per_page}` : '';
+  const r = await fetch(apiPublic(`/posts${q}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data, meta: d.meta };
+}
+
+/** Public post by slug */
+export async function getPublicPost(slug: string): Promise<{ success: boolean; data?: unknown; message?: string }> {
+  const r = await fetch(apiPublic(`/posts/${encodeURIComponent(slug)}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+/** Public case-study by slug */
+export async function getPublicCaseStudy(slug: string): Promise<{ success: boolean; data?: unknown; message?: string }> {
+  const r = await fetch(apiPublic(`/case-studies/${encodeURIComponent(slug)}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+/** Public service by slug */
+export async function getPublicService(slug: string): Promise<{ success: boolean; data?: unknown; message?: string }> {
+  const r = await fetch(apiPublic(`/services/${encodeURIComponent(slug)}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
 
 /** Кейс по id (админ) */
 export async function getCaseById(id: number): Promise<{ success: boolean; data?: any; message?: string }> {

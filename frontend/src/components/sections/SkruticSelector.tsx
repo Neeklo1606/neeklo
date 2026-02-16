@@ -142,7 +142,42 @@ const getStepLabel = (s: Step): string => {
   return `Шаг ${s} из 3`;
 };
 
-export function SkruticSelector() {
+const LABEL_TO_ID: Record<string, string> = {
+  "Сайт": "site", "Бот": "bot", "Видео": "video", "Не знаю": "unknown",
+  "Заявки": "leads", "Продажи": "sales", "Имидж": "image", "Автоматизация": "automation",
+  "Срочно": "urgent", "Можно подождать": "normal",
+};
+
+function cmsStepsToInternal(cms: Record<string, { title: string; options: string[] }> | undefined) {
+  if (!cms) return null;
+  const result: Record<1 | 2 | 3, { title: string; options: { id: string; label: string; emoji: string }[] }> = {
+    1: { title: "", options: [] },
+    2: { title: "", options: [] },
+    3: { title: "", options: [] },
+  };
+  const emojis: Record<string, string> = { site: "🌐", bot: "🤖", video: "🎬", unknown: "✨", leads: "📩", sales: "💰", image: "✨", automation: "⚡", urgent: "🚀", normal: "📅" };
+  ([1, 2, 3] as const).forEach((n) => {
+    const s = cms[String(n)];
+    if (s) {
+      result[n] = {
+        title: s.title,
+        options: s.options.map((label) => ({
+          id: LABEL_TO_ID[label] ?? label.toLowerCase().replace(/\s+/g, "-"),
+          label,
+          emoji: emojis[LABEL_TO_ID[label] ?? ""] ?? "•",
+        })),
+      };
+    }
+  });
+  return result;
+}
+
+interface SkruticSelectorProps {
+  steps?: Record<string, { title: string; options: string[] }>;
+  telegramLink?: string;
+}
+
+export function SkruticSelector({ steps: cmsSteps, telegramLink: defaultTelegram }: SkruticSelectorProps = {}) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>(1);
@@ -302,7 +337,7 @@ export function SkruticSelector() {
       );
     }
 
-    const currentStep = steps[step as 1 | 2 | 3];
+    const currentStep = activeSteps[step as 1 | 2 | 3];
     if (!currentStep) return null;
 
     return (

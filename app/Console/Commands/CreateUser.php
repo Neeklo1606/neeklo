@@ -38,12 +38,16 @@ class CreateUser extends Command
         $name = $this->option('name') ?: 'Джон Уик';
         $rolesInput = $this->option('roles');
 
-        // Если роли не указаны, присваиваем все роли (админ)
+        // Если роли не указаны — по умолчанию роль admin (создаём, если нет в БД)
         if (empty($rolesInput)) {
-            $roles = Role::all();
+            $adminRole = Role::firstOrCreate(
+                ['slug' => 'admin'],
+                ['name' => 'Администратор', 'description' => 'Полный доступ ко всем функциям системы']
+            );
+            $roles = collect([$adminRole]);
         } else {
             $roleSlugs = is_array($rolesInput) ? $rolesInput : explode(',', $rolesInput[0] ?? '');
-            $roles = Role::whereIn('slug', $roleSlugs)->get();
+            $roles = Role::whereIn('slug', array_map('trim', $roleSlugs))->get();
         }
 
         // Проверяем, существует ли пользователь

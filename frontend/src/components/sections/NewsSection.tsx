@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Container } from "@/components/common/Container";
@@ -63,9 +64,17 @@ const categoryColors: Record<string, string> = {
   "Маркетинг": "bg-rose-500/15 text-rose-400 border-rose-500/25",
 };
 
-export function NewsSection() {
+interface NewsSectionProps {
+  title?: string;
+  subtitle?: string;
+  blogLink?: string;
+  articles?: NewsArticle[];
+}
+
+export function NewsSection({ title, subtitle, blogLink, articles: articlesProp }: NewsSectionProps = {}) {
   const shouldReduceMotion = usePrefersReducedMotion();
-  
+  const articles = articlesProp ?? ARTICLES;
+
   return (
     <section className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
@@ -79,14 +88,14 @@ export function NewsSection() {
         >
           <div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
-              Полезно для бизнеса
+              {title ?? "Полезно для бизнеса"}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base">
-              Разборы, кейсы и практические советы
+              {subtitle ?? "Разборы, кейсы и практические советы"}
             </p>
           </div>
           <Link
-            to="/blog"
+            to={blogLink ?? "/blog"}
             className="text-sm font-medium text-primary hover:underline shrink-0"
           >
             Все статьи →
@@ -95,7 +104,7 @@ export function NewsSection() {
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-          {ARTICLES.map((article, index) => (
+          {articles.map((article, index) => (
             <motion.article
               key={article.id}
               initial={{ opacity: 0, y: 20 }}

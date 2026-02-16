@@ -5,18 +5,30 @@ import { BriefWizard } from './BriefWizard';
 import { useState, useEffect } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
-export function HeroSection() {
+interface HeroSectionProps {
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  scrollTarget?: string;
+}
+
+export function HeroSection({ title, subtitle, ctaText, scrollTarget }: HeroSectionProps = {}) {
   const [isBriefOpen, setIsBriefOpen] = useState(false);
   const [scrollOpacity, setScrollOpacity] = useState(1);
   const shouldReduceMotion = usePrefersReducedMotion();
+
+  const displayTitle = title ?? "Создание сайтов,\nMini App и AI видео";
+  const displaySubtitle = subtitle ?? "Разрабатываем продукты, которые приносят деньги";
+  const displayCta = ctaText ?? "Узнать стоимость";
 
   const handleCtaClick = () => {
     setIsBriefOpen(true);
   };
 
-  const scrollToCases = () => {
-    const casesSection = document.getElementById('cases');
-    casesSection?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToTarget = () => {
+    const id = scrollTarget ?? "cases";
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ behavior: "smooth" });
   };
 
   // Fade-out эффект при скролле
@@ -89,9 +101,12 @@ export function HeroSection() {
                              font-extrabold leading-[1.15] tracking-tight text-white
                              drop-shadow-[0_4px_20px_rgba(0,0,0,1)]"
                 >
-                  Создание сайтов,
-                  <br />
-                  Mini App и AI видео
+                  {displayTitle.split("\n").map((line, i) => (
+                    <span key={i}>
+                      {i > 0 && <br />}
+                      {line}
+                    </span>
+                  ))}
                 </motion.h1>
 
                 <motion.p
@@ -107,7 +122,7 @@ export function HeroSection() {
                              drop-shadow-[0_4px_16px_rgba(0,0,0,1)]
                              max-w-2xl sm:max-w-3xl mx-auto mt-6 mb-6"
                 >
-                  Разрабатываем продукты, которые приносят деньги
+                  {displaySubtitle}
                 </motion.p>
               </div>
 
@@ -155,7 +170,7 @@ export function HeroSection() {
 
                   {/* Secondary CTA */}
                   <button
-                    onClick={scrollToCases}
+                    onClick={scrollToTarget}
                     className="group w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-5 rounded-xl font-semibold
                                text-base sm:text-lg md:text-xl
                                bg-black/30 backdrop-blur-md

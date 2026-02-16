@@ -209,44 +209,6 @@ Route::get('/build/assets/{path}', function ($path) {
     ]);
 })->where('path', '.+')->name('build.assets');
 
-// Проксирование assets для Vue админки (build/assets/*)
-// Должно быть ДО catch-all роутов
-Route::get('/build/assets/{path}', function ($path) {
-    // Безопасно получаем имя файла (защита от path traversal)
-    $fileName = basename($path);
-    $filePath = public_path('build/assets/' . $fileName);
-    
-    // Проверяем существование файла
-    if (!file_exists($filePath) || !is_file($filePath)) {
-        abort(404, "File not found: {$fileName}");
-    }
-    
-    // Определяем MIME тип по расширению
-    $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-    $mimeTypes = [
-        'js' => 'application/javascript; charset=utf-8',
-        'mjs' => 'application/javascript; charset=utf-8',
-        'css' => 'text/css; charset=utf-8',
-        'png' => 'image/png',
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'gif' => 'image/gif',
-        'svg' => 'image/svg+xml',
-        'webp' => 'image/webp',
-        'woff' => 'font/woff',
-        'woff2' => 'font/woff2',
-        'ttf' => 'font/ttf',
-        'eot' => 'application/vnd.ms-fontobject',
-    ];
-    
-    $mimeType = $mimeTypes[$extension] ?? mime_content_type($filePath);
-    
-    return response()->file($filePath, [
-        'Content-Type' => $mimeType,
-        'Cache-Control' => 'public, max-age=31536000',
-    ]);
-})->where('path', '.+')->name('build.assets');
-
 // Роуты для статических файлов React приложения из корня
 Route::get('/manifest.webmanifest', function () {
     $filePath = public_path('frontend/manifest.webmanifest');
@@ -280,6 +242,57 @@ Route::get('/registerSW.js', function () {
     abort(404);
 })->name('react.registerSW');
 
+// Статические файлы: /videos/* и /cases/* (для кейсов и видео на сайте)
+Route::get('/videos/{path}', function (string $path) {
+    $path = str_replace('..', '', $path);
+    $filePath = public_path('videos/' . $path);
+    if (file_exists($filePath) && is_file($filePath)) {
+        $mime = match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
+            'mp4' => 'video/mp4',
+            'webm' => 'video/webm',
+            'mov' => 'video/quicktime',
+            default => mime_content_type($filePath),
+        };
+        return response()->file($filePath, ['Content-Type' => $mime, 'Cache-Control' => 'public, max-age=31536000']);
+    }
+    abort(404);
+})->where('path', '.*');
+
+Route::get('/cases/{path}', function (string $path) {
+    $path = str_replace('..', '', $path);
+    foreach ([public_path('cases/' . $path), storage_path('app/public/cases/' . $path)] as $filePath) {
+        if (file_exists($filePath) && is_file($filePath)) {
+            $mime = match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
+                'jpg', 'jpeg' => 'image/jpeg',
+                'png' => 'image/png',
+                'webp' => 'image/webp',
+                'gif' => 'image/gif',
+                default => mime_content_type($filePath),
+            };
+            return response()->file($filePath, ['Content-Type' => $mime, 'Cache-Control' => 'public, max-age=31536000']);
+        }
+    }
+    abort(404);
+})->where('path', '.*');
+
+// OG-изображение для соцсетей и прелоада (если нет файла — отдаём fallback, чтобы не было 404)
+Route::get('/og-image.png', function () {
+    $paths = [public_path('og-image.png'), public_path('og-image.jpg'), public_path('frontend/og-image.png'), public_path('frontend/og-image.jpg')];
+    foreach ($paths as $filePath) {
+        if (file_exists($filePath) && is_file($filePath)) {
+            return response()->file($filePath, [
+                'Content-Type' => str_ends_with($filePath, '.jpg') ? 'image/jpeg' : 'image/png',
+                'Cache-Control' => 'public, max-age=86400',
+            ]);
+        }
+    }
+    $fallback = public_path('frontend/pwa-192x192.png');
+    if (file_exists($fallback)) {
+        return response()->file($fallback, ['Content-Type' => 'image/png', 'Cache-Control' => 'public, max-age=86400']);
+    }
+    abort(404);
+})->name('og-image');
+
 // Страница истечения подписки (должна быть до админ-панели)
 Route::get('/subscription-expired', [\App\Http\Controllers\SubscriptionExpiredController::class, 'index'])
     ->name('subscription.expired');
@@ -298,6 +311,28 @@ Route::middleware('subscription.check')->group(function () {
 
 // Публичный роут для просмотра логов
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'index'])->name('logs.index');
+
+// Sitemap (CMS-based)
+Route::get('/sitemap.xml', \App\Http\Controllers\SitemapController::class)->name('sitemap');
+
+// robots.txt
+Route::get('/robots.txt', function () {
+    $base = request()->getSchemeAndHttpHost();
+    $body = "User-agent: *\n"
+        . "Disallow: /admin\n"
+        . "Disallow: /api/admin\n"
+        . "Allow: /\n"
+        . "Sitemap: {$base}/sitemap.xml\n";
+    return response($body, 200, [
+        'Content-Type' => 'text/plain; charset=utf-8',
+    ]);
+})->name('robots');
+
+// Server-side share pages (OG for Telegram/VK/WhatsApp)
+Route::get('/share/page/{slug}', [\App\Http\Controllers\ShareController::class, 'page'])->name('share.page');
+Route::get('/share/service/{slug}', [\App\Http\Controllers\ShareController::class, 'service'])->name('share.service');
+Route::get('/share/post/{slug}', [\App\Http\Controllers\ShareController::class, 'post'])->name('share.post');
+Route::get('/share/case-study/{slug}', [\App\Http\Controllers\ShareController::class, 'caseStudy'])->name('share.case-study');
 
 // Маршруты для основного приложения (React)
 // Корневой роут для React приложения

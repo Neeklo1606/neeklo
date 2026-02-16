@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, useMemo } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +14,7 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { ScrollToTop } from "@/components/common/ScrollToTop";
 import { MobileMenu } from "@/components/ui/MobileMenu";
 import { usePreloadRoutes } from "@/hooks/usePreloadRoutes";
+import { usePublicBootstrap } from "@/hooks/usePublicBootstrap";
 import { useWebVitals } from "@/hooks/useWebVitals";
 import { useScrollAnimations } from "@/hooks/useScrollAnimations";
 import Index from "./pages/Index";
@@ -65,8 +66,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// Navigation items for mobile menu
-const NAV_ITEMS = [
+const DEFAULT_NAV_ITEMS = [
   { label: "Главная", href: "/" },
   { label: "Услуги", href: "/services" },
   { label: "Кейсы", href: "/work" },
@@ -121,10 +121,21 @@ function AppRoutes() {
   );
 }
 
-// App content with navigation
 function AppContent() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { data: bootstrap } = usePublicBootstrap();
+
+  const navItems = useMemo(() => {
+    const menu = bootstrap?.menus?.mobile ?? bootstrap?.menus?.header;
+    const items = menu?.items;
+    if (items && Array.isArray(items) && items.length > 0) {
+      return (items as Array<{ label: string; url?: string }>)
+        .filter((i) => !i.url?.startsWith("#"))
+        .map((i) => ({ label: i.label, href: i.url ?? "/" }));
+    }
+    return DEFAULT_NAV_ITEMS;
+  }, [bootstrap]);
 
   const isActive = (href: string) => {
     if (href === "/") return location.pathname === "/";
@@ -146,7 +157,7 @@ function AppContent() {
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        navItems={NAV_ITEMS}
+        navItems={navItems}
         isActive={isActive}
       />
       <CookieConsent />

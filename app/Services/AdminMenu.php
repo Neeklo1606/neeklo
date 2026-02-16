@@ -15,17 +15,12 @@ class AdminMenu
      */
     public function getMenu(?User $user = null): Collection
     {
+        // Первые 5 пунктов по запросу: Медиа, Уведомления, Пользователи, Роли, Боты
         $menu = collect([
             [
                 'title' => 'Медиа',
                 'route' => 'admin.media',
                 'icon' => 'image',
-                'roles' => ['admin', 'manager'],
-            ],
-            [
-                'title' => 'Кейсы',
-                'route' => 'admin.cases',
-                'icon' => 'folder',
                 'roles' => ['admin', 'manager'],
             ],
             [
@@ -51,6 +46,60 @@ class AdminMenu
                 'route' => 'admin.bots',
                 'icon' => 'bot',
                 'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Страницы',
+                'route' => 'admin.pages',
+                'icon' => 'file-text',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Услуги',
+                'route' => 'admin.services',
+                'icon' => 'briefcase',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Кейс-стади',
+                'route' => 'admin.case-studies',
+                'icon' => 'folder-open',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Посты',
+                'route' => 'admin.posts',
+                'icon' => 'newspaper',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Таксономии',
+                'route' => 'admin.taxonomies',
+                'icon' => 'tags',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Меню',
+                'route' => 'admin.menus',
+                'icon' => 'menu',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Настройки CMS',
+                'route' => 'admin.settings-cms',
+                'icon' => 'settings',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Лиды',
+                'route' => 'admin.leads',
+                'icon' => 'inbox',
+                'roles' => ['admin'],
+            ],
+            [
+                'title' => 'Кейсы',
+                'route' => 'admin.cases',
+                'icon' => 'folder',
+                'roles' => ['admin', 'manager'],
             ],
             [
                 'title' => 'Подписка',

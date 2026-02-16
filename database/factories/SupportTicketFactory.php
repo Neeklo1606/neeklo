@@ -22,7 +22,7 @@ class SupportTicketFactory extends Factory
     {
         return [
             'id' => Str::uuid()->toString(),
-            'theme' => fake()->sentence(3),
+            'subject' => fake()->sentence(3),
             'status' => fake()->randomElement(['open', 'in_progress', 'closed']),
             'created_at' => now(),
             'updated_at' => now(),

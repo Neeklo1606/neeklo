@@ -66,7 +66,7 @@ class SupportTicketTest extends TestCase
                 'message',
                 'data' => [
                     'id',
-                    'theme',
+                    'subject',
                     'status',
                     'created_at',
                     'updated_at',
@@ -75,7 +75,7 @@ class SupportTicketTest extends TestCase
                             'id',
                             'ticket_id',
                             'sender',
-                            'message',
+                            'body',
                             'attachments',
                             'created_at',
                         ],
@@ -85,13 +85,13 @@ class SupportTicketTest extends TestCase
             ->assertJson([
                 'success' => true,
                 'data' => [
-                    'theme' => 'Тестовая тема',
+                    'subject' => 'Тестовая тема',
                     'status' => 'open',
                 ],
             ]);
 
         $this->assertDatabaseHas('support_tickets', [
-            'theme' => 'Тестовая тема',
+            'subject' => 'Тестовая тема',
             'status' => 'open',
         ]);
     }
@@ -118,7 +118,7 @@ class SupportTicketTest extends TestCase
                 'success' => true,
             ]);
 
-        $ticket = SupportTicket::where('theme', 'Тикет с файлами')->first();
+        $ticket = SupportTicket::where('subject', 'Тикет с файлами')->first();
         $this->assertNotNull($ticket);
 
         $message = $ticket->messages()->first();
@@ -215,7 +215,7 @@ class SupportTicketTest extends TestCase
                     'data' => [
                         '*' => [
                             'id',
-                            'theme',
+                            'subject',
                             'status',
                             'created_at',
                             'updated_at',
@@ -257,7 +257,7 @@ class SupportTicketTest extends TestCase
         $ticket = SupportTicket::factory()->create();
         SupportMessage::factory()->count(3)->create([
             'ticket_id' => $ticket->id,
-            'sender' => 'local',
+            'sender' => 'tma',
         ]);
 
         $response = $this->withHeaders([
@@ -270,13 +270,13 @@ class SupportTicketTest extends TestCase
                 'success',
                 'data' => [
                     'id',
-                    'theme',
+                    'subject',
                     'status',
                     'messages' => [
                         '*' => [
                             'id',
                             'sender',
-                            'message',
+                            'body',
                         ],
                     ],
                 ],
@@ -303,15 +303,15 @@ class SupportTicketTest extends TestCase
             ->assertJson([
                 'success' => true,
                 'data' => [
-                    'sender' => 'local',
-                    'message' => 'Новое сообщение',
+                    'sender' => 'tma',
+                    'body' => 'Новое сообщение',
                 ],
             ]);
 
         $this->assertDatabaseHas('support_messages', [
             'ticket_id' => $ticket->id,
-            'message' => 'Новое сообщение',
-            'sender' => 'local',
+            'body' => 'Новое сообщение',
+            'sender' => 'tma',
         ]);
     }
 
@@ -334,7 +334,7 @@ class SupportTicketTest extends TestCase
 
         $response->assertStatus(201);
         $message = SupportMessage::where('ticket_id', $ticket->id)
-            ->where('message', 'Сообщение с файлом')
+            ->where('body', 'Сообщение с файлом')
             ->first();
         $this->assertNotNull($message->attachments);
     }
@@ -389,14 +389,14 @@ class SupportTicketTest extends TestCase
                 'success' => true,
                 'data' => [
                     'sender' => 'crm',
-                    'message' => 'Ответ от CRM',
+                    'body' => 'Ответ от CRM',
                 ],
             ]);
 
         $this->assertDatabaseHas('support_messages', [
             'ticket_id' => $ticket->id,
             'sender' => 'crm',
-            'message' => 'Ответ от CRM',
+            'body' => 'Ответ от CRM',
         ]);
     }
 
@@ -531,17 +531,20 @@ class SupportTicketTest extends TestCase
     public function test_messages_sorted_by_time(): void
     {
         $ticket = SupportTicket::factory()->create();
-        
+
         $message1 = SupportMessage::factory()->create([
             'ticket_id' => $ticket->id,
+            'sender' => 'tma',
             'created_at' => now()->subHours(2),
         ]);
         $message2 = SupportMessage::factory()->create([
             'ticket_id' => $ticket->id,
+            'sender' => 'tma',
             'created_at' => now()->subHour(),
         ]);
         $message3 = SupportMessage::factory()->create([
             'ticket_id' => $ticket->id,
+            'sender' => 'tma',
             'created_at' => now(),
         ]);
 

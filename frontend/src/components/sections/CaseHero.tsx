@@ -16,7 +16,7 @@ export const CaseHero = ({ title, category, coverPoster, year }: CaseHeroProps) 
         {/* Hero Image with gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-background">
           <img 
-            src={`/cases/${coverPoster}`} 
+            src={!coverPoster ? '' : coverPoster.startsWith('http') || coverPoster.startsWith('/') ? coverPoster : `/cases/${coverPoster}`} 
             alt={title}
             className="w-full h-full object-cover opacity-30"
             loading="eager"

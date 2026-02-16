@@ -1,0 +1,1 @@
+import{j as s}from"./motion-vendor-BDjNjK_3.js";import{C as t}from"./index-DSpOx7Wv.js";import"./react-vendor-BPADj-9C.js";import"./products-BQxcE2KP.js";import"./ui-vendor-CLuw_zuZ.js";import"./query-vendor-DZdZBpgz.js";const e=()=>s.jsx(t,{slug:"case-studies"});export{e as default};

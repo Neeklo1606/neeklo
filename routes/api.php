@@ -12,9 +12,46 @@ use App\Http\Controllers\Api\BotController;
 use App\Http\Controllers\Api\BriefSubmissionController;
 use App\Http\Controllers\Api\v1\FolderController;
 use App\Http\Controllers\Api\v1\MediaController;
+use App\Http\Controllers\Api\Admin\Cms\PagesController;
+use App\Http\Controllers\Api\Admin\Cms\PageBlocksController;
+use App\Http\Controllers\Api\Admin\Cms\ServicesController;
+use App\Http\Controllers\Api\Admin\Cms\CaseStudiesController;
+use App\Http\Controllers\Api\Admin\Cms\PostsController;
+use App\Http\Controllers\Api\Admin\Cms\TaxonomiesController;
+use App\Http\Controllers\Api\Admin\Cms\MenusController;
+use App\Http\Controllers\Api\Admin\Cms\MenuItemsController;
+use App\Http\Controllers\Api\Admin\Cms\SettingsController;
+use App\Http\Controllers\Api\Admin\Cms\LeadsController;
+use App\Http\Controllers\Api\Admin\Cms\MediaRelationsController;
+use App\Http\Controllers\Api\Public\BootstrapController;
+use App\Http\Controllers\Api\Public\PageController;
+use App\Http\Controllers\Api\Public\ServiceController;
+use App\Http\Controllers\Api\Public\CaseStudyController;
+use App\Http\Controllers\Api\Public\PostController;
 use Illuminate\Support\Facades\Route;
 
-
+// Public CMS API (no auth)
+// Alias: /api/v1/* for frontend compatibility (canonical: /api/v1/public/*)
+Route::prefix('v1')->group(function () {
+    Route::get('bootstrap', BootstrapController::class);
+    Route::get('pages/{slug}', [PageController::class, 'show']);
+    Route::get('posts', [PostController::class, 'index']);
+    Route::get('posts/{slug}', [PostController::class, 'show'])->where('slug', '[a-z0-9\-]+');
+    Route::get('services', [ServiceController::class, 'index']);
+    Route::get('services/{slug}', [ServiceController::class, 'show'])->where('slug', '[a-z0-9\-]+');
+    Route::get('case-studies', [CaseStudyController::class, 'index']);
+    Route::get('case-studies/{slug}', [CaseStudyController::class, 'show'])->where('slug', '[a-z0-9\-]+');
+});
+Route::prefix('v1/public')->group(function () {
+    Route::get('bootstrap', BootstrapController::class);
+    Route::get('pages/{slug}', [PageController::class, 'show']);
+    Route::get('services', [ServiceController::class, 'index']);
+    Route::get('services/{slug}', [ServiceController::class, 'show'])->where('slug', '[a-z0-9\-]+');
+    Route::get('case-studies', [CaseStudyController::class, 'index']);
+    Route::get('case-studies/{slug}', [CaseStudyController::class, 'show'])->where('slug', '[a-z0-9\-]+');
+    Route::get('posts', [PostController::class, 'index']);
+    Route::get('posts/{slug}', [PostController::class, 'show'])->where('slug', '[a-z0-9\-]+');
+});
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -76,6 +113,52 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('support/ticket', [SupportController::class, 'store']);
             Route::post('support/message', [SupportController::class, 'sendMessage']);
         });
+    });
+
+    // CMS Admin API: /api/admin/cms/*
+    Route::middleware('admin')->prefix('admin/cms')->group(function () {
+        Route::apiResource('pages', PagesController::class);
+        Route::post('pages/{page}/media/attach', [MediaRelationsController::class, 'attachToPage']);
+        Route::post('pages/{page}/media/detach', [MediaRelationsController::class, 'detachFromPage']);
+        Route::post('pages/{page}/media/reorder', [MediaRelationsController::class, 'reorderPage']);
+        Route::put('pages/{page}/media/meta', [MediaRelationsController::class, 'updatePageMeta']);
+        Route::post('pages/{page}/blocks/reorder', [PageBlocksController::class, 'reorder']);
+        Route::post('pages/{page}/blocks', [PageBlocksController::class, 'store']);
+        Route::put('blocks/{block}', [PageBlocksController::class, 'update']);
+        Route::delete('blocks/{block}', [PageBlocksController::class, 'destroy']);
+
+        Route::apiResource('services', ServicesController::class);
+        Route::post('services/{service}/taxonomies/sync', [\App\Http\Controllers\Api\Admin\Cms\TaxonomySyncController::class, 'syncService']);
+        Route::post('services/{service}/media/attach', [MediaRelationsController::class, 'attachToService']);
+        Route::post('services/{service}/media/detach', [MediaRelationsController::class, 'detachFromService']);
+        Route::post('services/{service}/media/reorder', [MediaRelationsController::class, 'reorderService']);
+        Route::put('services/{service}/media/meta', [MediaRelationsController::class, 'updateServiceMeta']);
+        Route::apiResource('case-studies', CaseStudiesController::class);
+        Route::post('case-studies/{case_study}/taxonomies/sync', [\App\Http\Controllers\Api\Admin\Cms\TaxonomySyncController::class, 'syncCaseStudy']);
+        Route::post('case-studies/{case_study}/media/attach', [MediaRelationsController::class, 'attachToCaseStudy']);
+        Route::post('case-studies/{case_study}/media/detach', [MediaRelationsController::class, 'detachFromCaseStudy']);
+        Route::post('case-studies/{case_study}/media/reorder', [MediaRelationsController::class, 'reorderCaseStudy']);
+        Route::put('case-studies/{case_study}/media/meta', [MediaRelationsController::class, 'updateCaseStudyMeta']);
+        Route::apiResource('posts', PostsController::class);
+        Route::post('posts/{post}/taxonomies/sync', [\App\Http\Controllers\Api\Admin\Cms\TaxonomySyncController::class, 'syncPost']);
+        Route::post('posts/{post}/media/attach', [MediaRelationsController::class, 'attachToPost']);
+        Route::post('posts/{post}/media/detach', [MediaRelationsController::class, 'detachFromPost']);
+        Route::post('posts/{post}/media/reorder', [MediaRelationsController::class, 'reorderPost']);
+        Route::put('posts/{post}/media/meta', [MediaRelationsController::class, 'updatePostMeta']);
+        Route::apiResource('taxonomies', TaxonomiesController::class);
+        Route::apiResource('menus', MenusController::class);
+        Route::get('menus/{menu}/items', [MenuItemsController::class, 'tree']);
+        Route::post('menus/{menu}/items', [MenuItemsController::class, 'store']);
+        Route::post('menus/{menu}/items/reorder', [MenuItemsController::class, 'reorder']);
+        Route::put('menu-items/{menu_item}', [MenuItemsController::class, 'update']);
+        Route::delete('menu-items/{menu_item}', [MenuItemsController::class, 'destroy']);
+
+        Route::get('settings', [SettingsController::class, 'index']);
+        Route::put('settings/bulk', [SettingsController::class, 'bulkUpdate']);
+
+        Route::get('leads', [LeadsController::class, 'index']);
+        Route::get('leads/{lead}', [LeadsController::class, 'show']);
+        Route::put('leads/{lead}', [LeadsController::class, 'update']);
     });
 });
 

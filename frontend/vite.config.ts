@@ -6,6 +6,8 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // Все ассеты и чанки в билде будут с путём /frontend/assets/... (чтобы не конфликтовать с public/assets/)
+  base: '/frontend/',
   server: {
     host: "::",
     port: 8080,
