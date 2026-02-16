@@ -61,7 +61,7 @@
                             <td class="px-6 py-4 text-sm text-muted-foreground">{{ item.source || '-' }}</td>
                             <td class="px-6 py-4 text-sm text-muted-foreground">{{ formatDate(item.created_at) }}</td>
                             <td class="px-6 py-4 text-sm text-right">
-                                <router-link :to="`/admin/leads/${item.id}`" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded">View</router-link>
+                                <router-link :to="'/leads/' + item.id" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded">View</router-link>
                             </td>
                         </tr>
                     </tbody>

@@ -2,7 +2,7 @@
     <div class="lead-show">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <router-link to="/admin/leads" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Лиды</router-link>
+                <router-link to="/leads" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Лиды</router-link>
                 <h1 class="text-2xl font-bold text-foreground">Лид #{{ lead?.id }}</h1>
             </div>
         </div>

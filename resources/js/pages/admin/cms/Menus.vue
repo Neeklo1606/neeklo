@@ -57,7 +57,7 @@
                             <td class="px-6 py-4 text-sm font-medium text-foreground">{{ item.title }}</td>
                             <td class="px-6 py-4 text-sm text-muted-foreground">{{ formatDate(item.updated_at) }}</td>
                             <td class="px-6 py-4 text-sm text-right">
-                                <router-link :to="`/admin/menus/${item.id}`" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded mr-2">Edit</router-link>
+                                <router-link :to="'/menus/' + item.id" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded mr-2">Edit</router-link>
                                 <button @click="deleteItem(item)" class="px-3 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
                             </td>
                         </tr>
@@ -111,7 +111,7 @@ export default {
                 const { data } = await axios.post('/api/admin/cms/menus', payload);
                 Swal.fire({ title: 'Создано', icon: 'success', timer: 1500, showConfirmButton: false, toast: true, position: 'top-end' });
                 this.cancelForm();
-                this.$router.push(`/admin/menus/${data.data.id}`);
+                this.$router.push('/menus/' + data.data.id);
             } catch (err) {
                 this.handleApiError(err, 'Ошибка сохранения');
             } finally {

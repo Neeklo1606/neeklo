@@ -7,7 +7,7 @@
                     <p class="text-muted-foreground mt-1">Управление кейс-стади CMS</p>
                 </div>
                 <router-link
-                    to="/admin/case-studies/create"
+                    to="/case-studies/create"
                     class="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -34,7 +34,7 @@
         </div>
         <div v-if="error" class="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive">{{ error }}</div>
         <div v-if="loading" class="text-center py-8 text-muted-foreground">Загрузка...</div>
-        <div v-else-if="items.length === 0" class="text-center py-8 text-muted-foreground rounded-lg bg-card border border-border">Нет кейс-стади. <router-link to="/admin/case-studies/create" class="text-primary hover:underline">Создать</router-link></div>
+        <div v-else-if="items.length === 0" class="text-center py-8 text-muted-foreground rounded-lg bg-card border border-border">Нет кейс-стади. <router-link to="/case-studies/create" class="text-primary hover:underline">Создать</router-link></div>
         <div v-else class="rounded-lg bg-card border border-border overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -58,7 +58,7 @@
                             <td class="px-6 py-4 text-sm text-muted-foreground">{{ formatDate(item.published_at) }}</td>
                             <td class="px-6 py-4 text-sm text-muted-foreground">{{ formatDate(item.updated_at) }}</td>
                             <td class="px-6 py-4 text-sm text-right">
-                                <router-link :to="`/admin/case-studies/${item.id}`" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded mr-2">Edit</router-link>
+                                <router-link :to="'/case-studies/' + item.id" class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded mr-2">Edit</router-link>
                                 <button @click="deleteItem(item)" class="px-3 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
                             </td>
                         </tr>

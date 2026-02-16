@@ -2,7 +2,7 @@
     <div class="menu-edit">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <router-link to="/admin/menus" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Меню</router-link>
+                <router-link to="/menus" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Меню</router-link>
                 <h1 class="text-2xl font-bold text-foreground">Редактирование меню</h1>
             </div>
         </div>

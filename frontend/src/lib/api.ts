@@ -187,7 +187,7 @@ export async function getPublicBootstrap(params?: { locale?: string }): Promise<
   return { success: true, data: d.data };
 }
 
-/** Public page by slug */
+/** Public page by slug. Uses /api/v1/public/pages/{slug}; backend also serves /api/v1/pages/{slug}. */
 export async function getPublicPage(slug: string, params?: { locale?: string }): Promise<{
   success: boolean;
   data?: {
@@ -201,11 +201,18 @@ export async function getPublicPage(slug: string, params?: { locale?: string }):
   };
   message?: string;
 }> {
-  const url = params?.locale ? `${apiPublic(`/pages/${encodeURIComponent(slug)}`)}?locale=${encodeURIComponent(params.locale)}` : apiPublic(`/pages/${encodeURIComponent(slug)}`);
-  const r = await fetch(url, { headers: { Accept: 'application/json' } });
-  const d = await r.json();
-  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
-  return { success: true, data: d.data };
+  const base = (import.meta.env.VITE_API_URL || '/api').replace(/\/?$/, '');
+  const path = `/pages/${encodeURIComponent(slug)}`;
+  const qs = params?.locale ? `?locale=${encodeURIComponent(params.locale)}` : '';
+  const urls = [`${base}/v1/public${path}${qs}`, `${base}/v1${path}${qs}`];
+  let lastMessage = 'Ошибка';
+  for (const url of urls) {
+    const r = await fetch(url, { headers: { Accept: 'application/json' } });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) return { success: true, data: d.data };
+    lastMessage = d.message || lastMessage;
+  }
+  return { success: false, message: lastMessage };
 }
 
 /** Public services index */

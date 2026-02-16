@@ -2,7 +2,7 @@
     <div class="service-edit">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <router-link to="/admin/services" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Услуги</router-link>
+                <router-link to="/services" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Услуги</router-link>
                 <h1 class="text-2xl font-bold text-foreground">{{ isCreate ? 'Новая услуга' : 'Редактирование услуги' }}</h1>
             </div>
             <button v-if="!isCreate" @click="handleDelete" class="px-4 py-2 rounded-lg border border-red-500 text-red-600 hover:bg-red-500/10">Удалить</button>
@@ -81,7 +81,7 @@
 
             <div class="mt-6 flex gap-3">
                 <button @click="save" :disabled="saving" class="px-6 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50">{{ saving ? 'Сохранение...' : (isCreate ? 'Создать' : 'Сохранить') }}</button>
-                <router-link to="/admin/services" class="px-6 py-2 rounded-lg border border-border hover:bg-muted">Отмена</router-link>
+                <router-link to="/services" class="px-6 py-2 rounded-lg border border-border hover:bg-muted">Отмена</router-link>
             </div>
         </template>
     </div>
@@ -148,7 +148,7 @@ export default {
                     const { data } = await axios.post('/api/admin/cms/services', payload);
                     const newId = data.data.id;
                     await axios.post(`/api/admin/cms/services/${newId}/taxonomies/sync`, { taxonomy_ids: this.taxonomyIds || [] });
-                    this.$router.replace(`/admin/services/${newId}`);
+                    this.$router.replace('/services/' + newId);
                 } else {
                     await axios.put(`/api/admin/cms/services/${this.serviceId}`, payload);
                     await this.syncTaxonomies();
@@ -176,7 +176,7 @@ export default {
             try {
                 await axios.delete(`/api/admin/cms/services/${this.serviceId}`);
                 Swal.fire({ title: 'Удалено', icon: 'success', timer: 1500, showConfirmButton: false, toast: true, position: 'top-end' });
-                this.$router.replace('/admin/services');
+                this.$router.replace('/services');
             } catch (err) {
                 this.handleApiError(err, 'Ошибка удаления');
             }

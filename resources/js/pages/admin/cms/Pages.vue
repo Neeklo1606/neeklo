@@ -7,7 +7,7 @@
                     <p class="text-muted-foreground mt-1">Управление страницами CMS</p>
                 </div>
                 <router-link
-                    to="/admin/pages/create"
+                    :to="'/pages/create'"
                     class="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
 
         <!-- Empty -->
         <div v-else-if="pages.length === 0" class="text-center py-8 text-muted-foreground rounded-lg bg-card border border-border">
-            Нет страниц. <router-link to="/admin/pages/create" class="text-primary hover:underline">Создать</router-link>
+            Нет страниц. <router-link :to="'/pages/create'" class="text-primary hover:underline">Создать</router-link>
         </div>
 
         <!-- Table -->
@@ -99,7 +99,7 @@
                             <td class="px-6 py-4 text-sm text-right">
                                 <div class="flex items-center justify-end gap-2">
                                     <router-link
-                                        :to="`/admin/pages/${page.id}`"
+                                        :to="'/pages/' + page.id"
                                         class="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
                                     >
                                         Edit

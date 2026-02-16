@@ -34,7 +34,10 @@ class PageController extends Controller
             ->first();
 
         if (!$page) {
-            abort(404);
+            return response()->json([
+                'message' => "Page \"{$slug}\" not found. Run: php artisan db:seed",
+                'hint' => 'CmsSeeder creates pages from database/seeders/fixtures/frontend_content.json',
+            ], 404);
         }
 
         $data = (new PageResource($page))->resolve();

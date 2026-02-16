@@ -113,6 +113,7 @@ Required artifacts:
 4. Laravel:
    ```bash
    php artisan migrate --force
+   php artisan db:seed --force   # Creates CMS pages (home, services, etc.). Without this, /api/v1/pages/home returns 404.
    php artisan config:cache
    php artisan route:cache
    php artisan storage:link

@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @php
+        $baseUrl = rtrim(config('app.url'), '/');
+        if (str_ends_with($baseUrl, '/public')) {
+            $baseUrl = rtrim(substr($baseUrl, 0, -7), '/');
+        }
+    @endphp
+    <base href="{{ $baseUrl }}/">
     <title>Админ панель</title>
     {{-- КРИТИЧНО: Фильтрация ошибок ДО всего остального - максимально агрессивная --}}
     <script>

@@ -25,12 +25,12 @@ interface CmsPageProps {
 
 export function CmsPage({ slug, showStickyCta }: CmsPageProps) {
   const navigate = useNavigate();
-  const { data: page, isLoading, isError } = usePublicPage(slug);
+  const { data: page, isLoading, isError, error } = usePublicPage(slug);
   const { data: bootstrap } = usePublicBootstrap();
 
   useEffect(() => {
-    if (isError) navigate("/404", { replace: true });
-  }, [isError, navigate]);
+    if (isError && slug !== "home") navigate("/404", { replace: true });
+  }, [isError, slug, navigate]);
 
   useEffect(() => {
     if (page) {
@@ -39,7 +39,22 @@ export function CmsPage({ slug, showStickyCta }: CmsPageProps) {
     }
   }, [page, bootstrap]);
 
-  if (isLoading || !page) return <PageSkeleton />;
+  if (isLoading && !page) return <PageSkeleton />;
+
+  if (isError && slug === "home") {
+    const msg = error?.message ?? "Page not found";
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-8">
+        <div className="max-w-md rounded-lg border border-amber-500/30 bg-amber-500/5 p-6 text-center">
+          <h1 className="text-lg font-semibold text-foreground mb-2">Контент главной не найден</h1>
+          <p className="text-sm text-muted-foreground mb-4">{msg}</p>
+          <p className="text-xs text-muted-foreground">Выполните в корне проекта: <code className="bg-muted px-1 rounded">php artisan db:seed</code></p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !page) return null;
 
   return (
     <div className="min-h-screen bg-background">

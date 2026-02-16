@@ -49,6 +49,10 @@ Route::get('/storage/{path}', function ($path) {
     ]);
 })->where('path', '.*')->name('storage.serve');
 
+// Редирект /public/admin -> /admin (исправление некорректного редиректа при обновлении страницы)
+Route::get('/public/admin', fn () => redirect('/admin', 301))->name('admin.redirect.from-public');
+Route::get('/public/admin/{any}', fn (string $any) => redirect('/admin/' . $any, 301))->where('any', '.*')->name('admin.redirect.from-public.any');
+
 // API маршруты должны быть обработаны до SPA маршрутов
 // Они определены в routes/api.php
 

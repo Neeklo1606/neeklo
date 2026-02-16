@@ -2,7 +2,7 @@
     <div class="page-edit">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <router-link to="/admin/pages" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Страницы</router-link>
+                <router-link to="/pages" class="text-sm text-muted-foreground hover:text-foreground mb-2 inline-block">← Страницы</router-link>
                 <h1 class="text-2xl font-bold text-foreground">{{ isCreate ? 'Новая страница' : 'Редактирование страницы' }}</h1>
             </div>
             <div v-if="!isCreate" class="flex gap-2">
@@ -247,7 +247,7 @@
                 >
                     {{ saving ? 'Сохранение...' : (isCreate ? 'Создать' : 'Сохранить') }}
                 </button>
-                <router-link to="/admin/pages" class="px-6 py-2 rounded-lg border border-border hover:bg-muted">
+                <router-link to="/pages" class="px-6 py-2 rounded-lg border border-border hover:bg-muted">
                     Отмена
                 </router-link>
             </div>
@@ -376,7 +376,7 @@ export default {
             try {
                 if (this.isCreate) {
                     const { data } = await axios.post('/api/admin/cms/pages', payload);
-                    this.$router.replace(`/admin/pages/${data.data.id}`);
+                    this.$router.replace('/pages/' + data.data.id);
                 } else {
                     await axios.put(`/api/admin/cms/pages/${this.pageId}`, payload);
                     this.saved = true;
@@ -502,7 +502,7 @@ export default {
             try {
                 await axios.delete(`/api/admin/cms/pages/${this.pageId}`);
                 Swal.fire({ title: 'Удалено', icon: 'success', timer: 1500, showConfirmButton: false, toast: true, position: 'top-end' });
-                this.$router.replace('/admin/pages');
+                this.$router.replace('/pages');
             } catch (err) {
                 this.handleApiError(err, 'Ошибка удаления');
             }
