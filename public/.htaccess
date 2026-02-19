@@ -1,3 +1,11 @@
+<IfModule mod_deflate.c>
+    # gzip для текстовых ресурсов (PageSpeed / экономия трафика)
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+    AddOutputFilterByType DEFLATE application/x-javascript application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

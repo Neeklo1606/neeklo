@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Принудительное использование HTTPS (глобально)
         $middleware->append(\App\Http\Middleware\ForceHttps::class);
+        $middleware->append(\App\Http\Middleware\AddCacheHeaders::class);
         
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
