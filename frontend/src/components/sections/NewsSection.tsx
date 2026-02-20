@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Container } from "@/components/common/Container";
 import { ArrowRight, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface NewsArticle {
   id: string;
@@ -74,18 +74,13 @@ interface NewsSectionProps {
 export function NewsSection({ title, subtitle, blogLink, articles: articlesProp }: NewsSectionProps = {}) {
   const shouldReduceMotion = usePrefersReducedMotion();
   const articles = articlesProp ?? ARTICLES;
+  const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section ref={ref} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 md:mb-10"
-        >
+        <div className={`io-animate io-slide-right flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 md:mb-10 ${isVisible ? "io-visible" : ""}`}>
           <div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
               {title ?? "Полезно для бизнеса"}
@@ -100,20 +95,15 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
           >
             Все статьи →
           </Link>
-        </motion.div>
+        </div>
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {articles.map((article, index) => (
-            <motion.article
+            <article
               key={article.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ 
-                duration: shouldReduceMotion ? 0 : 0.4, 
-                delay: index * 0.08 
-              }}
+              className={`io-animate io-slide-right ${isVisible ? "io-visible" : ""}`}
+              style={{ transitionDelay: `${100 + index * 100}ms` }}
             >
               <Link
                 to={`/blog/${article.slug}`}
@@ -128,11 +118,7 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
                   "transition-all duration-300"
                 )}
               >
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex flex-col h-full min-h-[160px]"
-                >
+                <div className="flex flex-col h-full min-h-[160px] transition-transform duration-300 group-hover:-translate-y-1">
                   {/* Meta: Category + Date */}
                   <div className="flex items-center gap-3 mb-3">
                     <span className={cn(
@@ -162,9 +148,9 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
                     Читать
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" />
                   </div>
-                </motion.div>
+                </div>
               </Link>
-            </motion.article>
+            </article>
           ))}
         </div>
       </Container>

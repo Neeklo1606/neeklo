@@ -29,8 +29,8 @@ const routePreloads: Record<string, Array<() => Promise<unknown>>> = {
   ],
   '/blog': [() => import('@/pages/blog/BlogArticle')],
   '/services': [...Object.values(productImports)],
-  '/work': [() => import('@/pages/WorkDetail')],
-  '/cases': [() => import('@/pages/WorkDetail')],
+  '/work': [() => import('@/pages/WorkBySlug')],
+  '/cases': [() => import('@/pages/WorkBySlug')],
 };
 
 export function usePreloadRoutes() {

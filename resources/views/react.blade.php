@@ -43,11 +43,16 @@
                 $cssFiles[] = '/frontend/assets/' . basename($file);
             }
         }
+        // Приоритет: если есть собранные файлы — используем их (работает без Vite). Иначе в local с VITE_DEV_SERVER_URL — Vite dev.
         $useViteDev = (config('app.env') === 'local' && $viteDevUrl !== '' && empty($jsFiles));
     @endphp
 
-    @if(!empty($jsFiles))
-        {{-- Подключение собранных файлов React --}}
+    @if($useViteDev)
+        {{-- Локальная разработка: Vite dev (нужен npm run dev во frontend) — HMR --}}
+        <script type="module" src="{{ $viteDevUrl }}/@@vite/client"></script>
+        <script type="module" src="{{ $viteDevUrl }}/src/main.tsx"></script>
+    @elseif(!empty($jsFiles))
+        {{-- Подключение собранных файлов React (продакшен или без Vite) --}}
         @foreach($cssFiles ?? [] as $css)
             @if(!empty($css))
                 @if(str_starts_with($css, 'http://') || str_starts_with($css, 'https://'))
@@ -66,10 +71,6 @@
                 @endif
             @endif
         @endforeach
-    @elseif($useViteDev)
-        {{-- Локальная разработка: Vite dev server с HMR — только если билда нет --}}
-        <script type="module" src="{{ $viteDevUrl }}/@@vite/client"></script>
-        <script type="module" src="{{ $viteDevUrl }}/src/main.tsx"></script>
     @else
         {{-- React не собран и Vite dev не задан — подсказка в body --}}
         <script>console.warn('React: задайте VITE_DEV_SERVER_URL и запустите Vite ИЛИ выполните npm run build:react');</script>

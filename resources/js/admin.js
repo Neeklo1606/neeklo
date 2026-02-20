@@ -20,7 +20,7 @@
         )) {
             return true; // Предотвращаем показ ошибки
         }
-        // Также проверяем сообщение об ошибке
+        // Также проверяем сообщение об ошибке (в т.ч. AdBlock: Error handling response, message port closed)
         if (message && typeof message === 'string') {
             const msgLower = message.toLowerCase();
             if (msgLower.includes('chrome-extension://') ||
@@ -29,10 +29,14 @@
                 msgLower.includes('adblock') ||
                 msgLower.includes('imgpenhngnbnmhdkpdfnfhdpmfgmihdn') ||
                 msgLower.includes('error handling response') ||
-                (msgLower.includes('indexof') && msgLower.includes('undefined')) ||
+                (msgLower.includes('indexof') && (msgLower.includes('undefined') || msgLower.includes('reading'))) ||
+                msgLower.includes("reading 'indexof'") ||
                 msgLower.includes('safari is not defined') ||
                 msgLower.includes('uncaught referenceerror: safari') ||
-                (msgLower.includes('cannot read properties') && msgLower.includes('indexof'))) {
+                (msgLower.includes('cannot read properties') && (msgLower.includes('indexof') || msgLower.includes('undefined'))) ||
+                msgLower.includes('unchecked runtime.lasterror') ||
+                msgLower.includes('message port closed') ||
+                msgLower.includes('the message port closed')) {
                 return true;
             }
         }
@@ -75,10 +79,14 @@
         if (event.message) {
             const msgLower = event.message.toLowerCase();
             if (msgLower.includes('error handling response') ||
-                (msgLower.includes('indexof') && msgLower.includes('undefined')) ||
+                (msgLower.includes('indexof') && (msgLower.includes('undefined') || msgLower.includes('reading'))) ||
+                msgLower.includes("reading 'indexof'") ||
                 msgLower.includes('safari is not defined') ||
                 msgLower.includes('uncaught referenceerror: safari') ||
-                (msgLower.includes('cannot read properties') && msgLower.includes('indexof'))) {
+                (msgLower.includes('cannot read properties') && (msgLower.includes('indexof') || msgLower.includes('undefined'))) ||
+                msgLower.includes('unchecked runtime.lasterror') ||
+                msgLower.includes('message port closed') ||
+                msgLower.includes('the message port closed')) {
                 event.preventDefault();
                 event.stopPropagation();
                 event.stopImmediatePropagation();
@@ -98,6 +106,8 @@
                 message.includes('adblock') ||
                 message.includes('safari is not defined') ||
                 message.includes('indexof') ||
+                message.includes('message port closed') ||
+                message.includes('unchecked runtime.lasterror') ||
                 message.includes('imgpenhngnbnmhdkpdfnfhdpmfgmihdn') ||
                 stack.includes('chrome-extension://') ||
                 stack.includes('adblock') ||
@@ -162,6 +172,15 @@ import { createApp } from 'vue';
 import { createStore } from 'vuex';
 import { createRouter, createWebHistory } from 'vue-router';
 import axios from 'axios';
+
+// Базовый URL для API: с сервера (ADMIN_API_BASE из blade) или текущий origin
+if (typeof window !== 'undefined') {
+    const apiBase = (window.ADMIN_API_BASE || window.location.origin).replace(/\/$/, '');
+    axios.defaults.baseURL = apiBase;
+    if (typeof console !== 'undefined' && console.log) {
+        console.log('[Admin] API base URL:', apiBase, '| Login will POST to:', apiBase + '/api/auth/login');
+    }
+}
 
 // Дополнительная фильтрация (на случай, если что-то пропустили)
 if (typeof window !== 'undefined') {
@@ -353,9 +372,9 @@ const store = createStore({
                 return { success: true };
             } catch (error) {
                 console.error('Login error:', error);
-                // Обработка сетевых ошибок
+                // Обработка сетевых ошибок (нет ответа: CORS, неверный URL, сеть)
                 if (!error.response) {
-                    return { success: false, error: 'Нет соединения с сервером. Проверьте подключение к интернету.' };
+                    return { success: false, error: 'Нет соединения с сервером. Проверьте интернет и откройте админку по основному адресу сайта (как в браузере).' };
                 }
                 // Обработка ошибок валидации
                 if (error.response?.status === 422) {
@@ -418,7 +437,7 @@ const store = createStore({
                 console.error('Register error:', error);
                 // Обработка сетевых ошибок
                 if (!error.response) {
-                    return { success: false, error: 'Нет соединения с сервером. Проверьте подключение к интернету.' };
+                    return { success: false, error: 'Нет соединения с сервером. Проверьте интернет и что сайт открыт по тому же адресу (например, с или без www).' };
                 }
                 // Обработка ошибок валидации
                 if (error.response?.status === 422) {
@@ -968,11 +987,15 @@ if (store.state.token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
 }
 
-// Request interceptor: всегда подставляем актуальный токен из localStorage (на случай истечения/обновления)
+// Request interceptor: токен и CSRF для Laravel
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+    }
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    if (csrfToken) {
+        config.headers['X-CSRF-TOKEN'] = csrfToken;
     }
     return config;
 });

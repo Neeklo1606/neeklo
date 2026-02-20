@@ -62,8 +62,11 @@ export const CaseMediaGallery = memo(function CaseMediaGallery({
                   <img
                     src={item.src}
                     alt={item.alt || `Image ${index + 1}`}
+                    width={1280}
+                    height={720}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     decoding="async"
+                    fetchPriority={index === 0 ? "high" : "auto"}
                     className="w-full h-full object-cover"
                   />
                 </div>

@@ -18,6 +18,8 @@ export const CaseHero = ({ title, category, coverPoster, year }: CaseHeroProps) 
           <img 
             src={!coverPoster ? '' : coverPoster.startsWith('http') || coverPoster.startsWith('/') ? coverPoster : `/cases/${coverPoster}`} 
             alt={title}
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover opacity-30"
             loading="eager"
             decoding="sync"

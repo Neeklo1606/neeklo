@@ -92,6 +92,8 @@ export const OptimizedImage = memo(function OptimizedImage({
   };
 
   const webpSrc = getWebPSrc(src);
+  const intrinsicWidth = Number(props.width ?? 1600);
+  const intrinsicHeight = Number(props.height ?? 900);
 
   return (
     <div
@@ -122,6 +124,8 @@ export const OptimizedImage = memo(function OptimizedImage({
             ref={imgRef}
             src={src}
             alt={alt}
+            width={intrinsicWidth}
+            height={intrinsicHeight}
             loading={priority ? 'eager' : 'lazy'}
             decoding={priority ? 'sync' : 'async'}
             fetchPriority={priority ? 'high' : 'auto'}

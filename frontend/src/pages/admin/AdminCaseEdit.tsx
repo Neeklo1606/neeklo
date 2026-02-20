@@ -176,7 +176,15 @@ export default function AdminCaseEdit() {
             <div className="flex flex-wrap gap-3">
               {images.map((m, i) => (
                 <div key={m.id} className="relative group w-24 h-24 rounded-xl overflow-hidden bg-white/5 border border-white/10">
-                  <img src={m.url} alt="" className="w-full h-full object-cover" />
+                  <img
+                    src={m.url}
+                    alt=""
+                    width={96}
+                    height={96}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-1 transition-opacity">
                     <button onClick={() => move(images, i, -1)} disabled={i === 0} className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 disabled:opacity-30" title="Выше"><ChevronUp className="w-4 h-4" /></button>
                     <button onClick={() => move(images, i, 1)} disabled={i === images.length - 1} className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 disabled:opacity-30" title="Ниже"><ChevronDown className="w-4 h-4" /></button>

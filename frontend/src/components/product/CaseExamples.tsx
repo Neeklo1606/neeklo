@@ -48,6 +48,8 @@ export const CaseExamples = ({ title, cases }: CaseExamplesProps) => {
                       <img
                         src={caseItem.image}
                         alt={caseItem.title}
+                        width={800}
+                        height={450}
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

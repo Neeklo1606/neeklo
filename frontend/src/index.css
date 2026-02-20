@@ -28,80 +28,78 @@ textarea:focus-visible {
 @layer base {
   :root {
     /* ============================================
-       COLORS - Dark Theme Premium (Default)
+       PREMIUM LIGHT SaaS — единая палитра
+       --bg: #F7F8FA, --white: #ffffff, --ink: #0F172A, --secondary: #6B7280, --accent: #2563EB
        ============================================ */
     
+    --bg: 220 14% 98%; /* #F7F8FA */
+    --white: 0 0% 100%;
+    --ink: 222 47% 11%; /* #0F172A */
+    --secondary: 220 9% 46%; /* #6B7280 */
+    --accent: 221 83% 53%; /* #2563EB */
+    
     /* Background colors */
-    --background: 0 0% 4%; /* #0a0a0a */
-    --background-secondary: 0 0% 8%; /* #141414 */
-    --surface: 0 0% 10%; /* #1a1a1a */
-    --surface-elevated: 0 0% 12%;
+    --background: var(--bg);
+    --background-secondary: 0 0% 96%;
+    --surface: 0 0% 100%;
+    --surface-elevated: 0 0% 100%;
     
     /* Foreground colors */
-    --foreground: 0 0% 100%; /* #ffffff */
-    --foreground-muted: 0 0% 63%; /* #a0a0a0 */
-    --foreground-subtle: 0 0% 50%;
+    --foreground: var(--ink);
+    --foreground-muted: var(--secondary);
+    --foreground-subtle: 220 9% 56%;
     
-    /* Primary/Accent colors - Cyan Neon */
-    --primary: 191 100% 50%; /* #00d4ff */
+    /* Primary/Accent — blue SaaS */
+    --primary: var(--accent);
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 191 100% 55%;
-    --primary-active: 191 100% 45%;
-    --primary-glow: 191 100% 60%;
+    --primary-hover: 221 83% 48%;
+    --primary-active: 221 83% 58%;
+    --primary-glow: 221 83% 53%;
     
-    /* Secondary colors - Purple */
-    --secondary: 258 90% 66%; /* #8b5cf6 */
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 258 90% 70%;
-    --secondary-active: 258 90% 62%;
+    --secondary-hover: 220 9% 42%;
+    --secondary-active: 220 9% 50%;
     
-    /* Accent (same as primary for consistency) */
-    --accent: 191 100% 50%;
+    --accent: 221 83% 53%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 191 100% 55%;
-    --accent-active: 191 100% 45%;
+    --accent-hover: 221 83% 48%;
+    --accent-active: 221 83% 58%;
     
     /* Semantic colors */
-    --success: 153 100% 50%; /* #00ff88 */
-    --success-foreground: 0 0% 4%;
-    
-    --warning: 40 100% 50%; /* #ffaa00 */
-    --warning-foreground: 0 0% 4%;
-    
-    --error: 0 100% 63%; /* #ff4444 */
+    --success: 153 100% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 40 100% 50%;
+    --warning-foreground: var(--ink);
+    --error: 0 100% 60%;
     --error-foreground: 0 0% 100%;
-    
-    --destructive: 0 100% 63%;
+    --destructive: 0 100% 60%;
     --destructive-foreground: 0 0% 100%;
-    
-    --info: 191 100% 50%;
+    --info: var(--accent);
     --info-foreground: 0 0% 100%;
     
     /* UI colors */
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 100%;
+    --card: var(--white);
+    --card-foreground: var(--ink);
+    --popover: var(--white);
+    --popover-foreground: var(--ink);
+    --muted: 220 14% 96%;
+    --muted-foreground: var(--secondary);
     
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 100%;
-    
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 63%;
-    
-    /* Border & Input */
-    --border: 0 0% 100% / 0.1;
-    --border-hover: 0 0% 100% / 0.2;
-    --input: 0 0% 10%;
-    --ring: 191 100% 50% / 0.3;
+    /* Border & Input — тонкие, мягкие */
+    --border: 220 13% 91%; /* ~#E5E7EB */
+    --border-hover: 220 9% 46% / 0.2;
+    --input: var(--white);
+    --ring: 221 83% 53% / 0.25;
     
     /* Sidebar */
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 191 100% 50%;
+    --sidebar-background: var(--white);
+    --sidebar-foreground: var(--ink);
+    --sidebar-primary: var(--accent);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 20%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 100% / 0.1;
-    --sidebar-ring: 191 100% 50%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: var(--ink);
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: var(--accent);
     
     /* ============================================
        SPACING & SIZING (8px Grid System)
@@ -117,6 +115,8 @@ textarea:focus-visible {
     --spacing-4xl: 6rem;   /* 96px */
     
     /* Layout */
+    --nav-h: 72px; /* высота зоны nav (отступ top + высота шапки) для calc(100vh - var(--nav-h)) */
+    --scroll-offset: 90px; /* отступ скролла под sticky nav для якорей */
     --container-max-width: 1440px;
     --container-padding-desktop: 5rem; /* 80px */
     --container-padding-mobile: 1.5rem; /* 24px */
@@ -133,22 +133,21 @@ textarea:focus-visible {
     --radius-2xl: 1.5rem;
     
     /* ============================================
-       SHADOWS & EFFECTS (Premium Dark)
+       SHADOWS & EFFECTS (Premium Light SaaS)
        ============================================ */
     
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
-    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 12px 24px rgba(15, 23, 42, 0.08);
+    --shadow-xl: 0 20px 40px rgba(15, 23, 42, 0.08);
+    --shadow-card: 0 4px 24px rgba(15, 23, 42, 0.06);
     
-    --glow-primary: 0 0 40px hsl(191 100% 50% / 0.4);
-    --glow-accent: 0 0 30px hsl(191 100% 50% / 0.3);
-    --glow-success: 0 0 30px hsl(153 100% 50% / 0.3);
-    --glow-strong: 0 0 50px hsl(191 100% 50% / 0.6);
+    --glow-primary: 0 8px 24px rgba(37, 99, 235, 0.35);
+    --glow-accent: 0 8px 24px rgba(37, 99, 235, 0.3);
+    --glow-success: 0 4px 16px rgba(34, 197, 94, 0.25);
+    --glow-strong: 0 8px 32px rgba(37, 99, 235, 0.4);
     
-    /* Hero Input - Dark theme */
-    --hero-input-bg: linear-gradient(165deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 50%, rgba(0,0,0,0.1) 100%);
+    --hero-input-bg: linear-gradient(165deg, #ffffff 0%, #F9FBFF 100%);
     
     /* ============================================
        TRANSITIONS (Premium Easing)
@@ -176,97 +175,16 @@ textarea:focus-visible {
   }
 
   /* ============================================
-     LIGHT THEME
+     LIGHT THEME (alias — совпадает с :root SaaS)
      ============================================ */
   
   .light-mode {
-    /* Background colors */
-    --background: 0 0% 100%;
-    --background-secondary: 0 0% 96%;
-    --surface: 0 0% 98%;
-    --surface-elevated: 0 0% 100%;
-    
-    /* Foreground colors */
-    --foreground: 0 0% 4%;
-    --foreground-muted: 0 0% 40%;
-    --foreground-subtle: 0 0% 50%;
-    
-    /* Primary/Accent colors - adjusted for light mode */
-    --primary: 191 100% 40%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 191 100% 35%;
-    --primary-active: 191 100% 45%;
-    --primary-glow: 191 100% 50%;
-    
-    /* Secondary colors - Purple */
-    --secondary: 258 90% 60%;
-    --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 258 90% 55%;
-    --secondary-active: 258 90% 65%;
-    
-    /* Accent */
-    --accent: 191 100% 40%;
-    --accent-foreground: 0 0% 100%;
-    --accent-hover: 191 100% 35%;
-    --accent-active: 191 100% 45%;
-    
-    /* Semantic colors */
-    --success: 153 100% 40%;
-    --success-foreground: 0 0% 100%;
-    
-    --warning: 40 100% 50%;
-    --warning-foreground: 0 0% 4%;
-    
-    --error: 0 100% 60%;
-    --error-foreground: 0 0% 100%;
-    
-    --destructive: 0 100% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --info: 191 100% 40%;
-    --info-foreground: 0 0% 100%;
-    
-    /* UI colors */
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 4%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
-    
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
-    
-    /* Border & Input */
-    --border: 0 0% 0% / 0.1;
-    --border-hover: 0 0% 0% / 0.2;
-    --input: 0 0% 98%;
-    --ring: 191 100% 40% / 0.3;
-    
-    /* Sidebar */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 4%;
-    --sidebar-primary: 191 100% 40%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 90%;
-    --sidebar-accent-foreground: 0 0% 4%;
-    --sidebar-border: 0 0% 0% / 0.1;
-    --sidebar-ring: 191 100% 40%;
-    
-    /* Shadows - lighter for light mode */
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
-    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
-    
-    /* Glows */
-    --glow-primary: 0 0 40px hsl(191 100% 40% / 0.3);
-    --glow-accent: 0 0 30px hsl(191 100% 40% / 0.25);
-    --glow-success: 0 0 30px hsl(153 100% 40% / 0.25);
-    --glow-strong: 0 0 50px hsl(191 100% 40% / 0.4);
-    
-    /* Hero Input - Light theme */
-    --hero-input-bg: linear-gradient(165deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%);
+    --background: var(--bg);
+    --foreground: var(--ink);
+    --primary: 221 83% 53%;
+    --accent: 221 83% 53%;
+    --muted-foreground: var(--secondary);
+    --hero-input-bg: linear-gradient(165deg, #ffffff 0%, #F9FBFF 100%);
   }
 }
 
@@ -276,11 +194,12 @@ textarea:focus-visible {
     box-sizing: border-box;
   }
 
-  /* Prevent FOUC */
+  /* Prevent FOUC — светлый SaaS фон по умолчанию */
   html {
-    background-color: hsl(0 0% 4%);
-    /* Global scroll padding for fixed header - accounts for navigation height */
-    scroll-padding-top: 100px;
+    background-color: hsl(var(--background));
+    scroll-behavior: smooth;
+    /* Offset под sticky nav: якорь не прячется под шапкой */
+    scroll-padding-top: var(--scroll-offset, 90px);
     /* Переносы: не оставлять предлог в конце строки. Для этого в контенте между
        предлогом и словом используйте неразрывный пробел (U+00A0): в\u00A0, на\u00A0,
        с\u00A0, к\u00A0, из\u00A0, о\u00A0, у\u00A0, за\u00A0, под\u00A0, для\u00A0, от\u00A0,
@@ -290,7 +209,7 @@ textarea:focus-visible {
   }
   
   html.light-mode {
-    background-color: hsl(0 0% 100%);
+    background-color: hsl(var(--background));
   }
 
   body {
@@ -310,10 +229,10 @@ textarea:focus-visible {
     -moz-osx-font-smoothing: grayscale;
   }
   
-  /* Ensure sections have proper scroll margin for anchors */
+  /* Ensure sections have proper scroll margin for anchors (sticky nav offset) */
   section[id],
   [id] {
-    scroll-margin-top: 100px;
+    scroll-margin-top: var(--scroll-offset, 90px);
   }
 
   /* Typography - Premium Hierarchy with fallbacks */
@@ -534,6 +453,342 @@ textarea:focus-visible {
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero stagger: fade-up для левого блока и карточек */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Minimal — grid 2 cols, gap-12, items-center, min-h-[100vh], вертикальное центрирование */
+.hero-minimal {
+  min-height: 100vh;
+  padding-top: 80px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background:
+    radial-gradient(600px 400px at 15% 25%, rgba(37, 99, 235, 0.028) 0%, transparent 55%),
+    linear-gradient(180deg, #F8FAFC 0%, #FCFDFE 45%, #FFFFFF 100%);
+}
+/* Background grid — always behind text, never overlaps */
+.hero-minimal__grid {
+  z-index: 0;
+  opacity: 0.009;
+  mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 85%);
+  mask-size: cover;
+  -webkit-mask-size: cover;
+}
+.hero-minimal .hero-minimal__inner {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+}
+.hero-minimal .hero-minimal__left {
+  min-width: 0;
+  min-height: min-content;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+  align-items: flex-start;
+  text-align: left;
+}
+/* Левый блок: последовательный fade-up (stagger), чисто CSS */
+.hero-minimal .hero-minimal__left .hero-stagger-1 {
+  opacity: 0;
+  animation: heroFadeUp 0.5s ease forwards;
+  animation-delay: 0ms;
+}
+.hero-minimal .hero-minimal__left .hero-stagger-2 {
+  opacity: 0;
+  animation: heroFadeUp 0.5s ease forwards;
+  animation-delay: 80ms;
+}
+.hero-minimal .hero-minimal__left .hero-stagger-3 {
+  opacity: 0;
+  animation: heroFadeUp 0.5s ease forwards;
+  animation-delay: 160ms;
+}
+.hero-minimal .hero-minimal__left .hero-stagger-4 {
+  opacity: 0;
+  animation: heroFadeUp 0.5s ease forwards;
+  animation-delay: 240ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-minimal .hero-minimal__left .hero-stagger-1,
+  .hero-minimal .hero-minimal__left .hero-stagger-2,
+  .hero-minimal .hero-minimal__left .hero-stagger-3,
+  .hero-minimal .hero-minimal__left .hero-stagger-4 {
+    animation: none;
+    opacity: 1;
+  }
+}
+/* Левая колонка: отступы через gap, текст поверх фона */
+.hero-minimal .hero-minimal__left .hero-badge {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+.hero-minimal .hero-minimal__left .hero-badge-dot {
+  animation: hero-badge-blink 2s ease-in-out infinite;
+}
+@keyframes hero-badge-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.55); }
+}
+.hero-minimal .hero-minimal__left .hero-eyebrow {
+  font-size: 14px;
+}
+.hero-minimal .hero-minimal__left .hero-title {
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.15;
+  margin: 1rem 0 0 0;
+  letter-spacing: -0.03em;
+  hyphens: none;
+  overflow-wrap: break-word;
+  word-break: normal;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+.hero-minimal .hero-minimal__left .hero-title .hero-title-line {
+  display: block;
+}
+.hero-minimal .hero-minimal__left .hero-title-muted {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(20px, 3vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.hero-minimal .hero-minimal__left .hero-subtitle {
+  margin: 0.9rem 0 0 0;
+  padding-bottom: 0.5em;
+  font-size: clamp(16px, 2.2vw, 18px);
+  line-height: 1.6;
+  max-width: 460px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+.hero-minimal .hero-minimal__left .hero-ctas {
+  margin: 1.35rem 0 0 0;
+  padding-top: 0.25rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+@media (max-height: 768px) {
+  .hero-minimal .hero-minimal__left .hero-title {
+    font-size: clamp(28px, 3.5vw, 48px);
+  }
+  .hero-minimal .hero-minimal__left .hero-title-muted {
+    font-size: clamp(18px, 4vw, 28px);
+  }
+  .hero-minimal .hero-minimal__left .hero-subtitle {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+}
+/* Адаптив: tablet — одна колонка */
+@media (max-width: 1023px) {
+  .hero-minimal {
+    min-height: auto;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .hero-minimal .hero-minimal__inner {
+    gap: 40px;
+  }
+  .hero-minimal .hero-minimal__left {
+    order: 1;
+    max-width: 100%;
+  }
+  .hero-minimal .hero-right.hero-video-wrap {
+    order: 2;
+    justify-content: center;
+  }
+  .hero-minimal .hero-minimal__left .hero-title {
+    font-size: clamp(26px, 8vw, 38px);
+    letter-spacing: -0.025em;
+    max-width: 100%;
+    line-height: 1.25;
+  }
+  .hero-minimal .hero-minimal__left .hero-title-muted {
+    font-size: clamp(16px, 4.5vw, 24px);
+  }
+  .hero-minimal .hero-minimal__left .hero-subtitle {
+    font-size: 15px;
+    max-width: 100%;
+  }
+  .hero-minimal .hero-minimal__left .hero-ctas {
+    margin-top: 1.1rem;
+  }
+  .hero-minimal .hero-minimal__left .hero-cta-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+/* Адаптив: mobile */
+@media (max-width: 767px) {
+  .hero-minimal {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .hero-minimal .hero-minimal__inner {
+    gap: 36px;
+  }
+  .hero-minimal .hero-minimal__left .hero-badge {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  .hero-minimal .hero-minimal__left .hero-ctas {
+    margin-top: 0.95rem;
+  }
+  .hero-minimal .hero-minimal__left .hero-title {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+  .hero-minimal .hero-minimal__left .hero-title-muted {
+    font-size: clamp(15px, 4vw, 20px);
+  }
+}
+/* Tablet-only tweaks (768px–1023px) */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .hero-minimal .hero-minimal__inner {
+    gap: 44px;
+  }
+  .hero-minimal .hero-minimal__left .hero-ctas {
+    margin-top: 1.2rem;
+  }
+}
+.hero-minimal .hero-minimal__left .hero-cta-primary {
+  padding: 12px 24px;
+  font-size: 18px;
+  gap: 8px;
+}
+.hero-minimal .hero-minimal__left .hero-cta-primary:hover {
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.35);
+}
+
+.hero-minimal .hero-right.hero-video-wrap {
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 1024px) {
+  .hero-minimal .hero-right.hero-video-wrap {
+    max-height: min(65vh, 520px);
+  }
+}
+/* Light radial glow behind video container */
+.hero-minimal .hero-video-glow {
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  border-radius: 32px;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 50%,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(99, 102, 241, 0.03) 50%,
+    transparent 75%
+  );
+  filter: blur(14px);
+  pointer-events: none;
+}
+/* Мягкий голубой radial glow позади правой колонки */
+.hero-minimal .hero-right::before {
+  content: '';
+  position: absolute;
+  inset: -80px;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 120% 100% at 50% 50%,
+    rgba(37, 99, 235, 0.12) 0%,
+    rgba(59, 130, 246, 0.06) 35%,
+    rgba(99, 102, 241, 0.03) 55%,
+    transparent 75%
+  );
+  filter: blur(48px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .hero-minimal .hero-right::before {
+    inset: -100px;
+    background: radial-gradient(
+      ellipse 130% 110% at 50% 50%,
+      rgba(37, 99, 235, 0.14) 0%,
+      rgba(59, 130, 246, 0.07) 32%,
+      rgba(99, 102, 241, 0.03) 52%,
+      transparent 72%
+    );
+    filter: blur(56px);
+    opacity: 0.95;
+  }
+}
+@media (max-width: 767px) {
+  .hero-minimal .hero-right::before {
+    inset: -48px;
+    background: radial-gradient(
+      ellipse 100% 85% at 50% 50%,
+      rgba(37, 99, 235, 0.1) 0%,
+      rgba(59, 130, 246, 0.05) 40%,
+      transparent 70%
+    );
+    filter: blur(40px);
+    opacity: 0.8;
+  }
+}
+
+/* Marquee */
+.hero-marquee {
+  flex-shrink: 0;
+}
+.hero-marquee:hover .hero-marquee-track {
+  animation-play-state: paused;
+}
+@keyframes hero-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-hero-marquee {
+  animation: hero-marquee-scroll 30s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-marquee {
+    animation: none;
+    transform: none;
+  }
+}
+
 /* Shimmer animation for loading skeletons */
 @keyframes shimmer {
   0% {
@@ -662,7 +917,23 @@ textarea:focus-visible {
 
   .card-hover:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(34, 211, 238, 0.15);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Marquee — логотипы opacity 0.5, скорость 24s, плавный fade по краям */
+  .marquee-fade {
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+  .marquee-logos {
+    opacity: 0.5;
+  }
+  @keyframes marquee-24s {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee-24s {
+    animation: marquee-24s 24s linear infinite;
   }
 
   /* Button hover/active effects - scale with soft glow */
@@ -731,6 +1002,49 @@ textarea:focus-visible {
   .animate-gradient {
     animation: gradient 8s linear infinite;
     background-size: 200% auto;
+  }
+
+  /* Native IntersectionObserver reveal animations */
+  .io-animate {
+    opacity: 0;
+    transition-property: opacity, transform;
+    transition-duration: 600ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .io-fade-up {
+    transform: translate3d(0, 24px, 0);
+  }
+
+  .io-fade-in {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .io-scale-in {
+    transform: scale(0.92);
+    transform-origin: center;
+  }
+
+  .io-slide-left {
+    transform: translate3d(-36px, 0, 0);
+  }
+
+  .io-slide-right {
+    transform: translate3d(36px, 0, 0);
+  }
+
+  .io-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .io-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

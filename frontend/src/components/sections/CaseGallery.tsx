@@ -67,6 +67,8 @@ const LazyGalleryItem = memo(function LazyGalleryItem({ item, index }: LazyGalle
           <img
             src={item.src}
             alt={item.alt || `Gallery image ${index + 1}`}
+            width={1280}
+            height={720}
             loading="lazy"
             decoding="async"
             onLoad={handleLoad}

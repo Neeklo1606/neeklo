@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Send, Instagram, Linkedin, Youtube, Mail, MapPin, Hash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
+import { smoothScrollToId } from "@/lib/smoothScroll";
 
 const products = [
   { label: "Разработка сайтов", href: "/products/website" },
@@ -12,11 +13,11 @@ const products = [
 ];
 
 const company = [
-  { label: "О нас", href: "/about" },
-  { label: "Кейсы", href: "/cases" },
-  { label: "Продукты", href: "/products" },
-  { label: "Процесс", href: "/process" },
-  { label: "Контакты", href: "/contact" },
+  { label: "О нас", href: "/about", hashId: null },
+  { label: "Кейсы", href: "/portfolio", hashId: "cases" },
+  { label: "Продукты", href: "/services", hashId: "services" },
+  { label: "Процесс", href: "/process", hashId: "process" },
+  { label: "Контакты", href: "/contacts", hashId: "contact" },
 ];
 
 const socialLinks = [
@@ -28,6 +29,8 @@ const socialLinks = [
 
 export const Footer = () => {
   const [copied, setCopied] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleCopyEmail = async () => {
     try {
@@ -43,6 +46,15 @@ export const Footer = () => {
     }
   };
 
+  const handleCompanyAnchor = (hashId: string | null) => {
+    if (!hashId) return;
+    if (location.pathname !== "/") {
+      navigate(`/#${hashId}`);
+      return;
+    }
+    smoothScrollToId(hashId);
+  };
+
   return (
     <footer className="bg-background border-t border-border/10">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 pb-28 lg:pb-20">
@@ -51,7 +63,15 @@ export const Footer = () => {
           {/* Column 1: Brand */}
           <div>
             <Link to="/" className="inline-block mb-4">
-              <img src={logo} alt="Neeklo Studio" loading="lazy" decoding="async" className="h-12 w-auto" />
+              <img
+                src={logo}
+                alt="Neeklo Studio"
+                width={166}
+                height={48}
+                loading="lazy"
+                decoding="async"
+                className="h-12 w-auto"
+              />
             </Link>
             <p className="text-base text-foreground/70 mb-6 leading-relaxed">
               Цифровая студия нового поколения
@@ -101,12 +121,25 @@ export const Footer = () => {
             <ul className="space-y-3.5">
               {company.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-base text-foreground/70 hover:text-primary transition-colors duration-300"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.hashId ? (
+                    <a
+                      href={`#${link.hashId}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleCompanyAnchor(link.hashId);
+                      }}
+                      className="text-base text-foreground/70 hover:text-primary transition-colors duration-300"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="text-base text-foreground/70 hover:text-primary transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -160,7 +193,7 @@ export const Footer = () => {
         <div className="pt-8 border-t border-border/10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
             <p className="text-sm text-foreground/50 text-center sm:text-left">
-              © 2025 Neeklo Studio. Все права защищены.
+              © 2026 Neeklo Studio. Все права защищены.
             </p>
             <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4 sm:gap-6">
               <Link

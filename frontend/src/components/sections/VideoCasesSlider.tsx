@@ -156,6 +156,8 @@ const CaseCard = memo(function CaseCard({
             <img
               src={caseItem.coverImage}
               alt={caseItem.title}
+              width={900}
+              height={1600}
               className={cn(
                 "w-full h-full object-cover transition-transform duration-500",
                 !isMobile && "group-hover:scale-105"

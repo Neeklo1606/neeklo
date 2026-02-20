@@ -57,8 +57,13 @@ const About = () => {
 
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoSourceIndex, setVideoSourceIndex] = useState(0);
   const isMobile = useMobile();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoSources = [
+    "/frontend/videos/hf_20260220_225651_b8007db0-eebd-4e50-888b-24e3bf441702.mp4",
+    "/frontend/videos/neeklo_hello.mp4",
+  ];
 
   // Запуск видео на десктопе (autoplay не всегда срабатывает)
   useEffect(() => {
@@ -133,6 +138,8 @@ const About = () => {
           <div className="absolute inset-0 z-0">
             <video
               ref={videoRef}
+              key={videoSources[videoSourceIndex]}
+              src={videoSources[videoSourceIndex]}
               autoPlay={!isMobile}
               muted
               loop
@@ -140,10 +147,14 @@ const About = () => {
               preload="auto"
               onPlay={() => setVideoPlaying(true)}
               onPause={() => setVideoPlaying(false)}
+              onError={() => {
+                setVideoSourceIndex((prev) => {
+                  const next = prev + 1;
+                  return next < videoSources.length ? next : prev;
+                });
+              }}
               className="w-full h-full object-cover"
-            >
-              <source src="/videos/neeklo_hello.mp4" type="video/mp4" />
-            </video>
+            />
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/80 pointer-events-none" />
             {/* Кнопка play на мобильных, когда видео не идёт */}

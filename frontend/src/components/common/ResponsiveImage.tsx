@@ -42,6 +42,8 @@ export const ResponsiveImage = memo(function ResponsiveImage({
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const [hasError, setHasError] = useState(false);
+  const intrinsicWidth = 1600;
+  const intrinsicHeight = 900;
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -110,6 +112,10 @@ export const ResponsiveImage = memo(function ResponsiveImage({
           src={placeholder}
           alt=""
           aria-hidden="true"
+          width={intrinsicWidth}
+          height={intrinsicHeight}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover blur-lg scale-105"
         />
       )}
@@ -129,6 +135,8 @@ export const ResponsiveImage = memo(function ResponsiveImage({
             ref={imgRef}
             src={src}
             alt={alt}
+            width={intrinsicWidth}
+            height={intrinsicHeight}
             srcSet={srcSet}
             sizes={sizes}
             loading={priority ? "eager" : "lazy"}

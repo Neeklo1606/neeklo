@@ -139,14 +139,14 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
                 <label htmlFor="cf-email" className={labelBase}>
                   Email
                 </label>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                   <input
                     id="cf-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="email@example.com"
-                    className={cn(inputBase, "flex-1")}
+                    className={cn(inputBase, "w-full sm:flex-1")}
                   />
                   <button
                     type="button"

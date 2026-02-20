@@ -1,13 +1,13 @@
 "use client";
 
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Container } from "@/components/common/Container";
 import { ArrowRight, Globe, Bot, Video, Smartphone, LucideIcon, Currency, Clock, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobile } from "@/hooks/useMobile";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface Solution {
   id: string;
@@ -78,26 +78,18 @@ function buildSolutions(cms?: Array<{ slug: string; title: string; price: string
 const SolutionCard = memo(function SolutionCard({
   solution,
   index,
-  isMobile,
-  shouldReduceMotion,
+  isVisible,
 }: {
   solution: Solution;
   index: number;
-  isMobile: boolean;
-  shouldReduceMotion: boolean;
+  isVisible: boolean;
 }) {
   const Icon = solution.icon;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{
-        duration: shouldReduceMotion ? 0 : 0.4,
-        delay: index * 0.08,
-      }}
-      className="h-full"
+    <div
+      className={`io-animate io-slide-left h-full ${isVisible ? "io-visible" : ""}`}
+      style={{ transitionDelay: `${100 + index * 100}ms` }}
     >
       <Link
         to={solution.href}
@@ -157,7 +149,7 @@ const SolutionCard = memo(function SolutionCard({
           Обсудить
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 });
 
@@ -172,24 +164,19 @@ export function ReadySolutions({ title, subtitle, sectionId, solutions: solution
   const isMobile = useMobile();
   const shouldReduceMotion = usePrefersReducedMotion();
   const solutions = buildSolutions(solutionsData);
+  const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
 
   return (
-    <section id={sectionId ?? "products"} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section ref={ref} id={sectionId ?? "products"} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-12"
-        >
+        <div className={`io-animate io-slide-left flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-12 ${isVisible ? "io-visible" : ""}`}>
           <div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
-              Готовые решения
+              {title ?? "Готовые решения"}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base max-w-md">
-              Цена и сроки — сразу. Без скрытых платежей.
+              {subtitle ?? "Цена и сроки — сразу. Без скрытых платежей."}
             </p>
           </div>
 
@@ -205,7 +192,7 @@ export function ReadySolutions({ title, subtitle, sectionId, solutions: solution
             Все услуги
             <ArrowRight className="w-4 h-4" />
           </Link>
-        </motion.div>
+        </div>
 
         {/* Solutions Grid: 2x2 mobile, 4 cols desktop */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
@@ -214,19 +201,15 @@ export function ReadySolutions({ title, subtitle, sectionId, solutions: solution
               key={solution.id}
               solution={solution}
               index={index}
-              isMobile={isMobile}
-              shouldReduceMotion={shouldReduceMotion}
+              isVisible={isVisible}
             />
           ))}
         </div>
 
         {/* Mobile: All products link */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: shouldReduceMotion ? 0 : 0.4, delay: 0.3 }}
-          className="mt-10 md:hidden"
+        <div
+          className={`io-animate io-slide-left mt-10 md:hidden ${isVisible ? "io-visible" : ""}`}
+          style={{ transitionDelay: "400ms" }}
         >
           <Link
             to="/services"
@@ -242,7 +225,7 @@ export function ReadySolutions({ title, subtitle, sectionId, solutions: solution
             Все услуги
             <ArrowRight className="w-4 h-4" />
           </Link>
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

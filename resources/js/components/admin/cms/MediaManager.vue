@@ -20,10 +20,11 @@
 
         <div v-for="col in collectionsConfig" :key="col.key" v-show="activeCollection === col.key" class="space-y-3">
             <div class="flex items-center justify-between">
-                <span class="text-sm text-muted-foreground">{{ getCollectionLabel(col.key) }}</span>
+                <span class="text-sm text-muted-foreground">{{ getCollectionLabel(col.key) }}{{ col.maxCount ? ` (макс. ${col.maxCount})` : '' }}</span>
                 <button
                     @click="openPicker(col)"
-                    class="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-sm"
+                    :disabled="col.maxCount != null && items(col.key).length >= col.maxCount"
+                    class="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Добавить
                 </button>

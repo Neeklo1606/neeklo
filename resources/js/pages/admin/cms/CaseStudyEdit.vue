@@ -86,6 +86,8 @@
                     :media-collections="caseStudyData?.media_collections || {}"
                     :collections-config="[
                         { key: 'cover', label: 'Обложка', mode: 'single', allowReorder: false, allowMeta: true },
+                        { key: 'card_gallery', label: '5 фото для карточки (блок на главной)', mode: 'multiple', allowReorder: true, allowMeta: true, maxCount: 5 },
+                        { key: 'video', label: 'Видео для блока', mode: 'single', allowReorder: false, allowMeta: false },
                         { key: 'gallery', label: 'Галерея', mode: 'multiple', allowReorder: true, allowMeta: true },
                     ]"
                     @updated="onMediaUpdated"

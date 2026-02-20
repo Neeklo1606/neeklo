@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="light-mode">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,8 +24,9 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     
-    <!-- Preload critical assets -->
-    <link rel="preload" as="image" href="/frontend/assets/logo-BtIRzNvg.png" type="image/png" fetchpriority="high" />
+    <!-- Preload critical hero media for faster LCP -->
+    <link rel="preload" as="video" href="/frontend/videos/neeklo_hello.mp4" />
+    <link rel="preload" as="video" href="/frontend/videos/hf_20260220_225651_b8007db0-eebd-4e50-888b-24e3bf441702.mp4" />
     
     <!-- Fonts - Critical font preload for LCP with font-display: swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,8 +39,10 @@
     <!-- Font stylesheet with font-display: swap for FOUT optimization -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet" />
     </noscript>
 
     <!-- Open Graph / Facebook -->
@@ -73,55 +76,13 @@
     <meta name="apple-mobile-web-app-title" content="Neeklo" />
     <meta name="mobile-web-app-capable" content="yes" />
     
-    <!-- Structured Data - Organization -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Neeklo Studio",
-      "url": "https://neeklo.studio",
-      "logo": "https://neeklo.studio/logo.png",
-      "description": "Digital-студия разработки AI-агентов и веб-продуктов",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Москва",
-        "addressCountry": "RU"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "Customer Service",
-        "email": "hello@neeklo.studio",
-        "availableLanguage": ["Russian", "English"]
-      },
-      "sameAs": [
-        "https://t.me/neeklo_studio",
-        "https://instagram.com/neeklo.studio",
-        "https://linkedin.com/company/neeklo"
-      ]
-    }
-    </script>
-    
-    <!-- Structured Data - Website -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Neeklo Studio",
-      "url": "https://neeklo.studio",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://neeklo.studio/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-    <script type="module" crossorigin src="/frontend/assets/index-DSpOx7Wv.js"></script>
-    <link rel="modulepreload" crossorigin href="/frontend/assets/react-vendor-BPADj-9C.js">
-    <link rel="modulepreload" crossorigin href="/frontend/assets/motion-vendor-BDjNjK_3.js">
-    <link rel="modulepreload" crossorigin href="/frontend/assets/ui-vendor-CLuw_zuZ.js">
-    <link rel="modulepreload" crossorigin href="/frontend/assets/products-BQxcE2KP.js">
-    <link rel="modulepreload" crossorigin href="/frontend/assets/query-vendor-DZdZBpgz.js">
-    <link rel="stylesheet" crossorigin href="/frontend/assets/index-BFFnB1ef.css">
+    <script type="module" crossorigin src="/frontend/assets/index-Zh5VT6VF.js"></script>
+    <link rel="modulepreload" crossorigin href="/frontend/assets/react-vendor-Ck0rSI6M.js">
+    <link rel="modulepreload" crossorigin href="/frontend/assets/motion-vendor-D9aqm0v5.js">
+    <link rel="modulepreload" crossorigin href="/frontend/assets/ui-vendor-CeIBL6lO.js">
+    <link rel="modulepreload" crossorigin href="/frontend/assets/products-w-hVljV1.js">
+    <link rel="modulepreload" crossorigin href="/frontend/assets/query-vendor-BuKK8X4L.js">
+    <link rel="stylesheet" crossorigin href="/frontend/assets/index-53ZIctEa.css">
   <link rel="manifest" href="/frontend/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/frontend/registerSW.js"></script></head>
 
   <body>
@@ -175,5 +136,47 @@
       @keyframes loadingProgress{0%{left:-30%;width:30%}50%{width:50%}100%{left:100%;width:30%}}
     </style>
     <div id="root"></div>
+    <!-- type="module" по умолчанию defer — не блокирует парсинг -->
+
+    <!-- Non-critical JSON-LD moved to body end -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Neeklo Studio",
+      "url": "https://neeklo.studio",
+      "logo": "https://neeklo.studio/logo.png",
+      "description": "Digital-студия разработки AI-агентов и веб-продуктов",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Москва",
+        "addressCountry": "RU"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "email": "hello@neeklo.studio",
+        "availableLanguage": ["Russian", "English"]
+      },
+      "sameAs": [
+        "https://t.me/neeklo_studio",
+        "https://instagram.com/neeklo.studio",
+        "https://linkedin.com/company/neeklo"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Neeklo Studio",
+      "url": "https://neeklo.studio",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://neeklo.studio/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </body>
 </html>

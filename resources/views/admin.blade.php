@@ -12,6 +12,10 @@
     @endphp
     <base href="{{ $baseUrl }}/">
     <title>Админ панель</title>
+    {{-- Базовый URL для API: тот же хост, с которого открыта страница --}}
+    <script>
+        window.ADMIN_API_BASE = "{{ request()->getSchemeAndHttpHost() }}";
+    </script>
     {{-- КРИТИЧНО: Фильтрация ошибок ДО всего остального - максимально агрессивная --}}
     <script>
         // Устанавливаем фильтры СРАЗУ, до загрузки любых других скриптов
@@ -32,12 +36,14 @@
                        lower.includes('imgpenhngnbnmhdkpdfnfhdpmfgmihdn') ||
                        lower.includes('error handling response') ||
                        lower.startsWith('error handling response') ||
-                       (lower.includes('indexof') && lower.includes('undefined')) ||
-                       (lower.includes('cannot read properties') && lower.includes('indexof')) ||
+                       (lower.includes('indexof') && (lower.includes('undefined') || lower.includes('reading'))) ||
+                       (lower.includes('cannot read properties') && (lower.includes('indexof') || lower.includes('undefined'))) ||
+                       lower.includes("reading 'indexof'") ||
                        lower.includes('safari is not defined') ||
                        lower.includes('unchecked runtime.lasterror') ||
                        lower.includes('unchecked runtime.last error') ||
-                       lower.includes('message port closed');
+                       lower.includes('message port closed') ||
+                       lower.includes('the message port closed');
             }
             
             // Перехватываем window.onerror СРАЗУ
@@ -175,26 +181,25 @@
         })();
     </script>
     @php
-        // Используем продакшн сборку для стабильной работы
-        // В dev режиме можно использовать Vite, но нужно настроить проксирование
-        $viteDevUrl = rtrim(env('VITE_DEV_SERVER_URL', ''), '/');
-        $useViteDev = false; // Отключаем Vite dev для стабильности
-    @endphp
-    @if($useViteDev)
-        @vite(['resources/css/app.css', 'resources/js/admin.js'])
-    @else
-        {{-- Используем продакшн сборку --}}
-        @php
-            $manifestPath = public_path('build/manifest.json');
-            if (file_exists($manifestPath)) {
-                $manifest = json_decode(file_get_contents($manifestPath), true);
+        $manifestPath = public_path('build/manifest.json');
+        $adminAssetsAvailable = false;
+        $cssFile = null;
+        $jsFile = null;
+        if (file_exists($manifestPath)) {
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+            if (is_array($manifest)) {
                 $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
                 $jsFile = $manifest['resources/js/admin.js']['file'] ?? null;
+                $adminAssetsAvailable = $cssFile && $jsFile;
             }
-        @endphp
-        @if(isset($cssFile))
-            <link rel="stylesheet" href="/build/assets/{{ basename($cssFile) }}">
-        @endif
+        }
+    @endphp
+    @if($adminAssetsAvailable)
+        {{-- Относительный путь — всегда тот же хост, что и страница (избегаем белого экрана при APP_URL != текущий хост) --}}
+        <link rel="stylesheet" href="/build/{{ $cssFile }}">
+    @elseif(app()->environment('local'))
+        {{-- В локальной среде пробуем Vite dev server --}}
+        @vite(['resources/css/app.css', 'resources/js/admin.js'])
     @endif
     <script>
         // Фильтрация ошибок расширений браузера
@@ -270,7 +275,7 @@
                         checkString = String(arg).toLowerCase();
                     }
                     
-                    // Проверяем на наличие ошибок расширений
+                    // Проверяем на наличие ошибок расширений (AdBlock и др.)
                     if (checkString.includes('chrome-extension://') ||
                         checkString.includes('adblock') ||
                         checkString.includes('error handling response') ||
@@ -278,11 +283,13 @@
                         checkString.includes('unchecked runtime.lasterror') ||
                         checkString.includes('safari is not defined') ||
                         checkString.includes('message port closed') ||
+                        checkString.includes('the message port closed') ||
+                        checkString.includes("reading 'indexof'") ||
                         checkString.includes('indexof') ||
                         checkString.includes('imgpenhngnbnmhdkpdfnfhdpmfgmihdn') ||
                         checkString.includes('counter.js') ||
                         checkString.includes('content.js') ||
-                        (checkString.includes('cannot read properties') && checkString.includes('indexof'))) {
+                        (checkString.includes('cannot read properties') && (checkString.includes('indexof') || checkString.includes('undefined')))) {
                         return; // Блокируем вывод ошибки
                     }
                 }
@@ -296,24 +303,28 @@
                     errorString.includes('unchecked runtime.lasterror') ||
                     errorString.includes('safari is not defined') ||
                     errorString.includes('message port closed') ||
+                    errorString.includes('the message port closed') ||
+                    errorString.includes("reading 'indexof'") ||
                     errorString.includes('indexof') ||
                     errorString.includes('imgpenhngnbnmhdkpdfnfhdpmfgmihdn') ||
                     errorString.includes('counter.js') ||
                     errorString.includes('content.js') ||
-                    (errorString.includes('cannot read properties') && errorString.includes('indexof'))) {
+                    (errorString.includes('cannot read properties') && (errorString.includes('indexof') || errorString.includes('undefined')))) {
                     return;
                 }
                 originalError.apply(console, args);
             };
             
-            // Фильтруем console.warn
+            // Фильтруем console.warn (AdBlock и др.)
             const originalWarn = console.warn;
             console.warn = function(...args) {
                 const warnString = args.join(' ').toLowerCase();
                 if (warnString.includes('unchecked runtime.lasterror') ||
+                    warnString.includes('message port closed') ||
                     warnString.includes('error handling response') ||
                     warnString.includes('chrome-extension://') ||
-                    warnString.includes('adblock')) {
+                    warnString.includes('adblock') ||
+                    warnString.includes('indexof')) {
                     return;
                 }
                 originalWarn.apply(console, args);
@@ -397,12 +408,18 @@
             }
         })();
     </script>
-    @if(isset($jsFile))
-        <script type="module" src="/build/assets/{{ basename($jsFile) }}"></script>
+    @if($adminAssetsAvailable)
+        <script type="module" src="/build/{{ $jsFile }}"></script>
     @endif
 </head>
 <body class="min-h-screen bg-background text-foreground">
     <div id="admin-app"></div>
+    @if(!$adminAssetsAvailable && !app()->environment('local'))
+        <div style="padding:2rem;max-width:32rem;margin:2rem auto;background:#1a1a1a;color:#e5e5e5;border-radius:12px;font-family:system-ui,sans-serif;">
+            <h2 style="margin:0 0 0.5rem;font-size:1.25rem;">Админка не загружена</h2>
+            <p style="margin:0;font-size:0.875rem;color:#a3a3a3;">Сборка не найдена. В корне проекта выполните: <code style="background:#333;padding:0.2em 0.4em;border-radius:4px;">npm run build</code></p>
+        </div>
+    @endif
 </body>
 </html>
 

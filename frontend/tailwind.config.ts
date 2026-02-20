@@ -163,6 +163,18 @@ export default {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+        highlight: {
+          "0%": { backgroundColor: "transparent" },
+          "100%": { backgroundColor: "var(--highlight)" },
+        },
+        "highlight-breathe": {
+          "0%, 100%": { backgroundColor: "var(--highlight)", opacity: "0.55" },
+          "50%": { backgroundColor: "var(--highlight)", opacity: "1" },
+        },
+        flash: {
+          "0%, 100%": { backgroundColor: "hsl(var(--card))" },
+          "50%": { backgroundColor: "var(--highlight)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -173,6 +185,9 @@ export default {
         "float": "float 3s ease-in-out infinite",
         aurora: "aurora 60s linear infinite",
         gradient: "gradient 8s linear infinite",
+        highlight: "highlight 0.6s ease forwards",
+        "highlight-breathe": "highlight-breathe 1.8s ease-in-out infinite",
+        flash: "flash 0.6s ease infinite",
       },
       transitionTimingFunction: {
         "smooth": "cubic-bezier(0.4, 0, 0.2, 1)",

@@ -190,8 +190,11 @@ const WorkDetail = () => {
                 <img
                   src={coverImageUrl}
                   alt={caseData.title || ""}
+                  width={1280}
+                  height={720}
                   className="w-full h-full object-cover"
                   loading="eager"
+                  decoding="sync"
                   fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />

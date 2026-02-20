@@ -205,8 +205,12 @@ export const VideoPlayer = memo(function VideoPlayer({
         <img
           src={poster}
           alt={title || 'Video thumbnail'}
+          width={1280}
+          height={720}
           className="absolute inset-0 w-full h-full object-cover"
           loading={priority ? 'eager' : 'lazy'}
+          decoding={priority ? "sync" : "async"}
+          fetchPriority={priority ? "high" : "auto"}
         />
       )}
 

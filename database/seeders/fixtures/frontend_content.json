@@ -20,20 +20,26 @@
           "is_enabled": true,
           "position": 0,
           "data": {
-            "title": "Создание сайтов, Mini App и AI видео",
-            "subtitle": "Готовые digital-решения для бизнеса",
-            "cta_text": "Узнать стоимость",
-            "scroll_target": "cases"
+            "variant": "minimal",
+            "title": "Создание сайтов,\nвидео и чат-ботов",
+            "subtitle": "(Mini App) Разработка готовых AI-решений для твоего бизнеса.",
+            "eyebrow": "DIGITAL STUDIO · 2026",
+            "stat_projects": "48+",
+            "stat_time": "7 дней",
+            "stat_return": "82%",
+            "cta_primary": "Обсудить проект",
+            "cta_secondary": "Смотреть кейсы",
+            "scroll_target": "contact"
           }
         },
         {
-          "type": "video_cases_slider",
+          "type": "cases_hover",
           "is_enabled": true,
           "position": 1,
           "data": {
             "title": "Кейсы",
-            "section_id": "cases",
-            "use_featured_cases": true
+            "subtitle": "Смотрите результаты наших проектов",
+            "section_id": "cases"
           }
         },
         {

@@ -21,7 +21,11 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <main
+      className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-background pt-24 md:pt-28 pb-12"
+      role="main"
+      aria-label="Страница не найдена"
+    >
       <div className="text-center max-w-md px-4">
         <h1 className="mb-4 text-8xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           404
@@ -50,7 +54,7 @@ const NotFound = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

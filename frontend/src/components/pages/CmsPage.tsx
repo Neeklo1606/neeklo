@@ -56,10 +56,20 @@ export function CmsPage({ slug, showStickyCta }: CmsPageProps) {
 
   if (isError || !page) return null;
 
+  const blocks = Array.isArray(page.blocks) ? page.blocks : [];
+  const hasServicesTeaser = blocks.some((b: { type?: string }) => b.type === "services_teaser");
+  const blocksToRender =
+    slug === "home" && !hasServicesTeaser
+      ? [
+          ...blocks,
+          { id: -1, type: "services_teaser", position: 2, is_enabled: true, data: {} },
+        ].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
+      : blocks;
+
   return (
     <div className="min-h-screen bg-background">
       <main className="pb-24 lg:pb-0 pt-0">
-        <BlockRenderer blocks={page.blocks} />
+        <BlockRenderer blocks={blocksToRender} />
       </main>
       {showStickyCta && <StickyCtaButton />}
       <Footer />

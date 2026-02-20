@@ -38,7 +38,7 @@ class CaseStudyResource extends JsonResource
         $media = $this->relationLoaded('media') ? $this->media : $this->media()->get();
         $grouped = $media->groupBy(fn ($m) => $m->pivot?->collection ?? 'other');
         $result = [];
-        foreach (['cover', 'gallery'] as $col) {
+        foreach (['cover', 'gallery', 'card_gallery', 'video'] as $col) {
             $result[$col] = MediaResource::collection($grouped->get($col, collect())->values());
         }
         foreach ($grouped->keys() as $col) {
