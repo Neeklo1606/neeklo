@@ -58,24 +58,24 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
   };
 
   return (
-    <section ref={sectionRef} id={d.section_id ?? "cases"} className="py-10 md:py-14">
-      <Container>
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+    <section ref={sectionRef} id={d.section_id ?? "cases"} className="py-8 sm:py-10 md:py-14">
+      <Container className="px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 md:mb-8">
           <div>
             <h2 className={`io-animate io-fade-up text-2xl md:text-3xl font-heading font-bold text-foreground ${isVisible ? "io-visible" : ""}`}>
               {d.title ?? "Кейсы"}
             </h2>
             {(d.subtitle ?? (d.title ? "Смотрите результаты наших проектов" : null)) && (
-              <p className={`io-animate io-fade-up text-muted-foreground mt-1 ${isVisible ? "io-visible" : ""}`} style={{ transitionDelay: "100ms" }}>
+              <p className={`io-animate io-fade-up text-muted-foreground mt-1 text-sm sm:text-base ${isVisible ? "io-visible" : ""}`} style={{ transitionDelay: "100ms" }}>
                 {d.subtitle ?? "Смотрите результаты наших проектов"}
               </p>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <button
               type="button"
               onClick={() => scroll("left")}
-              className="p-2 rounded-full border border-border bg-background hover:bg-muted transition-colors"
+              className="p-2 rounded-full border border-border bg-background hover:bg-muted transition-colors touch-manipulation"
               aria-label="Предыдущие кейсы"
             >
               <ChevronLeft className="w-5 h-5 text-foreground" />
@@ -83,14 +83,14 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
             <button
               type="button"
               onClick={() => scroll("right")}
-              className="p-2 rounded-full border border-border bg-background hover:bg-muted transition-colors"
+              className="p-2 rounded-full border border-border bg-background hover:bg-muted transition-colors touch-manipulation"
               aria-label="Следующие кейсы"
             >
               <ChevronRight className="w-5 h-5 text-foreground" />
             </button>
             <Link
               to="/work"
-              className="text-primary font-medium hover:underline ml-2"
+              className="text-primary font-medium hover:underline ml-2 hidden sm:inline"
             >
               Все кейсы →
             </Link>
@@ -99,7 +99,7 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
 
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex gap-4 sm:gap-6 overflow-x-auto pb-2 sm:pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scroll-smooth snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {list.length === 0 && (
             <p className="text-muted-foreground py-12">Пока нет опубликованных кейсов.</p>
@@ -119,31 +119,28 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
                   : DEFAULT_IMAGES;
             const videoUrl = project.media_collections?.video?.[0]?.url ?? null;
             const category = project.category ?? project.taxonomies?.[0]?.title ?? "Кейс";
+            const caseHref = `/work/${project.slug}`;
 
             return (
               <div
                 key={project.id}
-                className={`io-animate io-scale-in snap-start min-w-[280px] max-w-md w-full ${isVisible ? "io-visible" : ""}`}
+                className={`io-animate io-scale-in snap-center snap-always min-w-[260px] sm:min-w-[280px] max-w-[320px] sm:max-w-md w-full flex-shrink-0 ${isVisible ? "io-visible" : ""}`}
                 style={{ transitionDelay: `${120 + index * 100}ms` }}
               >
                 <HoverDetailCard
+                  cardHref={caseHref}
+                  hideOverlayOnMobile
+                  singleButton
                   title={project.title}
                   subtitle={project.short_description ?? ""}
                   images={images}
                   videoUrl={videoUrl ?? undefined}
                   primaryButton={{
-                    text: "Смотреть кейс",
-                    href: `/portfolio/${project.slug}`,
+                    text: "Смотреть кейсы",
+                    href: caseHref,
                     color: "bg-white/90",
                     hoverColor: "hover:bg-white",
                     textColor: "text-gray-900",
-                  }}
-                  secondaryButton={{
-                    text: "Заказать такой",
-                    href: "/contact",
-                    color: "bg-primary",
-                    hoverColor: "hover:bg-primary/90",
-                    textColor: "text-primary-foreground",
                   }}
                   pills={{
                     left: {

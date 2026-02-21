@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { BlockHero } from "./BlockHero";
 import { BlockVideoCasesSlider } from "./BlockVideoCasesSlider";
-import { BlockSkruticSelector } from "./BlockSkruticSelector";
 import { BlockReadySolutions } from "./BlockReadySolutions";
 import { BlockNewsSection } from "./BlockNewsSection";
 import { BlockContactForm } from "./BlockContactForm";
@@ -24,7 +23,6 @@ const BLOCK_MAP: Record<string, (props: { block: CmsBlock }) => ReactNode> = {
   hero: (props) => <BlockHero {...props} />,
   services_teaser: (props) => <BlockServicesTeaser {...props} />,
   video_cases_slider: (props) => <BlockCasesHoverSection {...props} />,
-  skrutic_selector: (props) => <BlockSkruticSelector {...props} />,
   ready_solutions: (props) => <BlockReadySolutions {...props} />,
   news_section: (props) => <BlockNewsSection {...props} />,
   contact_form: (props) => <BlockContactForm {...props} />,

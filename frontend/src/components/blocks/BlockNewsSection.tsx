@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { NewsSection } from "@/components/sections/NewsSection";
-import { getPublicPosts } from "@/lib/api";
+import { getBlogArticle } from "@/data/blogArticles";
 import type { CmsBlock } from "./BlockRenderer";
 
 interface NewsSectionData {
@@ -13,38 +12,22 @@ interface NewsSectionData {
 
 export function BlockNewsSection({ block }: { block: CmsBlock }) {
   const d = (block.data || {}) as NewsSectionData;
-  const { data: postsData } = useQuery({
-    queryKey: ["public", "posts", "news"],
-    queryFn: async () => {
-      const r = await getPublicPosts({ per_page: 50 });
-      return r.success ? r.data : [];
-    },
-    enabled: !!d.article_slugs?.length,
-  });
 
   const articles = useMemo(() => {
-    const posts = (postsData ?? []) as Array<{
-      slug: string;
-      title: string;
-      excerpt?: string;
-      published_at?: string;
-      taxonomies?: Array<{ title: string }>;
-    }>;
     const slugs = d.article_slugs ?? [];
     if (slugs.length === 0) return undefined;
-    const bySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
     return slugs
-      .map((slug) => bySlug[slug])
+      .map((slug) => getBlogArticle(slug))
       .filter(Boolean)
-      .map((p) => ({
-        id: p!.slug,
-        slug: p!.slug,
-        title: p!.title,
-        excerpt: p!.excerpt ?? "",
-        date: p!.published_at ?? "",
-        category: p!.taxonomies?.[0]?.title ?? "",
+      .map((a) => ({
+        id: a!.slug,
+        slug: a!.slug,
+        title: a!.h1,
+        excerpt: a!.excerpt ?? "",
+        date: a!.date ?? "",
+        category: a!.category ?? "",
       }));
-  }, [postsData, d.article_slugs]);
+  }, [d.article_slugs]);
 
   return (
     <NewsSection

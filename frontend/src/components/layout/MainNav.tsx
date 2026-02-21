@@ -23,17 +23,24 @@ type NavItem = { label: string; href: string; sectionId?: string; hashId?: strin
 
 function menuItemsToNav(items: Array<{ label: string; url?: string; children?: unknown[] }>): NavItem[] {
   const urlToHash: Record<string, string> = { "/services": "services", "/work": "cases", "/contact": "contact" };
-  return items
+  const nav = items
     .filter((i) => !i.children?.length)
     .map((i) => {
       const url = i.url ?? "#";
       return {
         label: i.label,
         href: url,
-        sectionId: urlToHash[url] ?? (url === "/services" ? "services" : url === "/work" ? "cases" : undefined),
+        sectionId: urlToHash[url] ?? (url === "/services" ? "services" : url === "/work" ? "cases" : url === "/blog" ? "blog" : undefined),
         hashId: urlToHash[url],
       };
     });
+  const hasBlog = nav.some((i) => i.href === "/blog");
+  if (!hasBlog) {
+    const blogItem: NavItem = { label: "Блог", href: "/blog", sectionId: "blog", hashId: undefined };
+    const insertIndex = Math.min(2, nav.length);
+    nav.splice(insertIndex, 0, blogItem);
+  }
+  return nav;
 }
 
 export const MainNav = () => {
@@ -168,9 +175,7 @@ export const MainNav = () => {
             "rounded-lg md:rounded-xl",
             "px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-2",
             "min-h-10 md:min-h-11",
-            isHome
-              ? "bg-card/95 backdrop-blur-[16px] border border-border shadow-sm text-foreground"
-              : "bg-black/40 backdrop-blur-[16px] border border-white/10 shadow-2xl shadow-black/50"
+            "bg-card/95 backdrop-blur-[16px] border border-border shadow-sm text-foreground"
           )}
         >
             {/* Logo */}
@@ -183,7 +188,7 @@ export const MainNav = () => {
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
                 <img
-                  src={isHome ? logoDark : currentLogo}
+                  src={logoDark}
                   alt="Neeklo Studio"
                   width={160}
                   height={46}
@@ -203,9 +208,7 @@ export const MainNav = () => {
                   const className = cn(
                     "relative text-sm font-medium rounded-full transition-all duration-300 ease-out overflow-hidden cursor-pointer",
                     "px-4 py-2",
-                    active ? "text-white" : isHome
-                      ? "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
-                      : "text-foreground/60 hover:text-foreground hover:bg-foreground/5"
+                    active ? "text-white" : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                   );
                   const pillClass = "absolute inset-0 rounded-full bg-black";
                   return (
@@ -236,9 +239,7 @@ export const MainNav = () => {
                 className={cn(
                   "relative z-10 flex items-center gap-1.5 rounded-full border transition-all duration-200 cursor-pointer",
                   "text-sm font-medium px-4 py-2",
-                  isHome
-                    ? "bg-muted border-border text-foreground hover:bg-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    : "bg-foreground/10 border-foreground/20 text-foreground hover:bg-foreground/15"
+                  "bg-muted border-border text-foreground hover:bg-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 )}
                 aria-label="Корзина"
               >
@@ -246,10 +247,7 @@ export const MainNav = () => {
                 <span className="hidden sm:inline">Корзина</span>
                 {cart.length > 0 && (
                   <span
-                    className={cn(
-                      "absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-semibold",
-                      isHome ? "bg-foreground text-primary-foreground" : "bg-primary text-primary-foreground"
-                    )}
+                    className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-semibold bg-foreground text-primary-foreground"
                   >
                     {cart.length}
                   </span>
@@ -267,9 +265,7 @@ export const MainNav = () => {
                 whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                 className={cn(
                   "relative z-10 flex items-center gap-1.5 rounded-[14px] font-bold transition-all duration-200 text-sm px-5 py-2.5 cursor-pointer",
-                  isHome
-                    ? "bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--glow-primary)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    : "bg-gradient-to-r from-cyan-400 to-cyan-500 text-white hover:shadow-lg hover:shadow-cyan-500/30"
+                  "bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--glow-primary)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 )}
                 aria-label={isHome ? "Начать проект" : "Узнать стоимость проекта"}
               >

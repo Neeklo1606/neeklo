@@ -183,12 +183,19 @@ export function ReadySolutions({ title, subtitle, sectionId, variant, solutions:
     <section ref={ref} id={sectionId ?? "products"} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
         {/* Header */}
-        <div className={`io-animate io-slide-left flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-12 ${isVisible ? "io-visible" : ""}`}>
-          <div>
+        <div className={cn(
+          "io-animate io-slide-left flex flex-col gap-4 mb-10 md:mb-12",
+          isFaq ? "items-center text-center" : "md:flex-row md:items-end md:justify-between",
+          isVisible && "io-visible"
+        )}>
+          <div className={isFaq ? "max-w-lg" : ""}>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
               {title ?? "Готовые решения"}
             </h2>
-            <p className="text-muted-foreground text-sm md:text-base max-w-md">
+            <p className={cn(
+              "text-muted-foreground text-sm md:text-base",
+              isFaq ? "max-w-md mx-auto" : "max-w-md"
+            )}>
               {subtitle ?? (isFaq ? "Частые запросы: цена и сроки по каждому решению." : "Цена и сроки — сразу. Без скрытых платежей.")}
             </p>
           </div>
@@ -209,7 +216,7 @@ export function ReadySolutions({ title, subtitle, sectionId, variant, solutions:
         </div>
 
         {isFaq ? (
-          <div className={`io-animate io-fade-in max-w-3xl ${isVisible ? "io-visible" : ""}`}>
+          <div className={`io-animate io-fade-in max-w-3xl mx-auto ${isVisible ? "io-visible" : ""}`}>
             <Accordion type="single" collapsible className="space-y-2 sm:space-y-3">
               {solutions.map((solution, index) => (
                 <AccordionItem
