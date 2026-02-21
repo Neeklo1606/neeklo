@@ -65,11 +65,11 @@ class PublicUrlResolver
     }
 
     /**
-     * Case study detail URL. SPA has /work/:slug (WorkDetail).
+     * Case study detail URL. SPA: /portfolio/:slug (canonical), /work/:slug redirects.
      */
     public function caseStudy(CaseStudy $caseStudy): ?string
     {
-        return '/work/' . $caseStudy->slug;
+        return '/portfolio/' . $caseStudy->slug;
     }
 
     public function absolute(string $path): string

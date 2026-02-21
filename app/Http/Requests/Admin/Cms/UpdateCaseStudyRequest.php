@@ -18,6 +18,8 @@ class UpdateCaseStudyRequest extends FormRequest
         return [
             'slug' => ['sometimes', 'string', 'max:190', Rule::unique('case_studies', 'slug')->ignore($caseStudy?->id)],
             'title' => ['sometimes', 'string', 'max:255'],
+            'short_description' => ['nullable', 'string', 'max:512'],
+            'video_url' => ['nullable', 'string', 'max:512', 'url'],
             'client' => ['nullable', 'string', 'max:255'],
             'industry' => ['nullable', 'string', 'max:255'],
             'problem' => ['nullable', 'string'],

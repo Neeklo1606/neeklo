@@ -1,7 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Send, Instagram, Linkedin, Youtube, Mail, MapPin, Hash } from "lucide-react";
-import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
+import { Send, Instagram, Mail } from "lucide-react";
 import logo from "@/assets/logo.webp";
 import { smoothScrollToId } from "@/lib/smoothScroll";
 
@@ -20,31 +18,18 @@ const company = [
   { label: "Контакты", href: "/contacts", hashId: "contact" },
 ];
 
+const INSTAGRAM_URL = "https://www.instagram.com/neeklo.studio";
+const TELEGRAM_URL = "https://t.me/neeekn";
+const EMAIL = "klochkonikita@mail.ru";
+
 const socialLinks = [
-  { icon: Send, href: "https://t.me/neeklo", label: "Telegram" },
-  { icon: Instagram, href: "https://instagram.com/neeklo", label: "Instagram" },
-  { icon: Linkedin, href: "https://linkedin.com/company/neeklo", label: "LinkedIn" },
-  { icon: Youtube, href: "https://youtube.com/@neeklo", label: "YouTube" },
+  { icon: Instagram, href: INSTAGRAM_URL, label: "Instagram" },
+  { icon: Send, href: TELEGRAM_URL, label: "Telegram" },
 ];
 
 export const Footer = () => {
-  const [copied, setCopied] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
-  const handleCopyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText("hello@neeklo.studio");
-      setCopied(true);
-      toast({
-        title: "Email скопирован!",
-        description: "hello@neeklo.studio",
-      });
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy email:", err);
-    }
-  };
 
   const handleCompanyAnchor = (hashId: string | null) => {
     if (!hashId) return;
@@ -145,45 +130,48 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Contacts */}
+          {/* Column 4: Реквизиты и контакты */}
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-5">
-              Контакты
+              Реквизиты
             </h3>
+            <div className="text-base text-foreground/70 space-y-1.5 mb-5">
+              <p>ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ</p>
+              <p>КЛОЧКО НИКИТА НИКОЛАЕВИЧ</p>
+              <p>ИНН 263520430560</p>
+            </div>
             <ul className="space-y-3.5">
               <li>
-                <button
-                  onClick={handleCopyEmail}
-                  className="flex items-center gap-2.5 text-base text-foreground/70 hover:text-primary transition-colors duration-300 group"
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="flex items-center gap-2.5 text-base text-foreground/70 hover:text-primary transition-colors duration-300"
                 >
                   <Mail size={18} className="flex-shrink-0" />
-                  <span className="group-hover:underline">
-                    {copied ? "Скопировано!" : "hello@neeklo.studio"}
-                  </span>
-                </button>
+                  <span className="hover:underline">{EMAIL}</span>
+                </a>
               </li>
               <li>
                 <a
-                  href="https://t.me/neeklo"
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 text-base text-foreground/70 hover:text-primary transition-colors duration-300"
+                >
+                  <Instagram size={18} className="flex-shrink-0" />
+                  <span className="hover:underline">Instagram</span>
+                </a>
+                <p className="text-xs text-muted-foreground mt-0.5 ml-7">Meta запрещена в РФ</p>
+              </li>
+              <li>
+                <a
+                  href={TELEGRAM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 text-base text-foreground/70 hover:text-primary transition-colors duration-300"
                 >
                   <Send size={18} className="flex-shrink-0" />
-                  @neeklo
+                  <span className="hover:underline">Telegram</span>
                 </a>
-              </li>
-              <li>
-                <div className="flex items-center gap-2.5 text-base text-foreground/70">
-                  <MapPin size={18} className="flex-shrink-0" />
-                  Москва, Россия
-                </div>
-              </li>
-              <li>
-                <div className="flex items-center gap-2.5 text-base text-foreground/70">
-                  <Hash size={18} className="flex-shrink-0" />
-                  ИНН 263514478429
-                </div>
               </li>
             </ul>
           </div>

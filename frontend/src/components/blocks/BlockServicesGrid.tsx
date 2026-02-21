@@ -74,7 +74,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
 
   if (isIconLayout) {
     return (
-      <section id="services" className="py-16 md:py-20 bg-white text-[#0a0a0a]">
+      <section id="services" className="py-16 md:py-20 bg-card text-foreground">
         <Container className="max-w-[1200px]">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
             <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">
@@ -85,7 +85,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                 </span>
               ))}
             </h2>
-            <p className="text-sm text-[#6b6b6b] max-w-[280px] text-right leading-relaxed">
+            <p className="text-sm text-muted-foreground max-w-[280px] text-right leading-relaxed">
               {d.section_sub || "Выберите услугу — откроется карточка. В 2 шага можно оформить и оплатить на сайте."}
             </p>
           </div>
@@ -100,9 +100,9 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3, delay: index * 0.03 }}
                   onClick={() => navigate("/services", { state: { openSlug: service.slug } })}
-                  className="flex flex-col items-center justify-center rounded-2xl min-h-[100px] sm:min-h-[115px] bg-[#f5f5f3] border border-[#e8e8e5] hover:border-[#ccc] hover:shadow-md active:scale-[0.98] transition-all p-3 sm:p-4"
+                  className="flex flex-col items-center justify-center rounded-2xl min-h-[100px] sm:min-h-[115px] bg-muted border border-border hover:border-border hover:shadow-md active:scale-[0.98] transition-all p-3 sm:p-4 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white flex items-center justify-center mb-2 flex-shrink-0 overflow-hidden shadow-sm">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-card flex items-center justify-center mb-2 flex-shrink-0 overflow-hidden shadow-sm">
                     {service.media_collections?.cover?.[0]?.url ? (
                       <img
                         src={service.media_collections.cover[0].url}
@@ -114,10 +114,10 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-[#6b6b6b]" />
+                      <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-muted-foreground" />
                     )}
                   </div>
-                  <span className="text-xs sm:text-sm font-medium text-[#0a0a0a] text-center leading-tight line-clamp-2">
+                  <span className="text-xs sm:text-sm font-medium text-foreground text-center leading-tight line-clamp-2">
                     {service.title}
                   </span>
                 </motion.button>
@@ -130,7 +130,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
   }
 
   return (
-    <section id="services" className="py-16 md:py-20 bg-white text-[#0a0a0a]">
+    <section id="services" className="py-16 md:py-20 bg-card text-foreground">
       <Container className="max-w-[1200px]">
         {(d.section_title || showShopMode) && (
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
@@ -143,7 +143,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
               ))}
             </h2>
             {showShopMode && (
-              <p className="text-sm text-[#6b6b6b] max-w-[200px] text-right leading-relaxed">
+              <p className="text-sm text-muted-foreground max-w-[200px] text-right leading-relaxed">
                 {d.section_sub ||
                   "Добавьте в корзину и оформите — мы свяжемся в тот же день"}
               </p>
@@ -158,17 +158,17 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.03 }}
               className={cn(
-                "rounded-[20px] border-[1.5px] border-[#e8e8e5] overflow-hidden",
-                "bg-white cursor-pointer transition-all duration-250",
-                "hover:border-[#bbb] hover:shadow-lg hover:shadow-black/8 hover:-translate-y-1",
-                "relative"
+                "rounded-[20px] border-[1.5px] border-border overflow-hidden",
+                "bg-card cursor-pointer transition-all duration-250",
+                "hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1",
+                "relative focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
               )}
             >
               <Link
                 to={`/services/${service.slug}`}
                 className="block group"
               >
-                <div className="h-40 flex items-center justify-center bg-[#f5f5f3] border-b border-[#e8e8e5] relative overflow-hidden">
+                <div className="h-40 flex items-center justify-center bg-muted border-b border-border relative overflow-hidden">
                   {service.media_collections?.cover?.[0]?.url ? (
                     <img
                       src={service.media_collections.cover[0].url}
@@ -183,18 +183,15 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                     <span className="text-4xl opacity-60">📦</span>
                   )}
                   <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 50% 120%, rgba(200,255,0,.12), transparent 60%)",
-                    }}
+                    className="absolute inset-0 pointer-events-none bg-gradient-to-t from-primary/5 to-transparent"
+                    aria-hidden
                   />
                 </div>
                 <div className="p-6">
                   <h2 className="font-semibold text-base mb-1.5 tracking-tight">
                     {service.title}
                   </h2>
-                  <p className="text-[13px] text-[#6b6b6b] leading-relaxed mb-5 line-clamp-2 font-light">
+                  <p className="text-[13px] text-muted-foreground leading-relaxed mb-5 line-clamp-2 font-light">
                     {service.short || ""}
                   </p>
                   <div className="flex items-center justify-between flex-wrap gap-2">
@@ -202,12 +199,12 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                       {service.price_from != null ? (
                         <>
                           от {fmt(service.price_from)}{" "}
-                          <span className="text-xs text-[#6b6b6b] font-normal">
+                          <span className="text-xs text-muted-foreground font-normal">
                             / по запросу
                           </span>
                         </>
                       ) : (
-                        <span className="text-[#6b6b6b] text-sm font-normal">
+                        <span className="text-muted-foreground text-sm font-normal">
                           По запросу
                         </span>
                       )}
@@ -221,10 +218,10 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                           handleAddToCart(service);
                         }}
                         className={cn(
-                          "flex items-center gap-1.5 py-2.5 px-4 rounded-full text-[13px] font-medium whitespace-nowrap transition-all",
+                          "flex items-center gap-1.5 py-2.5 px-4 rounded-full text-[13px] font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                           isInCart(service.id)
-                            ? "bg-[#c8ff00] text-[#0a0a0a]"
-                            : "bg-[#0a0a0a] text-white hover:bg-[#333]"
+                            ? "bg-success text-success-foreground"
+                            : "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active"
                         )}
                       >
                         {isInCart(service.id) ? "✓ Добавлено" : "+ В корзину"}

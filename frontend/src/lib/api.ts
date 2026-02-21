@@ -258,6 +258,14 @@ export async function getPublicCaseStudy(slug: string): Promise<{ success: boole
   return { success: true, data: d.data };
 }
 
+/** Related case-studies for a given slug */
+export async function getPublicCaseStudyRelated(slug: string, limit = 4): Promise<{ success: boolean; data?: unknown[]; message?: string }> {
+  const r = await fetch(apiPublic(`/case-studies/${encodeURIComponent(slug)}/related?limit=${limit}`), { headers: { Accept: 'application/json' } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data ?? [] };
+}
+
 /** Public service by slug */
 export async function getPublicService(slug: string): Promise<{ success: boolean; data?: unknown; message?: string }> {
   const r = await fetch(apiPublic(`/services/${encodeURIComponent(slug)}`), { headers: { Accept: 'application/json' } });

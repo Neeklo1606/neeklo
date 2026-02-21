@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Plus, Paperclip, X, File as FileIcon } from "lucide-react";
+import { Plus, FileUp, X, File as FileIcon, ArrowUpRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
@@ -11,10 +11,10 @@ const TELEGRAM_DIRECT_URL = "https://t.me/neeklo_studio";
 const MAX_FILES = 5;
 
 const inputBase =
-  "w-full bg-white/5 border-2 border-white/25 rounded-xl text-white placeholder-white/40 " +
-  "focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 " +
+  "w-full bg-white border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-500 " +
+  "focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-0 " +
   "px-4 py-3 transition-colors duration-200";
-const labelBase = "text-sm font-medium text-white/70 mb-2 block";
+const labelBase = "text-sm font-medium text-white mb-2 block";
 
 interface ContactFormModernProps {
   onSuccess?: () => void;
@@ -23,8 +23,8 @@ interface ContactFormModernProps {
 
 export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) {
   const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
-  const [showEmail, setShowEmail] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [telegram, setTelegram] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [files, setFiles] = useState<File[]>([]);
@@ -32,16 +32,19 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
   const [personalData, setPersonalData] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const contact = telegram.trim() || phone.trim();
   const canSubmit =
     name.trim().length >= 2 &&
-    contact.trim().length >= 5 &&
+    contact.length >= 5 &&
     privacy &&
     personalData;
 
   const buildTelegramMessage = () => {
-    const parts = ["📋 Заявка с сайта\n", `Имя: ${name.trim()}`, `Контакт: ${contact.trim()}`];
-    if (showEmail && email.trim()) parts.push(`Email: ${email.trim()}`);
-    if (message.trim()) parts.push(`\nЧто нужно:\n${message.trim()}`);
+    const parts = ["📋 Заявка с сайта\n", `Имя: ${name.trim()}`];
+    if (phone.trim()) parts.push(`Телефон: ${phone.trim()}`);
+    if (telegram.trim()) parts.push(`Telegram: ${telegram.trim()}`);
+    if (email.trim()) parts.push(`Email: ${email.trim()}`);
+    if (message.trim()) parts.push(`\nСообщение:\n${message.trim()}`);
     if (files.length > 0) {
       parts.push(`\nФайлов прикреплено: ${files.length}`);
       files.forEach((f) => parts.push(`• ${f.name}`));
@@ -61,6 +64,13 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
 
   const removeFile = (i: number) => setFiles((p) => p.filter((_, idx) => idx !== i));
 
+  const handleSendRequest = () => {
+    if (!canSubmit) return;
+    const url = `${TELEGRAM_BOT_URL}?text=${encodeURIComponent(buildTelegramMessage())}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    onSuccess?.();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -70,256 +80,220 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
     >
       <div
         className={cn(
-          "rounded-2xl border-2 border-white/25 overflow-hidden",
-          "bg-black/60 backdrop-blur-xl",
-          "shadow-2xl shadow-black/50",
-          "p-4 sm:p-6 md:p-8"
+          "rounded-2xl overflow-hidden",
+          "bg-[#0f2744] shadow-xl",
+          "p-6 sm:p-8 md:p-10"
         )}
       >
-        <div className="space-y-5">
+        <div className="space-y-6">
           {/* Заголовок */}
           <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-semibold text-white">
-              {title ?? "Давайте познакомимся"}
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              {title ?? "Свяжитесь с нами"}
             </h2>
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-white/80">
               Расскажите о задаче — мы подготовим предложение
             </p>
           </div>
 
-          {/* Имя */}
-          <div>
-            <label htmlFor="cf-name" className={labelBase}>
-              Имя
-            </label>
-            <input
-              id="cf-name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Как к вам обращаться"
-              required
-              className={inputBase}
-            />
+          {/* Сетка: Имя*, Телефон | Телеграм, Email */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="cf-name" className={labelBase}>
+                Имя <span className="text-red-400">*</span>
+              </label>
+              <input
+                id="cf-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Как к вам обращаться"
+                required
+                className={inputBase}
+              />
+            </div>
+            <div>
+              <label htmlFor="cf-phone" className={labelBase}>
+                Телефон
+              </label>
+              <input
+                id="cf-phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+7 999 000 00 00"
+                className={inputBase}
+              />
+            </div>
+            <div>
+              <label htmlFor="cf-telegram" className={labelBase}>
+                Телеграм
+              </label>
+              <input
+                id="cf-telegram"
+                type="text"
+                value={telegram}
+                onChange={(e) => setTelegram(e.target.value)}
+                placeholder="@username"
+                className={inputBase}
+              />
+            </div>
+            <div>
+              <label htmlFor="cf-email" className={labelBase}>
+                Электронная почта
+              </label>
+              <input
+                id="cf-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email@example.com"
+                className={inputBase}
+              />
+            </div>
           </div>
 
-          {/* Telegram или Телефон */}
-          <div>
-            <label htmlFor="cf-contact" className={labelBase}>
-              Telegram или телефон
-            </label>
-            <input
-              id="cf-contact"
-              type="text"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              placeholder="@username или +7 999..."
-              required
-              className={inputBase}
-            />
-          </div>
-
-          {/* + Добавить email */}
-          <div>
-            {!showEmail ? (
-              <button
-                type="button"
-                onClick={() => setShowEmail(true)}
-                className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white/90 transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                Добавить email
-              </button>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                transition={{ duration: 0.25 }}
-              >
-                <label htmlFor="cf-email" className={labelBase}>
-                  Email
-                </label>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                  <input
-                    id="cf-email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="email@example.com"
-                    className={cn(inputBase, "w-full sm:flex-1")}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowEmail(false);
-                      setEmail("");
-                    }}
-                    className="p-2 rounded-lg text-white/60 hover:bg-white/10 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-400 shrink-0"
-                    aria-label="Убрать email"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </div>
-
-          {/* Что нужно сделать */}
+          {/* Сообщение */}
           <div>
             <label htmlFor="cf-message" className={labelBase}>
-              Что нужно сделать
+              Ваше сообщение
             </label>
             <textarea
               id="cf-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Например: сделать сайт, Telegram-бот для заявок..."
-              rows={3}
+              rows={4}
               className={cn(inputBase, "resize-none")}
             />
           </div>
 
-          {/* Файлы */}
-          <div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip"
-              onChange={handleFileChange}
-              className="hidden"
-              aria-label="Прикрепить файлы"
-            />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={files.length >= MAX_FILES}
-              className={cn(
-                "flex items-center gap-3 text-sm text-white/60",
-                "hover:text-white/80 transition-colors",
-                "disabled:opacity-50 disabled:cursor-not-allowed",
-                "focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded-lg"
-              )}
-            >
-              <Paperclip className="w-4 h-4 shrink-0" />
-              <span>Прикрепить файлы (до 5 шт.)</span>
-            </button>
-            {files.length > 0 && (
-              <ul className="mt-2 space-y-1.5">
-                {files.map((f, i) => (
-                  <li
-                    key={`${f.name}-${i}`}
-                    className="flex items-center gap-2 text-xs text-white/60"
-                  >
-                    <FileIcon className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate flex-1">{f.name}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeFile(i)}
-                      className="shrink-0 text-white/60 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded"
-                      aria-label={`Удалить ${f.name}`}
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          {/* Нижний ряд: Прикрепить файл | Отправить заявку | Чекбоксы */}
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pt-2">
+            <div className="flex flex-wrap items-center gap-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.zip"
+                onChange={handleFileChange}
+                className="hidden"
+                aria-label="Прикрепить файлы"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={files.length >= MAX_FILES}
+                className={cn(
+                  "inline-flex items-center gap-2 px-4 py-3 rounded-lg",
+                  "bg-white border border-gray-300 text-gray-800",
+                  "hover:bg-gray-50 hover:border-gray-400",
+                  "disabled:opacity-50 disabled:cursor-not-allowed",
+                  "transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+                )}
+              >
+                <Plus className="w-4 h-4 shrink-0" />
+                <FileUp className="w-4 h-4 shrink-0" />
+                <span>Прикрепить файл</span>
+              </button>
 
-          {/* Чекбоксы — заметные, 44×44 зона нажатия на мобильных */}
-          <div className="space-y-4 pt-1">
-            <label
-              htmlFor="cf-privacy"
-              className="flex items-start gap-3 sm:gap-4 cursor-pointer"
-            >
-              <div className="flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0">
+              <button
+                type="button"
+                onClick={handleSendRequest}
+                disabled={!canSubmit}
+                className={cn(
+                  "inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold",
+                  "bg-black text-white",
+                  "hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed",
+                  "transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+                )}
+              >
+                <span>Отправить заявку</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3 min-w-0 lg:max-w-xs">
+              <label
+                htmlFor="cf-privacy"
+                className="flex items-start gap-3 cursor-pointer"
+              >
                 <Checkbox
                   id="cf-privacy"
                   checked={privacy}
                   onCheckedChange={(v) => setPrivacy(!!v)}
                   className={cn(
-                    "w-7 h-7 sm:w-6 sm:h-6 rounded-md border-2 shrink-0",
-                    "border-white/30 hover:border-white/50",
-                    "data-[state=checked]:bg-cyan-400 data-[state=checked]:border-cyan-400",
-                    "data-[state=checked]:[&_svg]:text-white",
-                    "data-[state=checked]:shadow-[0_0_12px_rgba(34,211,238,0.4)]",
-                    "transition-all duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black/60"
+                    "mt-0.5 w-5 h-5 rounded border-2 border-white/40 shrink-0",
+                    "data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500",
+                    "focus-visible:ring-2 focus-visible:ring-white/50"
                   )}
                 />
-              </div>
-              <span className="text-sm leading-relaxed text-white/80 min-w-0 pt-2 sm:pt-0">
-                Даю согласие на обработку данных согласно{" "}
-                <a
-                  href="/privacy"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-cyan-400 hover:underline underline-offset-2"
-                >
-                  политике конфиденциальности
-                </a>
-              </span>
-            </label>
-            <label
-              htmlFor="cf-personal"
-              className="flex items-start gap-3 sm:gap-4 cursor-pointer"
-            >
-              <div className="flex shrink-0 items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0">
+                <span className="text-sm text-white/90 leading-snug">
+                  Я даю согласие на обработку персональных данных в целях, указанных в{" "}
+                  <a
+                    href="/privacy"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-cyan-300 hover:underline underline-offset-2"
+                  >
+                    Политике конфиденциальности
+                  </a>
+                  .
+                </span>
+              </label>
+              <label
+                htmlFor="cf-personal"
+                className="flex items-start gap-3 cursor-pointer"
+              >
                 <Checkbox
                   id="cf-personal"
                   checked={personalData}
                   onCheckedChange={(v) => setPersonalData(!!v)}
                   className={cn(
-                    "w-7 h-7 sm:w-6 sm:h-6 rounded-md border-2 shrink-0",
-                    "border-white/30 hover:border-white/50",
-                    "data-[state=checked]:bg-cyan-400 data-[state=checked]:border-cyan-400",
-                    "data-[state=checked]:[&_svg]:text-white",
-                    "data-[state=checked]:shadow-[0_0_12px_rgba(34,211,238,0.4)]",
-                    "transition-all duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black/60"
+                    "mt-0.5 w-5 h-5 rounded border-2 border-white/40 shrink-0",
+                    "data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500",
+                    "focus-visible:ring-2 focus-visible:ring-white/50"
                   )}
                 />
-              </div>
-              <span className="text-sm leading-relaxed text-white/80 min-w-0 pt-2 sm:pt-0">
-                Согласен с обработкой персональных данных
-              </span>
-            </label>
+                <span className="text-sm text-white/90 leading-snug">
+                  Согласен с обработкой персональных данных
+                </span>
+              </label>
+            </div>
           </div>
 
-          {/* Кнопки Telegram */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-6">
-            <a
-              href={canSubmit ? `${TELEGRAM_BOT_URL}?text=${encodeURIComponent(buildTelegramMessage())}` : TELEGRAM_BOT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => canSubmit && onSuccess?.()}
-              className={cn(
-                "flex-1 py-4 px-6 rounded-xl font-semibold text-base text-center",
-                "bg-gradient-to-r from-cyan-400 to-violet-500 text-white",
-                "hover:shadow-lg hover:shadow-cyan-500/50 hover:scale-105 active:scale-95",
-                "transition-all duration-200",
-                "focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black/60"
-              )}
-            >
-              Оставить заявку через бота 🤖
-            </a>
+          {files.length > 0 && (
+            <ul className="flex flex-wrap gap-2">
+              {files.map((f, i) => (
+                <li
+                  key={`${f.name}-${i}`}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs"
+                >
+                  <FileIcon className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate max-w-[120px]">{f.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeFile(i)}
+                    className="shrink-0 text-white/70 hover:text-white rounded p-0.5"
+                    aria-label={`Удалить ${f.name}`}
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
 
+          <p className="text-sm text-white/60">
+            Или{" "}
             <a
               href={TELEGRAM_DIRECT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "flex-1 py-4 px-6 rounded-xl font-semibold text-base text-center",
-                "bg-white/12 border-2 border-white/40 text-white",
-                "shadow-[0_2px_16px_rgba(0,0,0,0.4)]",
-                "hover:bg-white/20 hover:border-cyan-400/80 hover:shadow-lg",
-                "transition-all duration-200",
-                "focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black/60"
-              )}
+              className="text-cyan-300 hover:underline"
             >
-              Написать напрямую 💬
+              напишите нам напрямую в Telegram
             </a>
-          </div>
+          </p>
         </div>
       </div>
     </motion.div>

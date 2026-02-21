@@ -17,6 +17,8 @@ class StoreCaseStudyRequest extends FormRequest
         return [
             'slug' => ['required', 'string', 'max:190', 'unique:case_studies,slug'],
             'title' => ['required', 'string', 'max:255'],
+            'short_description' => ['nullable', 'string', 'max:512'],
+            'video_url' => ['nullable', 'string', 'max:512', 'url'],
             'client' => ['nullable', 'string', 'max:255'],
             'industry' => ['nullable', 'string', 'max:255'],
             'problem' => ['nullable', 'string'],

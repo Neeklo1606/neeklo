@@ -8,12 +8,20 @@ import { cn } from "@/lib/utils";
 import { useMobile } from "@/hooks/useMobile";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { smoothScrollToId } from "@/lib/smoothScroll";
 
 interface Solution {
   id: string;
   title: string;
   price: string;
   duration: string;
+  description?: string;
   href: string;
   icon: LucideIcon;
 }
@@ -57,7 +65,7 @@ const defaultSolutions: Solution[] = [
   },
 ];
 
-function buildSolutions(cms?: Array<{ slug: string; title: string; price: string; duration: string }>): Solution[] {
+function buildSolutions(cms?: Array<{ slug: string; title: string; price: string; duration: string; description?: string }>): Solution[] {
   if (!cms?.length) return defaultSolutions;
   return cms.map((s) => {
     const slug = s.slug.replace(/^products\//, "").toLowerCase();
@@ -68,6 +76,7 @@ function buildSolutions(cms?: Array<{ slug: string; title: string; price: string
       title: s.title,
       price: s.price,
       duration: s.duration,
+      description: s.description,
       href,
       icon: Icon,
     };
@@ -157,14 +166,18 @@ interface ReadySolutionsProps {
   title?: string;
   subtitle?: string;
   sectionId?: string;
-  solutions?: Array<{ slug: string; title: string; price: string; duration: string }>;
+  variant?: "cards" | "faq";
+  solutions?: Array<{ slug: string; title: string; price: string; duration: string; description?: string }>;
 }
 
-export function ReadySolutions({ title, subtitle, sectionId, solutions: solutionsData }: ReadySolutionsProps = {}) {
+const DEFAULT_FAQ_ANSWER = "Обсудим задачу и сроки — ответим в тот же день. Напишите в Telegram или оставьте заявку ниже.";
+
+export function ReadySolutions({ title, subtitle, sectionId, variant, solutions: solutionsData }: ReadySolutionsProps = {}) {
   const isMobile = useMobile();
   const shouldReduceMotion = usePrefersReducedMotion();
   const solutions = buildSolutions(solutionsData);
   const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
+  const isFaq = variant === "faq";
 
   return (
     <section ref={ref} id={sectionId ?? "products"} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
@@ -176,56 +189,102 @@ export function ReadySolutions({ title, subtitle, sectionId, solutions: solution
               {title ?? "Готовые решения"}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base max-w-md">
-              {subtitle ?? "Цена и сроки — сразу. Без скрытых платежей."}
+              {subtitle ?? (isFaq ? "Частые запросы: цена и сроки по каждому решению." : "Цена и сроки — сразу. Без скрытых платежей.")}
             </p>
           </div>
 
-          {/* Desktop: All services link */}
-          <Link
-            to="/services"
-            className={cn(
-              "hidden md:inline-flex items-center gap-1.5",
-              "text-sm font-medium text-cyan-400",
-              "hover:text-cyan-300 transition-colors duration-200"
-            )}
-          >
-            Все услуги
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          {!isFaq && (
+            <Link
+              to="/services"
+              className={cn(
+                "hidden md:inline-flex items-center gap-1.5",
+                "text-sm font-medium text-primary",
+                "hover:text-primary/90 transition-colors duration-200"
+              )}
+            >
+              Все услуги
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
         </div>
 
-        {/* Solutions Grid: 2x2 mobile, 4 cols desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-          {solutions.map((solution, index) => (
-            <SolutionCard
-              key={solution.id}
-              solution={solution}
-              index={index}
-              isVisible={isVisible}
-            />
-          ))}
-        </div>
+        {isFaq ? (
+          <div className={`io-animate io-fade-in max-w-3xl ${isVisible ? "io-visible" : ""}`}>
+            <Accordion type="single" collapsible className="space-y-2 sm:space-y-3">
+              {solutions.map((solution, index) => (
+                <AccordionItem
+                  key={solution.id}
+                  value={`solution-${solution.id}`}
+                  className="bg-card border border-border rounded-xl px-4 sm:px-5 data-[state=open]:border-primary/30 shadow-sm"
+                >
+                  <AccordionTrigger className="grid w-full grid-cols-[1fr_auto_auto] items-center gap-3 py-4 hover:no-underline [&>svg]:shrink-0">
+                    <span className="min-w-0 text-left font-semibold text-foreground text-sm sm:text-base">
+                      {solution.title}
+                    </span>
+                    <span className="text-right text-muted-foreground font-normal text-xs sm:text-sm tabular-nums">
+                      — {solution.price}, {solution.duration}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm pb-4">
+                    <p className="mb-4">
+                      {solution.description ?? DEFAULT_FAQ_ANSWER}
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      <Link
+                        to={solution.href}
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                      >
+                        Подробнее об услуге
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => smoothScrollToId("contact")}
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        Обсудить проект
+                      </button>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+              {solutions.map((solution, index) => (
+                <SolutionCard
+                  key={solution.id}
+                  solution={solution}
+                  index={index}
+                  isVisible={isVisible}
+                />
+              ))}
+            </div>
 
-        {/* Mobile: All products link */}
-        <div
-          className={`io-animate io-slide-left mt-10 md:hidden ${isVisible ? "io-visible" : ""}`}
-          style={{ transitionDelay: "400ms" }}
-        >
-          <Link
-            to="/services"
-            className={cn(
-              "flex items-center justify-center gap-2 w-full",
-              "py-3 px-5 rounded-lg min-h-[40px]",
-              "bg-zinc-800/80 border border-zinc-600/50",
-              "text-sm font-medium text-cyan-400",
-              "hover:bg-zinc-700/80 hover:border-cyan-400/30",
-              "transition-all duration-200"
-            )}
-          >
-            Все услуги
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+            <div
+              className={`io-animate io-slide-left mt-10 md:hidden ${isVisible ? "io-visible" : ""}`}
+              style={{ transitionDelay: "400ms" }}
+            >
+              <Link
+                to="/services"
+                className={cn(
+                  "flex items-center justify-center gap-2 w-full",
+                  "py-3 px-5 rounded-lg min-h-[40px]",
+                  "bg-muted border border-border",
+                  "text-sm font-medium text-primary",
+                  "hover:bg-muted/80 hover:border-primary/30",
+                  "transition-all duration-200"
+                )}
+              >
+                Все услуги
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </>
+        )}
       </Container>
     </section>
   );

@@ -28,15 +28,24 @@ textarea:focus-visible {
 @layer base {
   :root {
     /* ============================================
-       PREMIUM LIGHT SaaS — единая палитра
-       --bg: #F7F8FA, --white: #ffffff, --ink: #0F172A, --secondary: #6B7280, --accent: #2563EB
+       DESIGN TOKENS — единая палитра
+       primary, accent, muted, border, bg — использовать только эти токены.
+       WCAG AA: ink на bg ~12:1, primary на white ~4.5:1, muted-foreground на bg ~4.6:1.
+       Hover: primary-hover/primary-active; focus: ring (--ring); active: brightness/scale в компонентах.
        ============================================ */
     
     --bg: 220 14% 98%; /* #F7F8FA */
     --white: 0 0% 100%;
-    --ink: 222 47% 11%; /* #0F172A */
-    --secondary: 220 9% 46%; /* #6B7280 */
-    --accent: 221 83% 53%; /* #2563EB */
+    --ink: 222 47% 11%; /* #0F172A — foreground */
+    --secondary: 220 9% 46%; /* #6B7280 — muted-foreground */
+    --accent: 221 83% 53%; /* #2563EB — primary/accent */
+    
+    /* RGB для rgba() в тенях и градиентах */
+    --ink-rgb: 15, 23, 42;
+    --primary-rgb: 37, 99, 235;
+    --bg-rgb: 247, 248, 250;
+    --white-rgb: 255, 255, 255;
+    --border-rgb: 229, 231, 235;
     
     /* Background colors */
     --background: var(--bg);
@@ -136,18 +145,18 @@ textarea:focus-visible {
        SHADOWS & EFFECTS (Premium Light SaaS)
        ============================================ */
     
-    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
-    --shadow-lg: 0 12px 24px rgba(15, 23, 42, 0.08);
-    --shadow-xl: 0 20px 40px rgba(15, 23, 42, 0.08);
-    --shadow-card: 0 4px 24px rgba(15, 23, 42, 0.06);
+    --shadow-sm: 0 1px 2px rgba(var(--ink-rgb), 0.04);
+    --shadow-md: 0 4px 12px rgba(var(--ink-rgb), 0.06);
+    --shadow-lg: 0 12px 24px rgba(var(--ink-rgb), 0.08);
+    --shadow-xl: 0 20px 40px rgba(var(--ink-rgb), 0.08);
+    --shadow-card: 0 4px 24px rgba(var(--ink-rgb), 0.06);
     
-    --glow-primary: 0 8px 24px rgba(37, 99, 235, 0.35);
-    --glow-accent: 0 8px 24px rgba(37, 99, 235, 0.3);
+    --glow-primary: 0 8px 24px rgba(var(--primary-rgb), 0.35);
+    --glow-accent: 0 8px 24px rgba(var(--primary-rgb), 0.3);
     --glow-success: 0 4px 16px rgba(34, 197, 94, 0.25);
-    --glow-strong: 0 8px 32px rgba(37, 99, 235, 0.4);
+    --glow-strong: 0 8px 32px rgba(var(--primary-rgb), 0.4);
     
-    --hero-input-bg: linear-gradient(165deg, #ffffff 0%, #F9FBFF 100%);
+    --hero-input-bg: linear-gradient(165deg, hsl(var(--white)) 0%, hsl(var(--bg)) 100%);
     
     /* ============================================
        TRANSITIONS (Premium Easing)
@@ -184,7 +193,7 @@ textarea:focus-visible {
     --primary: 221 83% 53%;
     --accent: 221 83% 53%;
     --muted-foreground: var(--secondary);
-    --hero-input-bg: linear-gradient(165deg, #ffffff 0%, #F9FBFF 100%);
+    --hero-input-bg: linear-gradient(165deg, hsl(var(--white)) 0%, hsl(var(--bg)) 100%);
   }
 }
 
@@ -465,29 +474,22 @@ textarea:focus-visible {
 }
 
 /* Hero stagger: fade-up для левого блока и карточек */
-@keyframes heroFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Hero Minimal — grid 2 cols, gap-12, items-center, min-h-[100vh], вертикальное центрирование */
-.hero-minimal {
+/* Hero Minimal — flex flex-col gap-6, document flow only, no absolute/transform/negative margins */
+.hero-viewport {
   min-height: 100vh;
-  padding-top: 80px;
-  padding-bottom: 40px;
+  min-height: 100dvh;
+}
+.hero-minimal {
+  padding-top: 32px;
+  padding-bottom: 24px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   overflow-x: hidden;
   background:
-    radial-gradient(600px 400px at 15% 25%, rgba(37, 99, 235, 0.028) 0%, transparent 55%),
-    linear-gradient(180deg, #F8FAFC 0%, #FCFDFE 45%, #FFFFFF 100%);
+    radial-gradient(600px 400px at 15% 25%, rgba(var(--primary-rgb), 0.028) 0%, transparent 55%),
+    linear-gradient(180deg, hsl(var(--bg)) 0%, hsl(210 20% 99%) 45%, hsl(var(--white)) 100%);
 }
 /* Background grid — always behind text, never overlaps */
 .hero-minimal__grid {
@@ -498,60 +500,48 @@ textarea:focus-visible {
   mask-size: cover;
   -webkit-mask-size: cover;
 }
+/* B) Общий контейнер двух колонок: grid, items-stretch — одинаковая высота */
 .hero-minimal .hero-minimal__inner {
   position: relative;
   z-index: 1;
   min-height: 0;
 }
+@media (min-width: 1024px) {
+  .hero-minimal .hero-minimal__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+/* D) Левая колонка: height 100% от строки с видео, внутри flex flex-col justify-between */
 .hero-minimal .hero-minimal__left {
   min-width: 0;
   min-height: min-content;
-  gap: 0;
-  position: relative;
-  z-index: 1;
   align-items: flex-start;
   text-align: left;
+  display: flex;
+  flex-direction: column;
 }
-/* Левый блок: последовательный fade-up (stagger), чисто CSS */
-.hero-minimal .hero-minimal__left .hero-stagger-1 {
-  opacity: 0;
-  animation: heroFadeUp 0.5s ease forwards;
-  animation-delay: 0ms;
-}
-.hero-minimal .hero-minimal__left .hero-stagger-2 {
-  opacity: 0;
-  animation: heroFadeUp 0.5s ease forwards;
-  animation-delay: 80ms;
-}
-.hero-minimal .hero-minimal__left .hero-stagger-3 {
-  opacity: 0;
-  animation: heroFadeUp 0.5s ease forwards;
-  animation-delay: 160ms;
-}
-.hero-minimal .hero-minimal__left .hero-stagger-4 {
-  opacity: 0;
-  animation: heroFadeUp 0.5s ease forwards;
-  animation-delay: 240ms;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-minimal .hero-minimal__left .hero-stagger-1,
-  .hero-minimal .hero-minimal__left .hero-stagger-2,
-  .hero-minimal .hero-minimal__left .hero-stagger-3,
-  .hero-minimal .hero-minimal__left .hero-stagger-4 {
-    animation: none;
-    opacity: 1;
+@media (min-width: 1024px) {
+  .hero-minimal .hero-minimal__left {
+    min-height: 0;
+    height: 100%;
   }
 }
-/* Левая колонка: отступы через gap, текст поверх фона */
-.hero-minimal .hero-minimal__left .hero-badge {
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+
+/* Badge — document flow, no absolute/z-index */
+.hero-minimal .hero-minimal__left .badge.hero-badge {
+  padding: 6px 14px;
+  background: rgba(var(--white-rgb), 0.6);
+  border: 1px solid rgba(var(--white-rgb), 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   margin: 0;
-  position: relative;
-  z-index: 1;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.hero-minimal .hero-minimal__left .hero-badge-high {
+  margin-bottom: 0.25rem;
 }
 .hero-minimal .hero-minimal__left .hero-badge-dot {
   animation: hero-badge-blink 2s ease-in-out infinite;
@@ -560,61 +550,79 @@ textarea:focus-visible {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.3; transform: scale(0.55); }
 }
-.hero-minimal .hero-minimal__left .hero-eyebrow {
-  font-size: 14px;
-}
-.hero-minimal .hero-minimal__left .hero-title {
-  font-size: clamp(36px, 5vw, 56px);
-  line-height: 1.15;
-  margin: 1rem 0 0 0;
-  letter-spacing: -0.03em;
-  hyphens: none;
+
+/* E) h1: display block, leading-tight (1.05–1.1), margin 0, без absolute/translate */
+.hero-title {
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0;
+  display: block;
   overflow-wrap: break-word;
   word-break: normal;
-  display: block;
-  position: relative;
-  z-index: 1;
 }
-.hero-minimal .hero-minimal__left .hero-title .hero-title-line {
+.hero-line {
   display: block;
 }
-.hero-minimal .hero-minimal__left .hero-title-muted {
-  display: block;
-  margin-top: 0.35rem;
-  font-size: clamp(20px, 3vw, 40px);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+.hero-line + .hero-line {
+  margin-top: 0.2em;
 }
+@media (min-width: 1024px) {
+  .hero-line {
+    display: inline;
+  }
+  .hero-line + .hero-line {
+    margin-top: 0;
+  }
+  .hero-line:not(:last-child)::after {
+    content: " ";
+  }
+}
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+  .hero-line + .hero-line {
+    margin-top: 0.15em;
+  }
+}
+
+/* E) Subtitle: display block, max-w, нормальный leading; отступ от заголовка */
 .hero-minimal .hero-minimal__left .hero-subtitle {
-  margin: 0.9rem 0 0 0;
-  padding-bottom: 0.5em;
-  font-size: clamp(16px, 2.2vw, 18px);
-  line-height: 1.6;
-  max-width: 460px;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 100%;
   display: block;
-  position: relative;
-  z-index: 1;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
-.hero-minimal .hero-minimal__left .hero-ctas {
-  margin: 1.35rem 0 0 0;
-  padding-top: 0.25rem;
+.hero-minimal .hero-minimal__left .hero-subtitle-spaced {
+  margin-top: calc(1.5rem + 5px);
+}
+
+/* Кнопка: отступ сверху 25px */
+.hero-minimal .hero-minimal__left .hero-cta,
+.hero-minimal .hero-minimal__left .hero-bottom {
+  margin: 0;
+  margin-top: 25px;
+  padding: 0;
   flex-shrink: 0;
-  position: relative;
-  z-index: 2;
 }
-@media (max-height: 768px) {
-  .hero-minimal .hero-minimal__left .hero-title {
-    font-size: clamp(28px, 3.5vw, 48px);
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-title {
+    font-size: 40px;
   }
-  .hero-minimal .hero-minimal__left .hero-title-muted {
-    font-size: clamp(18px, 4vw, 28px);
-  }
-  .hero-minimal .hero-minimal__left .hero-subtitle {
-    font-size: 0.8125rem;
-    line-height: 1.4;
+  .hero-minimal .hero-minimal__inner {
+    gap: 40px;
   }
 }
-/* Адаптив: tablet — одна колонка */
+/* Адаптив: <1024px — flex-col, текст сверху, видео с отступом */
 @media (max-width: 1023px) {
   .hero-minimal {
     min-height: auto;
@@ -622,6 +630,8 @@ textarea:focus-visible {
     padding-bottom: 48px;
   }
   .hero-minimal .hero-minimal__inner {
+    display: flex;
+    flex-direction: column;
     gap: 40px;
   }
   .hero-minimal .hero-minimal__left {
@@ -631,29 +641,22 @@ textarea:focus-visible {
   .hero-minimal .hero-right.hero-video-wrap {
     order: 2;
     justify-content: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
   .hero-minimal .hero-minimal__left .hero-title {
-    font-size: clamp(26px, 8vw, 38px);
-    letter-spacing: -0.025em;
     max-width: 100%;
-    line-height: 1.25;
-  }
-  .hero-minimal .hero-minimal__left .hero-title-muted {
-    font-size: clamp(16px, 4.5vw, 24px);
   }
   .hero-minimal .hero-minimal__left .hero-subtitle {
     font-size: 15px;
     max-width: 100%;
-  }
-  .hero-minimal .hero-minimal__left .hero-ctas {
-    margin-top: 1.1rem;
   }
   .hero-minimal .hero-minimal__left .hero-cta-primary {
     width: 100%;
     justify-content: center;
   }
 }
-/* Адаптив: mobile */
+/* Mobile <768px — 34px title, line-height 1.2 */
 @media (max-width: 767px) {
   .hero-minimal {
     padding-top: 40px;
@@ -663,38 +666,58 @@ textarea:focus-visible {
     gap: 36px;
   }
   .hero-minimal .hero-minimal__left .hero-badge {
-    padding: 8px 16px;
-    font-size: 12px;
+    padding: 6px 12px;
+    font-size: 10px;
   }
-  .hero-minimal .hero-minimal__left .hero-ctas {
-    margin-top: 0.95rem;
-  }
-  .hero-minimal .hero-minimal__left .hero-title {
-    font-size: 28px;
-    line-height: 1.25;
-  }
-  .hero-minimal .hero-minimal__left .hero-title-muted {
-    font-size: clamp(15px, 4vw, 20px);
+  .hero-minimal .hero-minimal__left .hero-subtitle {
+    font-size: 14px;
+    line-height: 1.55;
   }
 }
-/* Tablet-only tweaks (768px–1023px) */
-@media (min-width: 641px) and (max-width: 1023px) {
-  .hero-minimal .hero-minimal__inner {
-    gap: 44px;
+/* Small mobile: компактные отступы, CTA на всю ширину */
+@media (max-width: 639px) {
+  .hero-minimal {
+    padding-top: 28px;
+    padding-bottom: 32px;
   }
-  .hero-minimal .hero-minimal__left .hero-ctas {
-    margin-top: 1.2rem;
+  .hero-minimal .hero-minimal__inner {
+    gap: 28px;
+  }
+  .hero-minimal .hero-minimal__left .hero-badge {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+  .hero-minimal .hero-minimal__left .hero-cta,
+  .hero-minimal .hero-minimal__left .hero-bottom {
+    width: 100%;
+  }
+  .hero-minimal .hero-minimal__left .hero-cta-primary {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 18px;
+    min-height: 42px;
+  }
+  .hero-minimal .hero-video-container {
+    border-radius: 0;
   }
 }
 .hero-minimal .hero-minimal__left .hero-cta-primary {
-  padding: 12px 24px;
-  font-size: 18px;
-  gap: 8px;
+  padding: 10px 20px;
+  font-size: 15px;
+  gap: 6px;
 }
 .hero-minimal .hero-minimal__left .hero-cta-primary:hover {
-  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.35);
+  box-shadow: var(--glow-primary);
+}
+.hero-minimal .hero-minimal__left .hero-cta-primary:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+.hero-minimal .hero-minimal__left .hero-cta-primary:active {
+  filter: brightness(0.95);
 }
 
+/* C) Правая колонка (видео): высота через aspect-ratio + max-height — источник для выравнивания */
 .hero-minimal .hero-right.hero-video-wrap {
   position: relative;
   min-height: 0;
@@ -707,6 +730,9 @@ textarea:focus-visible {
   .hero-minimal .hero-right.hero-video-wrap {
     max-height: min(65vh, 520px);
   }
+  .hero-minimal .hero-video-container {
+    max-height: min(65vh, 520px);
+  }
 }
 /* Light radial glow behind video container */
 .hero-minimal .hero-video-glow {
@@ -716,14 +742,14 @@ textarea:focus-visible {
   border-radius: 32px;
   background: radial-gradient(
     ellipse 80% 70% at 50% 50%,
-    rgba(59, 130, 246, 0.08) 0%,
-    rgba(99, 102, 241, 0.03) 50%,
+    rgba(var(--primary-rgb), 0.08) 0%,
+    rgba(var(--primary-rgb), 0.03) 50%,
     transparent 75%
   );
   filter: blur(14px);
   pointer-events: none;
 }
-/* Мягкий голубой radial glow позади правой колонки */
+/* Мягкий radial glow позади правой колонки (primary token) */
 .hero-minimal .hero-right::before {
   content: '';
   position: absolute;
@@ -731,9 +757,9 @@ textarea:focus-visible {
   z-index: -1;
   background: radial-gradient(
     ellipse 120% 100% at 50% 50%,
-    rgba(37, 99, 235, 0.12) 0%,
-    rgba(59, 130, 246, 0.06) 35%,
-    rgba(99, 102, 241, 0.03) 55%,
+    rgba(var(--primary-rgb), 0.12) 0%,
+    rgba(var(--primary-rgb), 0.06) 35%,
+    rgba(var(--primary-rgb), 0.03) 55%,
     transparent 75%
   );
   filter: blur(48px);
@@ -745,9 +771,9 @@ textarea:focus-visible {
     inset: -100px;
     background: radial-gradient(
       ellipse 130% 110% at 50% 50%,
-      rgba(37, 99, 235, 0.14) 0%,
-      rgba(59, 130, 246, 0.07) 32%,
-      rgba(99, 102, 241, 0.03) 52%,
+      rgba(var(--primary-rgb), 0.14) 0%,
+      rgba(var(--primary-rgb), 0.07) 32%,
+      rgba(var(--primary-rgb), 0.03) 52%,
       transparent 72%
     );
     filter: blur(56px);
@@ -759,8 +785,8 @@ textarea:focus-visible {
     inset: -48px;
     background: radial-gradient(
       ellipse 100% 85% at 50% 50%,
-      rgba(37, 99, 235, 0.1) 0%,
-      rgba(59, 130, 246, 0.05) 40%,
+      rgba(var(--primary-rgb), 0.1) 0%,
+      rgba(var(--primary-rgb), 0.05) 40%,
       transparent 70%
     );
     filter: blur(40px);
@@ -771,6 +797,7 @@ textarea:focus-visible {
 /* Marquee */
 .hero-marquee {
   flex-shrink: 0;
+  max-height: 33.333vh;
 }
 .hero-marquee:hover .hero-marquee-track {
   animation-play-state: paused;
@@ -944,7 +971,11 @@ textarea:focus-visible {
 
   .button-interactive:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+    box-shadow: var(--glow-accent);
+  }
+  .button-interactive:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
   }
 
   .button-interactive:active {

@@ -1,21 +1,37 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link, Navigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/common/Container";
 import { Button } from "@/components/common/Button";
+import { Breadcrumb } from "@/components/common/Breadcrumb";
+import { CaseCard } from "@/components/common/CaseCard";
 import { ArrowLeft, MessageCircle, CheckCircle, Target, Zap } from "lucide-react";
-import { getPublicCaseStudy } from "@/lib/api";
+import { getPublicCaseStudy, getPublicCaseStudyRelated } from "@/lib/api";
 import { setMetaTags } from "@/lib/seo";
 import { useEffect } from "react";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
 
+const PORTFOLIO_BASE = "/portfolio";
+
 export default function WorkBySlug() {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const basePath = location.pathname.startsWith("/portfolio") ? PORTFOLIO_BASE : "/work";
+
   const { data: response, isLoading, isError } = useQuery({
     queryKey: ["public", "case-study", slug],
     queryFn: () => getPublicCaseStudy(slug!),
     enabled: !!slug,
+  });
+
+  const { data: relatedList } = useQuery({
+    queryKey: ["public", "case-study-related", slug],
+    queryFn: async () => {
+      const r = await getPublicCaseStudyRelated(slug!, 4);
+      return r.success ? (r.data ?? []) : [];
+    },
+    enabled: !!slug && !!response?.success,
   });
 
   const data = response?.success ? response.data : null;
@@ -26,43 +42,55 @@ export default function WorkBySlug() {
         seo_title?: string;
         title?: string;
         seo_description?: string;
+        short_description?: string;
         result?: string;
-        short?: string;
         media_collections?: { cover?: Array<{ url: string }> };
+        cover_image?: { url: string };
       };
       setMetaTags(
         {
           title: s.seo_title || s.title,
-          seo_description: s.seo_description || s.result || s.short,
+          seo_description: s.seo_description || s.short_description || s.result,
           media_collections: s.media_collections,
+          cover_image: s.cover_image,
         },
         {}
       );
     }
   }, [data]);
 
-  if (!slug) return <Navigate to="/work" replace />;
+  if (!slug) return <Navigate to={PORTFOLIO_BASE} replace />;
   if (isLoading) return <PageSkeleton />;
-  if (isError || !data) return <Navigate to="/work" replace />;
+  if (isError || !data) return <Navigate to={PORTFOLIO_BASE} replace />;
 
   const c = data as {
     title: string;
+    short_description?: string;
     client?: string;
     industry?: string;
     problem?: string;
     solution?: string;
     result?: string;
     body?: string;
+    video_url?: string;
+    cover_image?: { url: string };
     media_collections?: {
       cover?: Array<{ url: string }>;
       gallery?: Array<{ url: string; type?: string }>;
     };
     taxonomies?: Array<{ title: string }>;
+    category?: string;
   };
 
-  const coverUrl = c.media_collections?.cover?.[0]?.url;
+  const coverUrl = c.cover_image?.url ?? c.media_collections?.cover?.[0]?.url;
   const gallery = c.media_collections?.gallery ?? [];
-  const category = c.taxonomies?.[0]?.title ?? c.industry ?? "";
+  const category = c.category ?? c.taxonomies?.[0]?.title ?? c.industry ?? "";
+
+  const breadcrumbItems = [
+    { label: "Портфолио", href: basePath },
+    ...(category ? [{ label: category, href: `${basePath}?category=${encodeURIComponent(category)}` }] : []),
+    { label: c.title },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,9 +102,10 @@ export default function WorkBySlug() {
             transition={{ duration: 0.4 }}
             className="mb-6 md:mb-8"
           >
+            <Breadcrumb items={breadcrumbItems} className="mb-4" />
             <Link
-              to="/work"
-              className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors"
+              to={basePath}
+              className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Все кейсы
@@ -102,22 +131,35 @@ export default function WorkBySlug() {
             )}
           </motion.header>
 
-          {coverUrl && (
+          {(coverUrl || c.video_url) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-10 rounded-2xl overflow-hidden bg-muted aspect-video max-w-4xl"
             >
-              <img
-                src={coverUrl}
-                alt=""
-                width={1280}
-                height={720}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover"
-              />
+              {c.video_url ? (
+                <video
+                  src={c.video_url}
+                  poster={coverUrl}
+                  controls
+                  className="w-full h-full object-cover"
+                  width={1280}
+                  height={720}
+                >
+                  Ваш браузер не поддерживает видео.
+                </video>
+              ) : coverUrl ? (
+                <img
+                  src={coverUrl}
+                  alt=""
+                  width={1280}
+                  height={720}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
             </motion.div>
           )}
 
@@ -228,6 +270,54 @@ export default function WorkBySlug() {
                       </div>
                     )
                   )}
+                </motion.section>
+              )}
+
+              {relatedList && (relatedList as unknown[]).length > 0 && (
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="mt-14 pt-10 border-t border-border"
+                >
+                  <h2 className="text-2xl font-heading font-bold text-foreground mb-6">
+                    Похожие проекты
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {(relatedList as Array<{
+                      id: number;
+                      slug: string;
+                      title: string;
+                      short_description?: string;
+                      category?: string;
+                      cover_image?: { url: string };
+                      media_collections?: { cover?: Array<{ url: string }> };
+                      taxonomies?: Array<{ title: string }>;
+                      industry?: string;
+                    }>).map((item) => {
+                      const img =
+                        item.cover_image?.url ??
+                        item.media_collections?.cover?.[0]?.url ??
+                        "";
+                      const cat =
+                        item.category ??
+                        item.taxonomies?.[0]?.title ??
+                        item.industry ??
+                        "";
+                      return (
+                        <CaseCard
+                          key={item.id}
+                          slug={item.slug}
+                          title={item.title}
+                          category={cat}
+                          image={img}
+                          description={
+                            item.short_description ?? "Кейс из портфолио Neeklo"
+                          }
+                        />
+                      );
+                    })}
+                  </div>
                 </motion.section>
               )}
             </div>

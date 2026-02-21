@@ -28,7 +28,6 @@
             "stat_time": "7 дней",
             "stat_return": "82%",
             "cta_primary": "Обсудить проект",
-            "cta_secondary": "Смотреть кейсы",
             "scroll_target": "contact"
           }
         },
@@ -43,39 +42,26 @@
           }
         },
         {
-          "type": "skrutic_selector",
+          "type": "ready_solutions",
           "is_enabled": true,
           "position": 2,
           "data": {
-            "section_id": "selector",
-            "steps": {
-              "1": { "title": "Что хотите сделать?", "options": ["Сайт", "Бот", "Видео", "Не знаю"] },
-              "2": { "title": "Для какой задачи?", "options": ["Заявки", "Продажи", "Имидж", "Автоматизация"] },
-              "3": { "title": "Насколько срочно?", "options": ["Срочно", "Можно подождать"] }
-            },
-            "telegram_link": "https://t.me/neeklo_manager"
-          }
-        },
-        {
-          "type": "ready_solutions",
-          "is_enabled": true,
-          "position": 3,
-          "data": {
-            "title": "Готовые решения",
-            "subtitle": "Цена и сроки — сразу. Без скрытых платежей.",
-            "section_id": "products",
+            "title": "Частые вопросы",
+            "subtitle": "Цена и сроки по каждому решению. Ответим в тот же день.",
+            "section_id": "faq",
+            "variant": "faq",
             "solutions": [
-              { "slug": "website", "title": "Сайт для бизнеса", "price": "от 120 000 ₽", "duration": "7–10 дней" },
-              { "slug": "telegram-bot", "title": "Telegram-бот", "price": "от 90 000 ₽", "duration": "5–7 дней" },
-              { "slug": "ai-video", "title": "Видео для продаж", "price": "от 60 000 ₽", "duration": "3–5 дней" },
-              { "slug": "mini-app", "title": "Mini App", "price": "от 150 000 ₽", "duration": "10–14 дней" }
+              { "slug": "website", "title": "Сайт для бизнеса", "price": "от 120 000 ₽", "duration": "7–10 дней", "description": "Лендинг или многостраничный сайт под ключ: дизайн, вёрстка, интеграции. Подключим аналитику и форму заявок. Срок зависит от объёма страниц и сложности." },
+              { "slug": "telegram-bot", "title": "Telegram-бот", "price": "от 90 000 ₽", "duration": "5–7 дней", "description": "Бот для приёма заявок, автоворонок, уведомлений или мини-сервиса. Интеграция с CRM и платёжными системами по запросу." },
+              { "slug": "ai-video", "title": "Видео для продаж", "price": "от 60 000 ₽", "duration": "3–5 дней", "description": "Рекламные и презентационные ролики с использованием AI. Под ключ: сценарий, озвучка, графика под ваш бренд." },
+              { "slug": "mini-app", "title": "Mini App", "price": "от 150 000 ₽", "duration": "10–14 дней", "description": "Мини-приложение внутри Telegram или ВКонтакте: каталог, заказы, личный кабинет. Подключим оплату и доставку при необходимости." }
             ]
           }
         },
         {
           "type": "news_section",
           "is_enabled": true,
-          "position": 4,
+          "position": 3,
           "data": {
             "title": "Полезно для бизнеса",
             "subtitle": "Разборы, кейсы и практические советы",
@@ -86,7 +72,7 @@
         {
           "type": "contact_form",
           "is_enabled": true,
-          "position": 5,
+          "position": 4,
           "data": {
             "section_id": "contact",
             "title": "Свяжитесь с нами"

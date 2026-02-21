@@ -21,7 +21,7 @@ export function HeroMinimal({
   subtitle = "Разработка готовых AI-решений для твоего бизнеса.",
   eyebrow = "Digital Studio · 2026",
   ctaPrimary = "Начать проект",
-  ctaSecondary,
+  ctaSecondary: _ctaSecondary,
   scrollTargetId = "contact",
   videoSrc,
   posterSrc,
@@ -72,126 +72,113 @@ export function HeroMinimal({
     smoothScrollToId(id);
   };
 
-  const lines = title.split("\n").filter(Boolean);
-  const lastIsMuted = lines[lines.length - 1]?.startsWith("(") ?? false;
-  const mainLines = lastIsMuted ? lines.slice(0, -1) : lines;
-  const mutedLine = lastIsMuted ? lines[lines.length - 1] : null;
+  const titleLines = title.split("\n").filter(Boolean).slice(0, 2);
 
   return (
     <>
-      <section
-        ref={heroRef}
-        id="hero"
-        className={`hero-minimal io-animate io-fade-up relative overflow-x-hidden text-[#0F172A] min-h-[100vh] flex flex-col isolate ${heroVisible ? "io-visible" : ""}`}
-      >
-        {/* Background grid — behind content, no overlap */}
-        <div
-          className="hero-minimal__grid absolute inset-0 pointer-events-none z-0"
-          style={{
-            backgroundImage: `linear-gradient(to right, #0F172A 1px, transparent 1px),
-                             linear-gradient(to bottom, #0F172A 1px, transparent 1px)`,
-            backgroundSize: "32px 32px",
-          }}
-          aria-hidden
-        />
-        <div className="hero-minimal__inner relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center max-w-[1200px] mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-0">
-          <div className="hero-minimal__left max-w-[640px] w-full flex flex-col justify-center items-start text-left">
-            <div className="hero-stagger-1 hero-eyebrow hero-badge inline-flex items-center gap-1.5 rounded-full border text-[14px] font-medium uppercase tracking-wider text-[#0F172A]">
-              <span className="hero-badge-dot h-1.5 w-1.5 rounded-full bg-[#3B82F6]" />
-              {eyebrow}
+      <div className="hero-viewport min-h-screen flex flex-col">
+        <section
+          ref={heroRef}
+          id="hero"
+          className={`hero-minimal io-animate io-fade-up relative overflow-x-hidden text-foreground flex-1 flex flex-col justify-center isolate min-h-0 ${heroVisible ? "io-visible" : ""}`}
+        >
+          {/* Background grid — behind content, no overlap */}
+          <div
+            className="hero-minimal__grid absolute inset-0 pointer-events-none z-0"
+            style={{
+              backgroundImage: `linear-gradient(to right, hsl(var(--ink)) 1px, transparent 1px),
+                               linear-gradient(to bottom, hsl(var(--ink)) 1px, transparent 1px)`,
+              backgroundSize: "32px 32px",
+            }}
+            aria-hidden
+          />
+          <div className="hero-minimal__inner relative z-10 flex flex-col lg:grid lg:grid-cols-[1fr_1fr] lg:items-center gap-6 lg:gap-10 max-w-[1200px] mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-0 flex-1 lg:flex-initial justify-center">
+            <div className="hero-minimal__left hero-left w-full max-w-[520px] flex flex-col items-center lg:items-start text-center lg:text-left order-1 min-w-0 gap-5 sm:gap-6 lg:gap-6 lg:justify-center">
+              <div className="hero-top flex flex-col gap-6 shrink-0 w-full min-w-0">
+                <span className="badge hero-badge inline-flex items-center gap-1.5 rounded-full border text-xs font-medium uppercase tracking-wider text-foreground w-fit shrink-0 hero-badge-high">
+                <span className="hero-badge-dot h-1.5 w-1.5 rounded-full bg-primary shrink-0" aria-hidden />
+                {eyebrow}
+              </span>
+              <h1 className="hero-title w-full min-w-0">
+                {titleLines.map((line, i) => (
+                  <span key={i} className="hero-line">
+                    {line}
+                  </span>
+                ))}
+              </h1>
+              <p className="hero-subtitle text-muted-foreground block w-full min-w-0 hero-subtitle-spaced">
+                {subtitle}
+              </p>
             </div>
-            <h1 className="hero-stagger-2 hero-title font-heading font-bold text-[#0F172A] tracking-tight mt-0 mb-0">
-              {mainLines.map((line, i) => (
-                <span key={i} className="hero-title-line">
-                  {line}
-                </span>
-              ))}
-              {mutedLine && (
-                <span className="hero-title-muted font-medium text-[#94A3B8]">{mutedLine}</span>
-              )}
-            </h1>
-            <p className="hero-stagger-3 hero-subtitle text-[#4A4A4A] text-[18px] leading-[1.6] max-w-[460px]">
-              {subtitle}
-            </p>
-            <div className="hero-stagger-4 hero-ctas flex flex-wrap gap-3 sm:flex-shrink-0" role="group" aria-label="Действия">
+            <div className="hero-bottom flex flex-wrap gap-3 flex-shrink-0 w-full sm:w-auto" role="group" aria-label="Действия">
               <button
                 type="button"
                 onClick={() => setIsProjectTypeOpen(true)}
-                className="hero-cta-primary inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold text-[18px] text-white transition-all duration-200 hover:-translate-y-0.5 min-h-[48px]"
-                style={{
-                  background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
-                  boxShadow: "0 6px 20px rgba(59, 130, 246, 0.26)",
-                }}
+                className="hero-cta-primary inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-semibold text-base bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active transition-colors duration-200 min-h-[44px] w-full sm:w-auto shadow-[var(--glow-accent)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 {ctaPrimary}
                 <span aria-hidden>→</span>
               </button>
-              {ctaSecondary ? (
-                <button
-                  type="button"
-                  onClick={() => scrollToSection(scrollTargetId)}
-                  className="hero-cta-secondary inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold text-[16px] text-[#0F172A] border border-[#D6DEEA] bg-white/85 backdrop-blur-sm transition-all duration-200 hover:bg-white min-h-[48px]"
-                >
-                  {ctaSecondary}
-                </button>
-              ) : null}
             </div>
           </div>
-          <div className="hero-right hero-video-wrap flex justify-end relative">
+          <div className="hero-right hero-video-wrap relative flex justify-center lg:justify-end order-2 px-0 sm:px-2 lg:px-0 -mx-4 sm:mx-0 w-full sm:max-w-full lg:min-h-0">
             <div className="hero-video-glow" aria-hidden />
-            <div className="hero-video-container aspect-video w-full max-w-full min-h-[180px] sm:min-h-[220px] overflow-hidden rounded-3xl bg-neutral-100 shadow-[0_8px_30px_rgba(15,23,42,0.08)]">
-              {resolvedVideoSrc ? (
-                <video
-                  className="h-full w-full object-cover"
-                  src={resolvedVideoSrc}
-                  poster={posterSrc}
-                  width={1280}
-                  height={720}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  onError={() => {
-                    setVideoIndex((prev) => {
-                      const next = prev + 1;
-                      return next < videoCandidates.length ? next : prev;
-                    });
-                  }}
-                />
-              ) : posterSrc ? (
-                <img
-                  src={posterSrc}
-                  alt="Превью проекта"
-                  width={1280}
-                  height={720}
-                  className="h-full w-full object-cover"
-                  loading="eager"
-                  decoding="sync"
-                  fetchPriority="high"
-                />
-              ) : (
-                <div className="flex h-full w-full min-h-[180px] items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-50 text-neutral-400">
-                  <span className="text-sm">Видео</span>
-                </div>
-              )}
+            <div className="h-full w-full min-w-0">
+              <div className="hero-video-container aspect-video w-full max-w-full min-h-[180px] sm:min-h-[220px] overflow-hidden rounded-none sm:rounded-2xl lg:rounded-3xl bg-muted shadow-[var(--shadow-lg)]">
+                {resolvedVideoSrc ? (
+                  <video
+                    className="h-full w-full object-cover"
+                    src={resolvedVideoSrc}
+                    poster={posterSrc}
+                    width={1280}
+                    height={720}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    onError={() => {
+                      setVideoIndex((prev) => {
+                        const next = prev + 1;
+                        return next < videoCandidates.length ? next : prev;
+                      });
+                    }}
+                  />
+                ) : posterSrc ? (
+                  <img
+                    src={posterSrc}
+                    alt="Превью проекта"
+                    width={1280}
+                    height={720}
+                    className="h-full w-full object-cover"
+                    loading="eager"
+                    decoding="sync"
+                    fetchPriority="high"
+                  />
+                ) : (
+                  <div className="flex h-full w-full min-h-[180px] items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-50 text-neutral-400">
+                    <span className="text-sm">Видео</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="hero-marquee border-t border-[#E8EDF3] border-b bg-white overflow-hidden">
+      <div className="hero-marquee flex-shrink-0 border-t border-border border-b bg-card overflow-hidden h-[33.333vh] min-h-[56px] flex items-center">
         <div className="hero-marquee-track flex w-max animate-hero-marquee">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((name, i) => (
             <div
               key={i}
-              className="hero-marquee-item flex items-center gap-2 px-8 py-3.5 text-[11.5px] font-semibold uppercase tracking-widest text-[#94A3B8] whitespace-nowrap border-r border-[#E8EDF3] last:border-r-0"
+              className="hero-marquee-item flex items-center gap-2 px-8 py-3.5 text-[11.5px] font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap border-r border-border last:border-r-0"
             >
               <span className="opacity-40" aria-hidden>◆</span>
               {name}
             </div>
           ))}
         </div>
+      </div>
       </div>
 
       <ProjectTypeModal

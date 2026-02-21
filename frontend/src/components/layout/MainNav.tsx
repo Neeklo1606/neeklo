@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, X, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -15,14 +15,14 @@ import logoDark from "@/assets/logo-dark.webp";
 const DEFAULT_NAV_ITEMS = [
   { label: "Услуги", href: "/services", sectionId: "services", hashId: "services" },
   { label: "Кейсы", href: "/work", sectionId: "cases", hashId: "cases" },
-  { label: "Процесс", href: "/", sectionId: "process", hashId: "process" },
+  { label: "Блог", href: "/blog", sectionId: "blog", hashId: undefined },
   { label: "Контакты", href: "/contact", sectionId: "contact", hashId: "contact" },
 ];
 
 type NavItem = { label: string; href: string; sectionId?: string; hashId?: string };
 
 function menuItemsToNav(items: Array<{ label: string; url?: string; children?: unknown[] }>): NavItem[] {
-  const urlToHash: Record<string, string> = { "/services": "services", "/work": "cases", "/": "process", "/contact": "contact" };
+  const urlToHash: Record<string, string> = { "/services": "services", "/work": "cases", "/contact": "contact" };
   return items
     .filter((i) => !i.children?.length)
     .map((i) => {
@@ -42,24 +42,11 @@ export const MainNav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const shouldReduceMotion = usePrefersReducedMotion();
   const activeSection = useActiveSection();
   const { data: bootstrap } = usePublicBootstrap();
   const { cart, toggleCart } = useCart();
   const isHome = location.pathname === "/";
-
-  const handleAnchorNavigation = (hashId: string, closeMobile = false) => {
-    if (closeMobile) setIsMobileMenuOpen(false);
-    if (!hashId) return;
-
-    if (location.pathname !== "/") {
-      navigate(`/#${hashId}`);
-      return;
-    }
-
-    smoothScrollToId(hashId);
-  };
 
   const navItems = useMemo(() => {
     const header = bootstrap?.menus?.header;
@@ -70,13 +57,26 @@ export const MainNav = () => {
     return DEFAULT_NAV_ITEMS;
   }, [bootstrap]);
 
+  // Active: на главной — по видимой секции (scroll-spy), на остальных — по маршруту
+  const isActive = (href: string, sectionId?: string) => {
+    if (location.pathname === '/' && sectionId && activeSection) return sectionId === activeSection;
+    if (href === '/services') return location.pathname === '/services' || location.pathname.startsWith('/services/');
+    if (href === '/work') return location.pathname === '/work' || location.pathname.startsWith('/work/') || location.pathname === '/portfolio' || location.pathname.startsWith('/portfolio/');
+    if (href === '/contact') return location.pathname === '/contact' || location.pathname === '/contacts';
+    if (href === '/blog') return location.pathname === '/blog' || location.pathname.startsWith('/blog/');
+    if (href === '/about') return location.pathname === '/about';
+    return location.pathname === href;
+  };
+
+  // Все пункты ведут на страницы; href всегда маршрут страницы
   const burgerMenuItems = useMemo(
     () => navItems.map((item) => ({
       label: item.label,
-      href: isHome && item.hashId ? `#${item.hashId}` : item.href,
-      isAnchor: Boolean(isHome && item.hashId),
+      href: item.href,
+      active: isActive(item.href, item.sectionId),
+      hashId: item.hashId,
     })),
-    [navItems, isHome]
+    [navItems, activeSection, location.pathname]
   );
 
   // Watch for dark mode changes (dark mode is default, light mode has 'light-mode' class)
@@ -137,25 +137,6 @@ export const MainNav = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Check if nav item is active (by route or by scroll section)
-  const isActive = (href: string, sectionId?: string) => {
-    // On homepage, use section-based highlighting
-    if (location.pathname === '/' && sectionId && activeSection) {
-      return sectionId === activeSection;
-    }
-    // Route-based highlighting
-    if (href === '/services') {
-      return location.pathname === '/services';
-    }
-    if (href === '/work') {
-      return location.pathname === '/work' || location.pathname.startsWith('/work/');
-    }
-    if (href === '/about' || href === '/contact') {
-      return location.pathname === href;
-    }
-    return location.pathname === href;
-  };
-
   // Get appropriate logo based on theme (light logo on dark theme, dark logo on light theme)
   const currentLogo = isDarkMode ? logoLight : logoDark;
 
@@ -188,14 +169,14 @@ export const MainNav = () => {
             "px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-2",
             "min-h-10 md:min-h-11",
             isHome
-              ? "bg-white/95 backdrop-blur-[16px] border border-black/[0.08] shadow-sm text-[#0F172A]"
+              ? "bg-card/95 backdrop-blur-[16px] border border-border shadow-sm text-foreground"
               : "bg-black/40 backdrop-blur-[16px] border border-white/10 shadow-2xl shadow-black/50"
           )}
         >
             {/* Logo */}
             <Link 
               to="/" 
-              className="relative z-50 flex items-center flex-shrink-0 transition-all duration-500"
+              className="relative z-50 flex items-center flex-shrink-0 transition-all duration-500 cursor-pointer"
             >
               <motion.div
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
@@ -214,50 +195,30 @@ export const MainNav = () => {
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation - Center: на главной — якоря #services, #cases, #process, #contact */}
+            {/* Desktop Navigation - Center: якоря на главной + ссылки на страницы */}
             <nav className="hidden md:flex items-center justify-center flex-1 transition-all duration-500">
               <ul className="flex items-center gap-1">
                 {navItems.map((item) => {
-                  const isAnchor = isHome && item.hashId;
-                  const href = isAnchor ? `#${item.hashId}` : item.href;
                   const active = isActive(item.href, item.sectionId);
                   const className = cn(
-                    "relative text-sm font-medium rounded-full transition-all duration-300 ease-out overflow-hidden",
+                    "relative text-sm font-medium rounded-full transition-all duration-300 ease-out overflow-hidden cursor-pointer",
                     "px-4 py-2",
-                    isHome
-                      ? active ? "text-white" : "text-[#6b6b6b] hover:text-[#0a0a0a] hover:bg-black/5"
-                      : active ? "text-background" : "text-foreground/60 hover:text-foreground hover:bg-foreground/5"
+                    active ? "text-white" : isHome
+                      ? "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                      : "text-foreground/60 hover:text-foreground hover:bg-foreground/5"
                   );
+                  const pillClass = "absolute inset-0 rounded-full bg-black";
                   return (
-                    <li key={item.href + (item.hashId ?? "")} className="relative">
-                      {isAnchor ? (
-                        <a
-                          href={href}
-                          className={className}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleAnchorNavigation(item.hashId || "");
-                          }}
-                        >
-                          <motion.span
-                            className={cn("absolute inset-0 rounded-full", isHome ? "bg-[#0a0a0a]" : "bg-foreground")}
-                            initial={false}
-                            animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          />
-                          <span className="relative z-10">{item.label}</span>
-                        </a>
-                      ) : (
-                        <Link to={item.href} className={className}>
-                          <motion.span
-                            className={cn("absolute inset-0 rounded-full", isHome ? "bg-[#0a0a0a]" : "bg-foreground")}
-                            initial={false}
-                            animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          />
-                          <span className="relative z-10">{item.label}</span>
-                        </Link>
-                      )}
+                    <li key={item.href + (item.sectionId ?? "")} className="relative">
+                      <Link to={item.href} className={className} aria-current={active ? "page" : undefined}>
+                        <motion.span
+                          className={pillClass}
+                          initial={false}
+                          animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                        <span className="relative z-10 pointer-events-none">{item.label}</span>
+                      </Link>
                     </li>
                   );
                 })}
@@ -273,10 +234,10 @@ export const MainNav = () => {
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                 className={cn(
-                  "relative flex items-center gap-1.5 rounded-full border transition-all duration-200",
+                  "relative z-10 flex items-center gap-1.5 rounded-full border transition-all duration-200 cursor-pointer",
                   "text-sm font-medium px-4 py-2",
                   isHome
-                    ? "bg-[#f5f5f3] border-[#e8e8e5] text-[#0a0a0a] hover:bg-[#e8e8e5]"
+                    ? "bg-muted border-border text-foreground hover:bg-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     : "bg-foreground/10 border-foreground/20 text-foreground hover:bg-foreground/15"
                 )}
                 aria-label="Корзина"
@@ -287,7 +248,7 @@ export const MainNav = () => {
                   <span
                     className={cn(
                       "absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-semibold",
-                      isHome ? "bg-[#0a0a0a] text-white" : "bg-primary text-primary-foreground"
+                      isHome ? "bg-foreground text-primary-foreground" : "bg-primary text-primary-foreground"
                     )}
                   >
                     {cart.length}
@@ -296,6 +257,7 @@ export const MainNav = () => {
               </motion.button>
               {/* CTA - Desktop */}
               <motion.button
+                type="button"
                 onClick={() =>
                   isHome
                     ? smoothScrollToId("contact")
@@ -304,9 +266,9 @@ export const MainNav = () => {
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-[14px] font-bold transition-all duration-200 text-sm px-5 py-2.5",
+                  "relative z-10 flex items-center gap-1.5 rounded-[14px] font-bold transition-all duration-200 text-sm px-5 py-2.5 cursor-pointer",
                   isHome
-                    ? "bg-[#2563EB] text-white hover:bg-[#1D4ED8] shadow-[0_8px_24px_rgba(37,99,235,0.35)]"
+                    ? "bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--glow-primary)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     : "bg-gradient-to-r from-cyan-400 to-cyan-500 text-white hover:shadow-lg hover:shadow-cyan-500/30"
                 )}
                 aria-label={isHome ? "Начать проект" : "Узнать стоимость проекта"}
@@ -397,36 +359,18 @@ export const MainNav = () => {
                         }
                       }}
                     >
-                      {item.isAnchor ? (
-                        <a
-                          href={item.href}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleAnchorNavigation(item.href.replace("#", ""), true);
-                          }}
-                          className={cn(
-                            "block px-5 py-4 rounded-xl min-h-[48px] flex items-center",
-                            "text-base md:text-lg font-medium transition-all duration-200",
-                            "text-foreground hover:bg-foreground/5 active:scale-[0.98]"
-                          )}
-                        >
-                          {item.label}
-                        </a>
-                      ) : (
-                        <Link
-                          to={item.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className={cn(
-                            "block px-5 py-4 rounded-xl min-h-[48px] flex items-center",
-                            "text-base md:text-lg font-medium transition-all duration-200",
-                            location.pathname === item.href
-                              ? "bg-foreground text-background"
-                              : "text-foreground hover:bg-foreground/5 active:scale-[0.98]"
-                          )}
-                        >
-                          {item.label}
-                        </Link>
-                      )}
+                      <Link
+                        to={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          "block px-5 py-4 rounded-xl min-h-[48px] flex items-center cursor-pointer",
+                          "text-base md:text-lg font-medium transition-all duration-200",
+                          item.active ? "bg-black text-white" : "text-foreground hover:bg-foreground/5 active:scale-[0.98]"
+                        )}
+                        aria-current={item.active ? "page" : undefined}
+                      >
+                        {item.label}
+                      </Link>
                     </motion.li>
                   ))}
                 </motion.ul>

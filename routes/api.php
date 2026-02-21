@@ -40,6 +40,7 @@ Route::prefix('v1')->group(function () {
     Route::get('services', [ServiceController::class, 'index']);
     Route::get('services/{slug}', [ServiceController::class, 'show'])->where('slug', '[a-z0-9\-]+');
     Route::get('case-studies', [CaseStudyController::class, 'index']);
+    Route::get('case-studies/{slug}/related', [CaseStudyController::class, 'related'])->where('slug', '[a-z0-9\-]+');
     Route::get('case-studies/{slug}', [CaseStudyController::class, 'show'])->where('slug', '[a-z0-9\-]+');
 });
 Route::prefix('v1/public')->group(function () {
@@ -48,6 +49,7 @@ Route::prefix('v1/public')->group(function () {
     Route::get('services', [ServiceController::class, 'index']);
     Route::get('services/{slug}', [ServiceController::class, 'show'])->where('slug', '[a-z0-9\-]+');
     Route::get('case-studies', [CaseStudyController::class, 'index']);
+    Route::get('case-studies/{slug}/related', [CaseStudyController::class, 'related'])->where('slug', '[a-z0-9\-]+');
     Route::get('case-studies/{slug}', [CaseStudyController::class, 'show'])->where('slug', '[a-z0-9\-]+');
     Route::get('posts', [PostController::class, 'index']);
     Route::get('posts/{slug}', [PostController::class, 'show'])->where('slug', '[a-z0-9\-]+');

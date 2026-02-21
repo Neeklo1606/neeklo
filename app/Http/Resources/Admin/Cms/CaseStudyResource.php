@@ -16,6 +16,8 @@ class CaseStudyResource extends JsonResource
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
+            'short_description' => $this->short_description,
+            'video_url' => $this->video_url,
             'client' => $this->client,
             'industry' => $this->industry,
             'problem' => $this->problem,

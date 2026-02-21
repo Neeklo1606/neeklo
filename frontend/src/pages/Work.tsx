@@ -133,11 +133,20 @@ const Work = () => {
               >
                 {displayedCases.map((project, index) => {
                   const coverUrl =
+                    (project as { cover_image?: { url?: string } }).cover_image?.url ||
                     resolveStorageUrl((project as { cover?: string }).cover) ||
                     (project as { coverPoster?: string }).coverPoster ||
                     project.media_collections?.cover?.[0]?.url;
                   const category =
-                    project.taxonomies?.[0]?.title ?? project.industry ?? "";
+                    (project as { category?: string }).category ??
+                    project.taxonomies?.[0]?.title ??
+                    project.industry ??
+                    "";
+                  const description =
+                    (project as { short_description?: string }).short_description ||
+                    (project as { shortDescription?: string }).shortDescription ||
+                    (project as { result?: string }).result ||
+                    "Кейс из портфолио Neeklo";
                   return (
                     <CaseCard
                       key={project.id}
@@ -145,11 +154,7 @@ const Work = () => {
                       title={project.title}
                       category={category}
                       image={coverUrl || ""}
-                      description={
-                        (project as { shortDescription?: string }).shortDescription ||
-                        (project as { result?: string }).result ||
-                        "Кейс из портфолио Neeklo"
-                      }
+                      description={description}
                       priority={index < 3}
                     />
                   );

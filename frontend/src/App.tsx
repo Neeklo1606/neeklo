@@ -60,20 +60,20 @@ function AppContent() {
 
   return (
     <CartProvider>
-      <MainNav />
       <ErrorBoundary>
+        <MainNav />
         <AppRoutes />
+        <BottomNav onMenuOpen={() => setIsMobileMenuOpen(true)} />
+        <MobileMenu
+          isOpen={isMobileMenuOpen}
+          onClose={() => setIsMobileMenuOpen(false)}
+          navItems={navItems}
+          isActive={isActive}
+        />
+        <CartSidebar />
+        <SuccessScreen />
+        <CookieConsent />
       </ErrorBoundary>
-      <BottomNav onMenuOpen={() => setIsMobileMenuOpen(true)} />
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-        navItems={navItems}
-        isActive={isActive}
-      />
-      <CartSidebar />
-      <SuccessScreen />
-      <CookieConsent />
     </CartProvider>
   );
 }
