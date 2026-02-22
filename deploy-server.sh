@@ -51,4 +51,7 @@ php artisan view:cache
 echo "==> Storage link (if not exists)"
 php artisan storage:link 2>/dev/null || true
 
+echo "==> Final cache clear (чтобы отображались свежие данные)"
+php artisan cache:clear
+
 echo "==> Done."
