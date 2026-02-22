@@ -42,7 +42,7 @@ const Services = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-20 md:pt-28 pb-24 md:pb-28">
+      <main className="pt-20 md:pt-28 pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] md:pb-28">
         <Container>
           <motion.header
             initial={{ opacity: 0, y: 16 }}

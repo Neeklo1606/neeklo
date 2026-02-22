@@ -64,18 +64,34 @@ const About = () => {
     "/frontend/videos/neeklo_hello.mp4",
   ];
 
-  // Запуск видео на десктопе (autoplay не всегда срабатывает)
+  // Запуск видео на десктопе и возобновление при возврате на вкладку
   useEffect(() => {
-    if (isMobile) return;
     const v = videoRef.current;
     if (!v) return;
-    const onCanPlay = () => { v.play().catch(() => {}); setVideoPlaying(true); };
-    v.addEventListener("canplay", onCanPlay);
-    const t = setTimeout(() => { v.play().catch(() => {}); }, 400);
-    return () => {
-      v.removeEventListener("canplay", onCanPlay);
-      clearTimeout(t);
+    const play = () => {
+      v.muted = true;
+      v.play().catch(() => {});
+      setVideoPlaying(true);
     };
+    if (!isMobile) {
+      const onCanPlay = () => play();
+      v.addEventListener("canplay", onCanPlay);
+      const t = setTimeout(play, 400);
+      const onVisibility = () => {
+        if (document.visibilityState === "visible") play();
+      };
+      document.addEventListener("visibilitychange", onVisibility);
+      return () => {
+        v.removeEventListener("canplay", onCanPlay);
+        clearTimeout(t);
+        document.removeEventListener("visibilitychange", onVisibility);
+      };
+    }
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") play();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
   }, [isMobile]);
 
   const handleVideoPlay = () => {
@@ -130,7 +146,7 @@ const About = () => {
     <div className="min-h-screen bg-background">
       <StructuredData data={aboutStructuredData} />
       
-      <main>
+      <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0">
         {/* ========== HERO with Video ========== */}
         <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
           {/* Video Background */}

@@ -25,7 +25,7 @@ const ServiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-24 md:pt-32 pb-16 md:pb-20">
+      <main className="pt-24 md:pt-32 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-20">
         <Container>
           {/* Back button */}
           <motion.div

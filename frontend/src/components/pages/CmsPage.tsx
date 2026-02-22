@@ -68,7 +68,7 @@ export function CmsPage({ slug, showStickyCta }: CmsPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pb-24 lg:pb-0 pt-0">
+      <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0 pt-0">
         <BlockRenderer blocks={blocksToRender} />
       </main>
       {showStickyCta && <StickyCtaButton />}

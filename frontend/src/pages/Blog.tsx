@@ -63,7 +63,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pb-24 lg:pb-0 pt-24 md:pt-28">
+      <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0 pt-24 md:pt-28">
         <Container>
           <header className="mb-8 md:mb-10">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">

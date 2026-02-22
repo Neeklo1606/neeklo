@@ -61,7 +61,7 @@ const Work = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-20 md:pt-28 pb-16 md:pb-24">
+      <main className="pt-20 md:pt-28 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] md:pb-24">
         <Container>
           <motion.header
             initial={{ opacity: 0, y: 16 }}

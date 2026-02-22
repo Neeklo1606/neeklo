@@ -140,7 +140,7 @@ const WorkDetail = () => {
     <div className="min-h-screen bg-background">
       <StructuredData data={creativeWorkSchema} />
       
-      <main className="pt-20 md:pt-24 lg:pt-28 pb-16">
+      <main className="pt-20 md:pt-24 lg:pt-28 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container className="py-3 md:py-4">
           <Breadcrumbs
             items={[

@@ -88,7 +88,7 @@ export function HeroMinimal({
     };
   }, [resolvedVideoSrc, posterSrc]);
 
-  // Autoplay: ensure video plays when in view (and on resize/adaptation)
+  // Autoplay: in view, on resize, и при возврате на вкладку
   useEffect(() => {
     const el = videoRef.current;
     if (!el) return;
@@ -105,10 +105,15 @@ export function HeroMinimal({
     );
     obs.observe(el);
     const onResize = () => play();
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") play();
+    };
     window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibility);
     return () => {
       obs.disconnect();
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [resolvedVideoSrc]);
 
