@@ -61,7 +61,6 @@ const About = () => {
   const isMobile = useMobile();
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoSources = [
-    "/frontend/videos/hf_20260220_225651_b8007db0-eebd-4e50-888b-24e3bf441702.mp4",
     "/frontend/videos/neeklo_hello.mp4",
   ];
 

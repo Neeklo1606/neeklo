@@ -52,7 +52,6 @@ export function HeroMinimal({
     () =>
       [
         videoSrc,
-        "/frontend/videos/hf_20260220_225651_b8007db0-eebd-4e50-888b-24e3bf441702.mp4",
         "/frontend/videos/neeklo_hello.mp4",
       ].filter(Boolean) as string[],
     [videoSrc]
