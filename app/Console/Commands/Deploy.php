@@ -565,20 +565,22 @@ class Deploy extends Command
     protected function sendDeployRequest(): void
     {
         $this->info('🌐 Шаг 7: Отправка запроса на сервер...');
-        
-        $serverUrl = env('DEPLOY_SERVER_URL');
-        $deployToken = env('DEPLOY_TOKEN');
 
-        if (!$serverUrl) {
-            $this->warn('  ⚠️  DEPLOY_SERVER_URL не настроен в .env - пропуск отправки на сервер');
-            $this->line('  💡 Добавьте DEPLOY_SERVER_URL и DEPLOY_TOKEN в .env для автоматического деплоя');
+        $serverUrl = config('deploy.server_url') ?: env('DEPLOY_SERVER_URL');
+        $deployToken = config('deploy.token') ?: env('DEPLOY_TOKEN');
+
+        if (empty($serverUrl)) {
+            $this->warn('  ⚠️  DEPLOY_SERVER_URL не настроен — пропуск отправки на сервер');
+            $this->line('  💡 Добавьте в **локальный** .env (где запускаете php artisan deploy):');
+            $this->line('     DEPLOY_SERVER_URL=https://neeklo.ru');
+            $this->line('     DEPLOY_TOKEN=<ваш токен из .env на сервере>');
             $this->newLine();
             return;
         }
 
-        if (!$deployToken) {
-            $this->warn('  ⚠️  DEPLOY_TOKEN не настроен в .env - пропуск отправки на сервер');
-            $this->line('  💡 Добавьте DEPLOY_TOKEN в .env для автоматического деплоя');
+        if (empty($deployToken)) {
+            $this->warn('  ⚠️  DEPLOY_TOKEN не настроен — пропуск отправки на сервер');
+            $this->line('  💡 Добавьте в **локальный** .env: DEPLOY_TOKEN=(тот же токен, что и DEPLOY_TOKEN на сервере)');
             $this->newLine();
             return;
         }
