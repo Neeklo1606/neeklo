@@ -42,13 +42,13 @@ const Services = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-20 md:pt-28 pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] md:pb-28">
+      <main className="pt-24 pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-16">
         <Container>
           <motion.header
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-10 md:mb-14"
+            className="mb-8 md:mb-10"
           >
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground">
               Услуги

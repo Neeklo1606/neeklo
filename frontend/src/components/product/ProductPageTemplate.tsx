@@ -228,7 +228,7 @@ export const ProductPageTemplate = ({ data }: ProductPageTemplateProps) => {
                 "px-6 py-3.5 rounded-xl",
                 "bg-gradient-to-r from-[#0088cc] to-[#00a8e8]",
                 "text-white font-semibold",
-                "hover:scale-[1.02] active:scale-[0.98]",
+                "md:hover:scale-[1.02] active:scale-[0.98]",
                 "transition-all duration-200"
               )}
             >

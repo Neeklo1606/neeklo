@@ -28,9 +28,9 @@ const PACKAGES = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-20 md:pt-28 pb-16 md:pb-24">
+      <main className="pt-24 pb-16">
         <Container>
-          <header className="mb-10 md:mb-14">
+          <header className="mb-8 md:mb-10">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground">Прайс-лист</h1>
             <p className="mt-3 text-lg text-muted-foreground max-w-2xl">
               Пакеты ориентировочные. Финальная стоимость зависит от объема задач и сроков.

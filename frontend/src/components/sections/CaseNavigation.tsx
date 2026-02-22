@@ -15,14 +15,14 @@ export const CaseNavigation = ({ currentId }: CaseNavigationProps) => {
   if (!prevCase && !nextCase) return null;
 
   return (
-    <section className="py-20 border-t border-border">
+    <section className="py-12 md:py-16 border-t border-border">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Previous Case */}
           {prevCase ? (
             <Link
               to={`/work/${prevCase.slug}`}
-              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 p-8"
+              className="group relative overflow-hidden rounded-2xl glass-card hover:border-primary/50 transition-all duration-300 p-8"
             >
               <div className="flex items-center text-muted-foreground group-hover:text-primary transition-colors mb-4">
                 <ArrowLeft className="w-5 h-5 mr-2" />
@@ -43,7 +43,7 @@ export const CaseNavigation = ({ currentId }: CaseNavigationProps) => {
           {nextCase ? (
             <Link
               to={`/work/${nextCase.slug}`}
-              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 p-8 text-right"
+              className="group relative overflow-hidden rounded-2xl glass-card hover:border-primary/50 transition-all duration-300 p-8 text-right"
             >
               <div className="flex items-center justify-end text-muted-foreground group-hover:text-primary transition-colors mb-4">
                 <span className="text-sm uppercase tracking-wider">Следующий проект</span>

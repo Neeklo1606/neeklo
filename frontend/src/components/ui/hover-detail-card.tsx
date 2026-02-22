@@ -196,7 +196,7 @@ export function HoverDetailCard({
   const primaryBtnClass = `${primaryButton.color} ${primaryButton.hoverColor} ${primaryButton.textColor} cursor-pointer px-3 py-1.5 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200`;
   const secondaryBtnClass = `${secondaryButton.color} ${secondaryButton.hoverColor} ${secondaryButton.textColor} cursor-pointer px-3 py-1.5 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200`;
 
-  const cardClassName = "bg-card border border-border/50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col";
+  const cardClassName = "bg-card border border-border/50 rounded-xl overflow-hidden transition-shadow duration-300 h-full flex flex-col";
   const wrapperClass = "block w-full max-w-md flex-shrink-0";
 
   const innerProps = {

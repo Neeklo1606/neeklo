@@ -97,8 +97,8 @@ export const SectionHeaderSkeleton = memo(function SectionHeaderSkeleton() {
 // Products section skeleton
 export const ProductsSectionSkeleton = memo(function ProductsSectionSkeleton() {
   return (
-    <section className="py-10 md:py-16 lg:py-20 bg-background">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 md:py-16 bg-background">
+      <div className="max-w-[1440px] mx-auto container-mobile px-5 sm:px-6 lg:px-8">
         <SectionHeaderSkeleton />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {[1, 2, 3, 4].map((i) => (
@@ -113,8 +113,8 @@ export const ProductsSectionSkeleton = memo(function ProductsSectionSkeleton() {
 // Cases section skeleton
 export const CasesSectionSkeleton = memo(function CasesSectionSkeleton() {
   return (
-    <section className="py-16 md:py-24 lg:py-[120px] bg-background">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 md:py-16 bg-background">
+      <div className="max-w-[1440px] mx-auto container-mobile px-5 sm:px-6 lg:px-8">
         <SectionHeaderSkeleton />
         
         {/* Filter buttons skeleton */}

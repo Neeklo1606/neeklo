@@ -255,7 +255,7 @@ export const VideoPlayer = memo(function VideoPlayer({
             className="absolute inset-0 flex items-center justify-center z-10"
             aria-label="Play video"
           >
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-primary/30 hover:bg-primary hover:scale-110 transition-all">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-primary/30 hover:bg-primary md:hover:scale-110 transition-all">
               <Play className="w-7 h-7 md:w-8 md:h-8 text-primary-foreground ml-1" fill="currentColor" />
             </div>
           </motion.button>

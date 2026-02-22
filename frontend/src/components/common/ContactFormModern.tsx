@@ -13,15 +13,17 @@ const MAX_FILES = 5;
 const inputBase =
   "w-full bg-white border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-500 " +
   "focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-0 " +
-  "px-4 py-3 transition-colors duration-200";
+  "px-4 py-4 transition-colors duration-200";
 const labelBase = "text-sm font-medium text-white mb-2 block";
 
 interface ContactFormModernProps {
   onSuccess?: () => void;
   title?: string;
+  /** Скрыть внутренний заголовок, если он уже выведен в блоке (BlockContactForm) */
+  hideTitle?: boolean;
 }
 
-export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) {
+export function ContactFormModern({ onSuccess, title, hideTitle }: ContactFormModernProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [telegram, setTelegram] = useState("");
@@ -82,19 +84,20 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
         className={cn(
           "rounded-2xl overflow-hidden",
           "bg-[#0f2744] shadow-xl",
-          "p-6 sm:p-8 md:p-10"
+          "p-6"
         )}
       >
         <div className="space-y-6">
-          {/* Заголовок */}
-          <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-bold text-white">
-              {title ?? "Свяжитесь с нами"}
-            </h2>
-            <p className="text-sm text-white/80">
-              Расскажите о задаче — мы подготовим предложение
-            </p>
-          </div>
+          {!hideTitle && (
+            <div className="space-y-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-white">
+                {title ?? "Свяжитесь с нами"}
+              </h2>
+              <p className="text-sm text-white/80">
+                Расскажите о задаче — мы подготовим предложение
+              </p>
+            </div>
+          )}
 
           {/* Сетка: Имя*, Телефон | Телеграм, Email */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -213,7 +216,7 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
               </button>
             </div>
 
-            <div className="flex flex-col gap-3 min-w-0 lg:max-w-xs">
+            <div className="flex flex-col gap-4 min-w-0 lg:max-w-xs">
               <label
                 htmlFor="cf-privacy"
                 className="flex items-start gap-3 cursor-pointer"
@@ -223,12 +226,12 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
                   checked={privacy}
                   onCheckedChange={(v) => setPrivacy(!!v)}
                   className={cn(
-                    "mt-0.5 w-5 h-5 rounded border-2 border-white/40 shrink-0",
+                    "mt-0.5 size-6 min-w-6 min-h-6 rounded-[6px] border-2 border-white/40 shrink-0",
                     "data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500",
                     "focus-visible:ring-2 focus-visible:ring-white/50"
                   )}
                 />
-                <span className="text-sm text-white/90 leading-snug">
+                <span className="text-[14px] text-white/90 leading-snug">
                   Я даю согласие на обработку персональных данных в целях, указанных в{" "}
                   <a
                     href="/privacy"
@@ -249,12 +252,12 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
                   checked={personalData}
                   onCheckedChange={(v) => setPersonalData(!!v)}
                   className={cn(
-                    "mt-0.5 w-5 h-5 rounded border-2 border-white/40 shrink-0",
+                    "mt-0.5 size-6 min-w-6 min-h-6 rounded-[6px] border-2 border-white/40 shrink-0",
                     "data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500",
                     "focus-visible:ring-2 focus-visible:ring-white/50"
                   )}
                 />
-                <span className="text-sm text-white/90 leading-snug">
+                <span className="text-[14px] text-white/90 leading-snug">
                   Согласен с обработкой персональных данных
                 </span>
               </label>
@@ -283,7 +286,7 @@ export function ContactFormModern({ onSuccess, title }: ContactFormModernProps) 
             </ul>
           )}
 
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-white/60 !mt-0">
             Или{" "}
             <a
               href={TELEGRAM_DIRECT_URL}

@@ -19,16 +19,30 @@
         </div>
 
         <div v-for="col in collectionsConfig" :key="col.key" v-show="activeCollection === col.key" class="space-y-3">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-wrap gap-2">
                 <span class="text-sm text-muted-foreground">{{ getCollectionLabel(col.key) }}{{ col.maxCount ? ` (макс. ${col.maxCount})` : '' }}</span>
-                <button
-                    @click="openPicker(col)"
-                    :disabled="col.maxCount != null && items(col.key).length >= col.maxCount"
-                    class="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    Добавить
-                </button>
+                <div class="flex gap-2">
+                    <label class="px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground text-sm cursor-pointer inline-flex items-center gap-1.5">
+                        <span>📤 Загрузить</span>
+                        <input
+                            type="file"
+                            multiple
+                            accept="image/*,video/*"
+                            class="hidden"
+                            @change="(e) => onDirectUpload(col, e)"
+                        />
+                    </label>
+                    <button
+                        @click="openPicker(col)"
+                        :disabled="col.maxCount != null && items(col.key).length >= col.maxCount"
+                        class="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Из медиатеки
+                    </button>
+                </div>
             </div>
+            <span v-if="uploading[col.key]" class="text-xs text-muted-foreground">Загрузка...</span>
+            <span v-if="uploadError[col.key]" class="text-xs text-destructive">{{ uploadError[col.key] }}</span>
 
             <div v-if="items(col.key).length === 0" class="py-6 text-center text-muted-foreground text-sm rounded-lg border border-dashed border-border">
                 Нет медиа. Нажмите «Добавить».
@@ -140,6 +154,8 @@ export default {
             pickerShow: false,
             pickerConfig: { key: '', mode: 'single' },
             error: null,
+            uploading: {},
+            uploadError: {},
         };
     },
     watch: {
@@ -169,6 +185,51 @@ export default {
             this.pickerConfig = { key: col.key, mode: col.mode };
             this.pickerShow = true;
             this.error = null;
+        },
+        async onDirectUpload(col, event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            const colKey = col.key;
+            const maxCount = col.maxCount != null ? col.maxCount : 999;
+            const current = (this.collections[colKey] || []).length;
+            if (current >= maxCount) {
+                this.uploadError = { ...this.uploadError, [colKey]: `Достигнут лимит: ${maxCount}` };
+                event.target.value = '';
+                return;
+            }
+            this.uploading = { ...this.uploading, [colKey]: true };
+            this.uploadError = { ...this.uploadError, [colKey]: null };
+            const toUpload = Math.min(files.length, maxCount - current);
+            const ids = [];
+            try {
+                for (let i = 0; i < toUpload; i++) {
+                    const formData = new FormData();
+                    formData.append('file', files[i]);
+                    const { data } = await axios.post('/api/v1/media', formData, {
+                        headers: { Accept: 'application/json' },
+                    });
+                    if (data && data.data && data.data.id) {
+                        ids.push(data.data.id);
+                    }
+                }
+                if (ids.length > 0) {
+                    const base = `/api/admin/cms/${this.entityType}/${this.entityId}/media`;
+                    const payload = col.mode === 'single'
+                        ? { media_id: ids[0], collection: colKey }
+                        : { media_ids: ids, collection: colKey };
+                    const { data } = await axios.post(`${base}/attach`, payload);
+                    this.emitUpdated(data.data);
+                }
+            } catch (err) {
+                const msg = err.response?.data?.message || err.response?.data?.error || (err.response?.data?.errors && Object.values(err.response.data.errors).flat().join(', ')) || 'Ошибка загрузки или привязки';
+                this.uploadError = { ...this.uploadError, [colKey]: msg };
+                if (err.response?.status === 401 || err.response?.status === 403) {
+                    Swal.fire({ title: 'Ошибка доступа', text: 'Войдите снова в админ-панель.', icon: 'error' });
+                }
+            } finally {
+                this.uploading = { ...this.uploading, [colKey]: false };
+                event.target.value = '';
+            }
         },
         async onMediaSelected(ids) {
             this.pickerShow = false;

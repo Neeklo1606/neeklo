@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Grid3X3, Send, Menu } from "lucide-react";
+import { Home, LayoutGrid, Send, Menu } from "lucide-react";
 import { useMobile } from "@/hooks/useMobile";
 
 interface NavTab {
@@ -14,7 +14,7 @@ interface NavTab {
 
 const TABS: NavTab[] = [
   { id: "home", label: "Главная", icon: Home, href: "/" },
-  { id: "catalog", label: "Каталог", icon: Grid3X3, href: "/services" },
+  { id: "catalog", label: "Каталог", icon: LayoutGrid, href: "/services" },
   { id: "telegram", label: "Telegram", icon: Send, action: "telegram" },
   { id: "menu", label: "Меню", icon: Menu, action: "menu" },
 ];
@@ -53,15 +53,15 @@ export const BottomNav = memo(function BottomNav({ onMenuOpen }: BottomNavProps)
       role="navigation"
       aria-label="Нижнее меню"
     >
-      {/* Компактный контейнер, единые отступы */}
-      <div className="mx-2 mb-2 rounded-2xl bg-card/95 backdrop-blur-xl border border-border shadow-sm">
-        <div className="flex items-center justify-around h-14 px-0 gap-0">
+      {/* Компактный контейнер с backdrop-blur и тенью */}
+      <div className="mx-2 mb-2 rounded-2xl bg-card/95 backdrop-blur-xl border border-border shadow-md">
+        <div className="flex items-center justify-around gap-0 p-[14px]">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
 
             const content = (
-              <div className="relative flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 min-w-[56px]">
+              <div className="relative flex flex-col items-center justify-center gap-[6px] min-w-[56px]">
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
@@ -70,14 +70,16 @@ export const BottomNav = memo(function BottomNav({ onMenuOpen }: BottomNavProps)
                   />
                 )}
                 <Icon
-                  className={`relative z-10 w-5 h-5 transition-colors duration-200 ${
-                    isActive ? "text-primary" : "text-foreground/60"
+                  className={`relative z-10 w-[22px] h-[22px] transition-colors duration-200 ${
+                    isActive
+                      ? "text-primary opacity-100 drop-shadow-[0_0_6px_hsl(var(--primary)/0.4)]"
+                      : "text-foreground/60"
                   }`}
-                  strokeWidth={isActive ? 2.25 : 1.75}
+                  strokeWidth={isActive ? 2.5 : 1.75}
                 />
                 <span
-                  className={`text-[10px] font-medium relative z-10 transition-colors duration-200 ${
-                    isActive ? "text-primary" : "text-foreground/55"
+                  className={`text-xs font-medium relative z-10 transition-colors duration-200 ${
+                    isActive ? "text-primary font-semibold" : "text-foreground/55"
                   }`}
                 >
                   {tab.label}

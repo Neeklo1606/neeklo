@@ -5,13 +5,13 @@ import { BriefForm } from "../BriefForm";
 
 export const BriefFormSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true });
 
   return (
     <section
       id="brief-form"
       ref={ref}
-      className="relative py-20 md:py-32 overflow-hidden bg-background"
+      className="relative py-12 md:py-16 overflow-hidden bg-background"
     >
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">

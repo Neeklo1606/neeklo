@@ -12,10 +12,21 @@ interface HeroSectionProps {
   scrollTarget?: string;
 }
 
+const MOBILE_BREAKPOINT = 768;
+
 export function HeroSection({ title, subtitle, ctaText, scrollTarget }: HeroSectionProps = {}) {
   const [isBriefOpen, setIsBriefOpen] = useState(false);
   const [scrollOpacity, setScrollOpacity] = useState(1);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < MOBILE_BREAKPOINT : false);
   const shouldReduceMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const handler = () => setIsMobile(mql.matches);
+    mql.addEventListener('change', handler);
+    handler();
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   const displayTitle = title ?? "Создание сайтов,\nMini App и AI видео";
   const displaySubtitle = subtitle ?? "Разрабатываем продукты, которые приносят деньги";
@@ -77,8 +88,8 @@ export function HeroSection({ title, subtitle, ctaText, scrollTarget }: HeroSect
                      pt-16 sm:pt-20 md:pt-24 lg:pt-28"
           style={{
             opacity: scrollOpacity,
-            transform: `translateY(${(1 - scrollOpacity) * -20}px)`,
-            transition: 'opacity 0.1s ease-out, transform 0.1s ease-out'
+            transform: isMobile ? 'none' : `translateY(${(1 - scrollOpacity) * -20}px)`,
+            transition: 'opacity 0.3s ease, transform 0.3s ease'
           }}
         >
           
@@ -146,7 +157,7 @@ export function HeroSection({ title, subtitle, ctaText, scrollTarget }: HeroSect
                                bg-gradient-to-r from-cyan-400 to-cyan-500 text-white
                                shadow-lg shadow-cyan-500/50 
                                hover:shadow-xl hover:shadow-cyan-500/60
-                               hover:scale-105 active:scale-95
+                               md:hover:scale-105 active:scale-95
                                transition-all duration-200 overflow-hidden
                                [text-shadow:_0_1px_2px_rgba(0,0,0,0.3)]
                                focus-visible:outline-none focus-visible:ring-2 
@@ -156,7 +167,7 @@ export function HeroSection({ title, subtitle, ctaText, scrollTarget }: HeroSect
                   >
                     <span
                       className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-500 
-                                 rounded-xl blur opacity-50 group-hover:opacity-75 
+                                 rounded-xl blur opacity-50 md:group-hover:opacity-75 max-md:blur-0 
                                  transition-opacity duration-300"
                     />
                     <span className="relative flex items-center justify-center gap-2">

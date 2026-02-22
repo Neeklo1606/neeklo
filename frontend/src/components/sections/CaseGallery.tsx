@@ -30,7 +30,7 @@ const LazyGalleryItem = memo(function LazyGalleryItem({ item, index }: LazyGalle
           observer.disconnect();
         }
       },
-      { rootMargin: '200px 0px', threshold: 0.01 }
+      { rootMargin: '0px', threshold: 0.01 }
     );
 
     if (containerRef.current) {
@@ -97,7 +97,7 @@ export const CaseGallery = memo(function CaseGallery({ items }: CaseGalleryProps
   if (!items || items.length === 0) return null;
 
   return (
-    <section className="py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <div className="space-y-12">
           {items.map((item, index) => (

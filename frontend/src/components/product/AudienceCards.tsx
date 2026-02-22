@@ -53,7 +53,7 @@ export const AudienceCards = ({
   };
 
   return (
-    <section className="py-10 sm:py-12 md:py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <motion.div
           className="text-center mb-5 sm:mb-6 md:mb-8"

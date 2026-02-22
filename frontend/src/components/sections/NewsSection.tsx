@@ -77,21 +77,21 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
   const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-6 sm:py-12 md:py-20 lg:py-24 relative overflow-hidden">
+    <section ref={ref} className="py-12 md:py-16 relative overflow-hidden">
       <Container>
         {/* Header */}
-        <div className={`io-animate io-slide-right flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 md:mb-10 ${isVisible ? "io-visible" : ""}`}>
-          <div>
+        <div className={`io-animate io-slide-right flex flex-col items-center gap-4 mb-6 md:mb-8 ${isVisible ? "io-visible" : ""}`}>
+          <div className="text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
               {title ?? "Полезно для бизнеса"}
             </h2>
-            <p className="text-muted-foreground text-sm md:text-base">
+            <p className="text-muted-foreground mt-1 text-sm sm:text-base">
               {subtitle ?? "Разборы, кейсы и практические советы"}
             </p>
           </div>
           <Link
             to={blogLink ?? "/blog"}
-            className="text-sm font-medium text-primary hover:underline shrink-0"
+            className="text-primary font-medium hover:underline inline-flex items-center gap-1"
           >
             Все статьи →
           </Link>
@@ -118,7 +118,7 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
                   "transition-all duration-300"
                 )}
               >
-                <div className="flex flex-col h-full min-h-[160px] transition-transform duration-300 group-hover:-translate-y-1">
+                <div className="flex flex-col h-full min-h-[160px] transition-transform duration-300 md:group-hover:-translate-y-1">
                   {/* Meta: Category + Date */}
                   <div className="flex items-center gap-3 mb-3">
                     <span className={cn(

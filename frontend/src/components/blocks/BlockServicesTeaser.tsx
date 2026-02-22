@@ -61,8 +61,24 @@ export function BlockServicesTeaser({ block }: { block: CmsBlock }) {
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="bg-background py-6 sm:py-10 min-[1024px]:py-20" aria-label="Услуги">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="bg-background pt-16 pb-12 md:pb-16" aria-label="Услуги">
+      <div className="max-w-[1200px] mx-auto container-mobile px-5 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center gap-4 mb-6 md:mb-8">
+          <div className="text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
+              Услуги
+            </h2>
+            <p className="text-muted-foreground mt-1 text-sm sm:text-base">
+              Сайты, боты, Mini App и AI-решения под ваши задачи
+            </p>
+          </div>
+          <Link
+            to="/services"
+            className="text-primary font-medium hover:underline inline-flex items-center gap-1"
+          >
+            Все услуги →
+          </Link>
+        </div>
         <div className="grid grid-cols-2 min-[768px]:grid-cols-4 gap-4 sm:gap-6">
           {ITEMS.map((card, index) => (
             <div
@@ -72,9 +88,9 @@ export function BlockServicesTeaser({ block }: { block: CmsBlock }) {
             >
               <Link
                 to={card.href}
-                className="services-teaser-card flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8 text-center shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="services-teaser-card flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-5 sm:p-6 md:p-8 text-center transition-all duration-200 md:hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
-                <div className="mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-[20px] bg-primary/10 text-primary">
+                <div className="mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                   <card.Icon />
                 </div>
                 <div className="flex items-center justify-center gap-2 font-bold text-foreground tracking-tight text-[13.5px] sm:text-base">

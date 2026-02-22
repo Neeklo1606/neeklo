@@ -19,7 +19,7 @@ export const CaseTestimonial = ({ testimonial }: CaseTestimonialProps) => {
   if (!testimonial) return null;
 
   return (
-    <section className="py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -147,7 +147,7 @@ const CaseCard = memo(function CaseCard({
           "bg-neutral-900",
           "hover:ring-2 hover:ring-cyan-500/40",
           "transition-all duration-300 ease-out",
-          !shouldReduceMotion && "hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl"
+          !shouldReduceMotion && "md:hover:-translate-y-2 md:hover:scale-[1.02] md:hover:shadow-lg"
         )}
       >
         {/* Video/Image Background */}
@@ -432,7 +432,7 @@ export function VideoCasesSlider({ title, sectionId }: VideoCasesSliderProps = {
   }, [x, maxDrag, scrollAmount]);
 
   return (
-    <section id={sectionId ?? "cases"} className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
+    <section id={sectionId ?? "cases"} className="py-12 md:py-16 relative overflow-hidden">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 16 }}

@@ -53,12 +53,12 @@ export const StickyCtaButton = () => {
                      font-semibold text-sm md:text-base text-black
                      shadow-lg shadow-cyan-500/30
                      hover:shadow-xl hover:shadow-cyan-500/50
-                     hover:scale-105 transition-all duration-200
+                     md:hover:scale-105 transition-all duration-200
                      flex items-center gap-2
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2
                      ${
                        isMobile
-                         ? "bottom-4 left-4 right-4 w-auto"
+                         ? "bottom-[5.25rem] left-4 right-4 w-auto"
                          : "top-4 right-6"
                      }`}
           aria-label="Узнать стоимость проекта"
@@ -88,12 +88,12 @@ export const StickyCtaButton = () => {
                        font-semibold text-sm md:text-base text-black
                        shadow-lg shadow-cyan-500/30
                        hover:shadow-xl hover:shadow-cyan-500/50
-                       hover:scale-105 transition-all duration-200
+                       md:hover:scale-105 transition-all duration-200
                        flex items-center gap-2
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2
                        ${
                          isMobile
-                           ? "bottom-4 left-4 right-4 w-auto"
+                           ? "bottom-[5.25rem] left-4 right-4 w-auto"
                            : "top-4 right-6"
                        }`}
             aria-label="Узнать стоимость проекта"

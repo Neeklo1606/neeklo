@@ -38,7 +38,7 @@ export function HowToOrder({
 
   return (
     <section className="py-10 md:py-14 bg-muted/20">
-      <div className="container max-w-4xl mx-auto px-4">
+      <div className="container max-w-4xl mx-auto container-mobile px-5">
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">

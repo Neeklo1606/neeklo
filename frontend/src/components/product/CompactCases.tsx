@@ -18,7 +18,7 @@ export const CompactCases = ({
   cases,
 }: CompactCasesProps) => {
   return (
-    <section className="py-12 md:py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <motion.h2
           className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8"

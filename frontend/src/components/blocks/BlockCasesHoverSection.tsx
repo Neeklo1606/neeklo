@@ -51,33 +51,20 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
   }>;
 
   return (
-    <section ref={sectionRef} id={d.section_id ?? "cases"} className="py-6 sm:py-10 md:py-14">
-      <Container className="px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 md:mb-8">
-          <div>
+    <section ref={sectionRef} id={d.section_id ?? "cases"} className="mt-0 py-6 sm:py-10 md:py-14">
+      <Container className="sm:px-6">
+        <div className="flex flex-col items-center gap-4 mb-6 md:mb-8">
+          <div className="text-center">
             <h2 className={`io-animate io-fade-up text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 ${isVisible ? "io-visible" : ""}`}>
               {d.title ?? "Кейсы"}
             </h2>
-            {(d.subtitle ?? (d.title ? "Смотрите результаты наших проектов" : null)) && (
-              <p className={`io-animate io-fade-up text-muted-foreground mt-1 text-sm sm:text-base ${isVisible ? "io-visible" : ""}`} style={{ transitionDelay: "100ms" }}>
-                {d.subtitle ?? "Смотрите результаты наших проектов"}
-              </p>
-            )}
+            <p className={`io-animate io-fade-up text-muted-foreground mt-1 text-sm sm:text-base ${isVisible ? "io-visible" : ""}`} style={{ transitionDelay: "100ms" }}>
+              {d.subtitle ?? "Смотрите результаты наших проектов"}
+            </p>
           </div>
-          <div className="flex items-center flex-shrink-0">
-            <Link
-              to="/work"
-              className="text-primary font-medium hover:underline hidden sm:inline-flex items-center gap-1"
-            >
-              Все кейсы →
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-3 md:hidden">
           <Link
             to="/work"
-            className="text-sm font-medium text-primary hover:underline shrink-0 inline-flex items-center gap-1 touch-manipulation min-h-[44px] items-center"
+            className="text-primary font-medium hover:underline inline-flex items-center gap-1"
           >
             Все кейсы →
           </Link>

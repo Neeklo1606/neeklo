@@ -132,7 +132,7 @@ export const HowItWorks = memo(function HowItWorks({
   const icons = variantIcons[variant] || variantIcons["default"];
 
   return (
-    <section id="how-it-works" className="py-10 sm:py-12 md:py-20 bg-surface/30">
+    <section id="how-it-works" className="py-12 md:py-16 bg-surface/30">
       <Container>
         <motion.div
           className="text-center mb-6 sm:mb-8 md:mb-12"

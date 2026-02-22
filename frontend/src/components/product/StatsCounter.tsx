@@ -53,7 +53,7 @@ const CounterAnimation = ({ value, prefix = "", suffix = "" }: { value: string; 
 
 export const StatsCounter = ({ stats }: StatsCounterProps) => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
+    <section className="py-12 md:py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-surface/50 to-background" />
       
       <Container>

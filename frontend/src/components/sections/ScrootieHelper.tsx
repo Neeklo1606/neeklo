@@ -24,7 +24,7 @@ export function ScrootieHelper() {
 
   return (
     <>
-      <section className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
+      <section className="py-12 md:py-16 relative overflow-hidden">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 24 }}

@@ -36,7 +36,7 @@ interface HeroMinimalProps {
 }
 
 export function HeroMinimal({
-  title = "Создание сайтов,\nвидео и чат-ботов\n(Mini App)",
+  title = "Создание сайтов,\nвидео\u00A0и\u00A0чат-ботов\n(Mini App)",
   subtitle = "Разработка готовых AI-решений для твоего бизнеса.",
   eyebrow = "Digital Studio · 2026",
   ctaPrimary = "Начать проект",
@@ -131,17 +131,9 @@ export function HeroMinimal({
           id="hero"
           className={`hero-minimal io-animate io-fade-up relative overflow-x-hidden text-foreground flex-1 flex flex-col justify-center isolate min-h-0 max-h-[72vh] md:max-h-none ${heroVisible ? "io-visible" : ""}`}
         >
-          {/* Background grid — behind content, no overlap */}
-          <div
-            className="hero-minimal__grid absolute inset-0 pointer-events-none z-0"
-            style={{
-              backgroundImage: `linear-gradient(to right, hsl(var(--ink)) 1px, transparent 1px),
-                               linear-gradient(to bottom, hsl(var(--ink)) 1px, transparent 1px)`,
-              backgroundSize: "32px 32px",
-            }}
-            aria-hidden
-          />
-          <div className="hero-minimal__inner relative z-10 flex flex-col lg:grid lg:grid-cols-[1fr_1fr] lg:items-stretch gap-6 lg:gap-10 max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-0 flex-1 lg:flex-initial justify-center">
+          {/* Background grid — behind content, opacity и маска в CSS, текст поверх (z-10) */}
+          <div className="hero-minimal__grid absolute inset-0 pointer-events-none z-0" aria-hidden />
+          <div className="hero-minimal__inner relative z-10 flex flex-col lg:grid lg:grid-cols-[1fr_1fr] lg:items-stretch gap-6 lg:gap-10 max-w-[1400px] mx-auto w-full container-mobile px-5 sm:px-6 lg:px-8 min-h-0 flex-1 lg:flex-initial justify-center">
             <div className="hero-minimal__left hero-left w-full max-w-[520px] flex flex-col items-center lg:items-start text-center lg:text-left order-1 min-w-0 gap-5 sm:gap-6 lg:gap-6 lg:justify-center">
               <div className="hero-top flex flex-col gap-6 shrink-0 w-full min-w-0">
                 <span className="badge hero-badge inline-flex items-center gap-1.5 rounded-full border text-xs font-medium uppercase tracking-wider text-foreground w-fit shrink-0 hero-badge-high">
@@ -170,14 +162,14 @@ export function HeroMinimal({
               </button>
             </div>
           </div>
-          <div className="hero-right hero-video-wrap relative flex justify-center lg:justify-end order-2 px-0 sm:px-2 lg:px-0 -mx-4 sm:mx-0 w-full sm:max-w-full lg:min-h-[70vh]">
+          <div className="hero-right hero-video-wrap relative flex justify-center lg:justify-end order-2 px-0 sm:px-2 lg:px-0 mx-0 w-full sm:max-w-full lg:min-h-[70vh]">
             <div className="hero-video-glow" aria-hidden />
-            <div className="h-full w-full min-w-0 flex flex-col min-h-[200px] sm:min-h-[280px] lg:min-h-[70vh]">
-              <div className="hero-video-container w-full max-w-full flex-1 min-h-[200px] sm:min-h-[280px] lg:min-h-[70vh] overflow-hidden rounded-none sm:rounded-2xl lg:rounded-3xl bg-muted shadow-[var(--shadow-lg)]">
+            <div className="h-full w-full min-w-0 flex flex-col min-h-0 sm:min-h-[280px] lg:min-h-[70vh]">
+              <div className="hero-video-container w-full max-w-full flex-1 min-h-0 sm:min-h-[280px] lg:min-h-[70vh] overflow-hidden rounded-[20px] sm:rounded-2xl lg:rounded-3xl bg-muted">
                 {resolvedVideoSrc ? (
                   <video
                     ref={videoRef}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover [&::-webkit-media-controls-start-playback-button]:hidden"
                     src={resolvedVideoSrc}
                     poster={posterSrc}
                     width={1280}

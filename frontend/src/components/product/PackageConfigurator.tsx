@@ -37,7 +37,7 @@ export const PackageConfigurator = ({
   };
 
   return (
-    <section id="configurator" className="py-10 sm:py-12 md:py-20 bg-surface/30">
+    <section id="configurator" className="py-12 md:py-16 bg-surface/30">
       <Container>
         <motion.div
           className="text-center mb-5 sm:mb-6 md:mb-8"
@@ -124,7 +124,7 @@ export const PackageConfigurator = ({
               {/* CTA Button */}
               <button
                 onClick={() => onSelect(packages[activeIndex].id, packages[activeIndex].name)}
-                className="w-full py-3 sm:py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm sm:text-base transition-all hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.99] min-h-[44px] sm:min-h-[48px]"
+                className="w-full py-3 sm:py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm sm:text-base transition-all hover:bg-primary/90 md:hover:scale-[1.01] active:scale-[0.99] min-h-[44px] sm:min-h-[48px]"
               >
                 Выбрать этот пакет
               </button>

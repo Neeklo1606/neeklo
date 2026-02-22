@@ -22,7 +22,7 @@ const NotFound = () => {
 
   return (
     <main
-      className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-background pt-24 md:pt-28 pb-12"
+      className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-background pt-24 pb-16"
       role="main"
       aria-label="Страница не найдена"
     >

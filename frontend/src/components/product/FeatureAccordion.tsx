@@ -21,7 +21,7 @@ interface FeatureAccordionProps {
 
 export const FeatureAccordion = ({ title, features }: FeatureAccordionProps) => {
   return (
-    <section className="py-20 md:py-32 relative bg-surface/30">
+    <section className="py-12 md:py-16 relative bg-surface/30">
       <Container>
         <motion.h2
           className="text-3xl md:text-4xl font-heading font-bold text-center mb-12"

@@ -165,7 +165,7 @@ const Process = () => {
     <div className="min-h-screen bg-background" ref={containerRef}>
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         {/* Hero */}
-        <section className="py-8 md:py-12">
+        <section className="py-12 md:py-16">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -228,7 +228,7 @@ const Process = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 md:py-24">
+        <section className="py-12 md:py-16">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 40 }}

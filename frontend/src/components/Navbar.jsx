@@ -72,7 +72,7 @@ export default function Navbar({ items = DEFAULT_ITEMS, logo = "Logo" }) {
             : "bg-transparent",
         ].join(" ")}
       >
-        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between container-mobile px-5 sm:px-6 lg:px-8">
           <a
             href="#hero"
             onClick={(e) => {

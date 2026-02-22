@@ -33,7 +33,7 @@ class AttachMediaToModelAction
             $relation->attach($mediaId, [
                 'collection' => $collection,
                 'position' => $insertPosition + $index,
-                'meta' => $meta,
+                'meta' => $meta !== [] ? json_encode($meta) : null,
             ]);
         }
 

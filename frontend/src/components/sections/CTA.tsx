@@ -19,7 +19,7 @@ export const CTA = () => {
 
   return (
     <>
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section className="py-12 md:py-16 relative overflow-hidden">
         {/* Parallax Background Effects */}
         <div className="absolute inset-0 -z-10">
           <motion.div 
@@ -36,7 +36,7 @@ export const CTA = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             variants={variants.fadeInUp}
             className="text-center max-w-3xl mx-auto"
           >

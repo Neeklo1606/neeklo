@@ -45,7 +45,7 @@ export function DirectionsSection() {
   const shouldReduceMotion = usePrefersReducedMotion();
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section className="py-12 md:py-16 relative overflow-hidden">
       <Container>
         <motion.div
           initial={{ opacity: 0 }}

@@ -78,14 +78,14 @@ export const FeaturedWork = () => {
     : featuredCases.filter(c => c.category === activeCategory);
 
   return (
-    <section id="cases" className="py-16 md:py-20 lg:py-24 bg-background relative overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="cases" className="py-12 md:py-16 bg-background relative overflow-hidden">
+      <div className="max-w-[1440px] mx-auto container-mobile px-5 sm:px-6 lg:px-8">
         {/* Header - minimal */}
         <motion.div 
           className="text-center mb-10 md:mb-14"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
           variants={variants.fadeInUp}
         >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 text-foreground">
@@ -129,7 +129,7 @@ export const FeaturedWork = () => {
                   className="group"
                 >
                   <Link to={`/work/${caseItem.slug}`}>
-                    <div className="cursor-pointer rounded-2xl md:rounded-[20px] overflow-hidden glass-effect relative aspect-[4/3] hover:shadow-[0_16px_48px_rgba(0,212,255,0.2)] hover:border-primary/50 transition-all duration-500 bg-gradient-to-br from-secondary/50 to-secondary/20">
+                    <div className="cursor-pointer rounded-2xl md:rounded-[20px] overflow-hidden glass-card relative aspect-[4/3] hover:border-primary/50 transition-all duration-500">
                       {/* Case Cover Image or Abstract Pattern Placeholder */}
                       {caseItem.coverImage ? (
                         <img 
@@ -137,7 +137,7 @@ export const FeaturedWork = () => {
                           alt={caseItem.client}
                           width={800}
                           height={600}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-105"
                           loading="lazy"
                           decoding="async"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -188,7 +188,7 @@ export const FeaturedWork = () => {
                       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-10">
                         {/* Category Badge - Enhanced contrast */}
                         <span 
-                          className="inline-block mb-2 md:mb-3 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm border transition-all duration-300 group-hover:scale-105"
+                          className="inline-block mb-2 md:mb-3 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm border transition-all duration-300 md:group-hover:scale-105"
                           style={{
                             backgroundColor: `${caseItem.color}25`,
                             borderColor: `${caseItem.color}50`,
@@ -210,7 +210,7 @@ export const FeaturedWork = () => {
                         </p>
 
                         {/* View Button - Appears on Hover */}
-                        <div className="opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 text-sm font-medium text-secondary-foreground bg-secondary hover:bg-secondary/80 px-4 py-2.5 rounded-xl inline-flex items-center gap-2 shadow-lg">
+                        <div className="opacity-0 md:group-hover:opacity-100 translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 text-sm font-medium text-secondary-foreground bg-secondary hover:bg-secondary/80 px-4 py-2.5 rounded-xl inline-flex items-center gap-2 shadow-lg">
                           Смотреть кейс
                           <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                         </div>

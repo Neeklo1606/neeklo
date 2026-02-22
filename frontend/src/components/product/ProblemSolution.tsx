@@ -9,7 +9,7 @@ interface ProblemSolutionProps {
 
 export const ProblemSolution = ({ problems, solution }: ProblemSolutionProps) => {
   return (
-    <section className="py-20 md:py-32 relative">
+    <section className="py-12 md:py-16 relative">
       <Container>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Problems */}

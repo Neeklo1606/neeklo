@@ -42,9 +42,9 @@ export const Footer = () => {
 
   return (
     <footer className="bg-background border-t border-border/10">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 pb-28 lg:pb-20">
+      <div className="max-w-[1440px] mx-auto container-mobile px-5 sm:px-6 lg:px-8 pt-12 pb-28 md:pt-16 md:pb-20 lg:pb-20">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mb-10 sm:mb-14">
           {/* Column 1: Brand */}
           <div>
             <Link to="/" className="inline-block mb-4">
@@ -70,7 +70,7 @@ export const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-11 h-11 rounded-full text-foreground/70 hover:text-primary hover:bg-primary/10 hover:scale-110 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+                  className="flex items-center justify-center w-11 h-11 rounded-full text-foreground/70 hover:text-primary hover:bg-primary/10 md:hover:scale-110 md:hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                   aria-label={social.label}
                 >
                   <social.icon size={22} />

@@ -61,13 +61,13 @@ const Work = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-20 md:pt-28 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] md:pb-24">
+      <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container>
           <motion.header
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-10 md:mb-14"
+            className="mb-8 md:mb-10"
           >
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground">
               Портфолио
@@ -174,7 +174,7 @@ const Work = () => {
               )}
 
               {filteredCases.length === 0 && (
-                <div className="text-center py-20">
+                <div className="text-center py-12 md:py-16">
                   <p className="text-xl text-muted-foreground">
                     В этой категории пока нет проектов
                   </p>

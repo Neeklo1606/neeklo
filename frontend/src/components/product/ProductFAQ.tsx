@@ -22,7 +22,7 @@ export const ProductFAQ = ({
   items,
 }: ProductFAQProps) => {
   return (
-    <section className="py-12 sm:py-16 md:py-24 bg-surface/30">
+    <section className="py-12 md:py-16 bg-surface/30">
       <Container>
         <motion.h2
           className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 md:mb-10"

@@ -12,7 +12,7 @@ interface LazySectionProps {
 export const LazySection = memo(function LazySection({
   children,
   className,
-  rootMargin = '200px',
+  rootMargin = '0px',
   fallback
 }: LazySectionProps) {
   const [ref, isVisible] = useIntersectionObserver<HTMLDivElement>({

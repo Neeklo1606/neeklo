@@ -69,7 +69,7 @@ export function ProductHeroCompact({
         </motion.nav>
       </Container>
       
-      <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container max-w-4xl mx-auto container-mobile px-5 sm:px-6 lg:px-8">
 
         {/* Badge */}
         <motion.div

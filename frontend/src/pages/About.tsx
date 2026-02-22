@@ -148,7 +148,7 @@ const About = () => {
       
       <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0">
         {/* ========== HERO with Video ========== */}
-        <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
+        <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16">
           {/* Video Background */}
           <div className="absolute inset-0 z-0">
             <video
@@ -188,7 +188,7 @@ const About = () => {
           </div>
           
           {/* Hero Content */}
-          <Container className="relative z-10 text-center py-12 md:py-20">
+          <Container className="relative z-10 text-center py-12 md:py-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -243,7 +243,7 @@ const About = () => {
         </section>
 
         {/* ========== VALUE CARDS ========== */}
-        <section id="values" className="py-12 md:py-20 scroll-mt-24">
+        <section id="values" className="py-12 md:py-16 scroll-mt-24">
           <Container>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               {valueCards.map((card, index) => (
@@ -271,7 +271,7 @@ const About = () => {
         </section>
 
         {/* ========== WHAT WE DO ========== */}
-        <section id="what-we-do" className="py-12 md:py-20 bg-muted/20 scroll-mt-24">
+        <section id="what-we-do" className="py-12 md:py-16 bg-muted/20 scroll-mt-24">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -315,7 +315,7 @@ const About = () => {
         </section>
 
         {/* ========== HOW WE WORK ========== */}
-        <section id="how-we-work" className="py-12 md:py-20 scroll-mt-24">
+        <section id="how-we-work" className="py-12 md:py-16 scroll-mt-24">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -350,7 +350,7 @@ const About = () => {
         </section>
 
         {/* ========== FINAL CTA ========== */}
-        <section id="cta" className="py-12 md:py-20 scroll-mt-24 mb-16 md:mb-0">
+        <section id="cta" className="py-12 md:py-16 scroll-mt-24 mb-8 md:mb-0">
           <Container size="md">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

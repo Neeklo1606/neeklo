@@ -6,13 +6,7 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { Container } from "@/components/common/Container";
 import { cn } from "@/lib/utils";
 import type { CmsBlock } from "./BlockRenderer";
-
-interface FAQItem {
-  question: string;
-  answer: string;
-  /** Показывается справа в строке (например: "от 120 000 ₽, 7–10 дней") */
-  meta?: string;
-}
+import { defaultFaqs, type FAQItem } from "@/data/faq";
 
 interface BlockFAQData {
   title?: string;
@@ -22,7 +16,7 @@ interface BlockFAQData {
 
 export function BlockFAQ({ block }: { block: CmsBlock }) {
   const d = (block.data || {}) as BlockFAQData;
-  const items = Array.isArray(d.items) ? d.items : [];
+  const items = (Array.isArray(d.items) && d.items.length > 0 ? d.items : defaultFaqs) as FAQItem[];
   const title = d.title || "Частые вопросы";
   const subtitle = d.subtitle;
 
@@ -37,10 +31,8 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  if (items.length === 0) return null;
-
   return (
-    <section id="faq" className="py-6 sm:py-12 md:py-24 bg-background relative overflow-hidden">
+    <section id="faq" className="py-12 md:py-16 bg-background relative overflow-hidden">
       <motion.div
         style={shouldReduceMotion ? {} : { y: y1 }}
         className="absolute top-0 right-0 w-80 h-80 bg-accent/5 rounded-full blur-[120px] pointer-events-none"
@@ -55,7 +47,7 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3"
           >
@@ -65,7 +57,7 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
               className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 md:mb-14 max-w-xl px-2"
             >
@@ -80,7 +72,7 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true }}
                 transition={{
                   duration: shouldReduceMotion ? 0 : 0.4,
                   delay: shouldReduceMotion ? 0 : index * 0.05,
@@ -94,7 +86,7 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
                 <button
                   type="button"
                   onClick={() => toggleItem(index)}
-                  className="w-full min-h-[48px] sm:min-h-0 py-4 sm:py-5 px-4 sm:px-5 flex items-center justify-between gap-3 sm:gap-4 text-left group transition-colors duration-300 hover:text-primary active:bg-muted/30 touch-manipulation"
+                  className="w-full min-h-[48px] sm:min-h-0 py-5 px-5 flex items-center justify-between gap-3 sm:gap-4 text-left group transition-colors duration-300 hover:text-primary active:bg-muted/30 touch-manipulation"
                   aria-expanded={openIndex === index}
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
@@ -110,7 +102,7 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
                     )}
                     <motion.div
                       animate={{ rotate: openIndex === index ? 180 : 0 }}
-                      transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
+                      transition={{ duration: shouldReduceMotion ? 0 : 0.25 }}
                       className="w-8 h-8 sm:w-auto sm:h-auto flex items-center justify-center"
                       aria-hidden
                     >
@@ -132,12 +124,12 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{
-                        duration: shouldReduceMotion ? 0 : 0.4,
+                        duration: shouldReduceMotion ? 0 : 0.25,
                         ease: "easeOut",
                       }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-4 sm:pb-5 px-4 sm:px-5 pt-0">
+                      <div className="p-5 pt-0">
                         <p className="text-sm sm:text-[15px] text-muted-foreground leading-relaxed">
                           {faq.answer}
                         </p>

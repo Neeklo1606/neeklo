@@ -37,7 +37,7 @@ export const ServicesHolo = () => {
     .sort((a, b) => a.order - b.order);
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-[120px] bg-card/30">
+    <section className="py-12 sm:py-16 md:py-16 bg-card/30">
       <Container>
         <SectionTitle
           title="Наши услуги"
@@ -129,7 +129,7 @@ export const ServicesHolo = () => {
                         transition: { duration: 0.2 }
                       }}
                       whileTap={{ scale: 0.98 }}
-                      className="group p-5 md:p-6 rounded-2xl bg-card/80 border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_8px_32px_rgba(0,212,255,0.15)] cursor-pointer h-full min-h-[140px]"
+                      className="group glass-card p-5 md:p-6 rounded-2xl hover:border-primary/50 cursor-pointer h-full min-h-[140px]"
                     >
                       <div className="flex items-start gap-4">
                         {/* Icon with glow */}

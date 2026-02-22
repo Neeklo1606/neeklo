@@ -172,37 +172,32 @@ export function HoverDetailCardInner(props: HoverDetailCardInnerProps) {
       </motion.div>
 
       <motion.div
-        className="p-4"
+        className="p-4 text-center"
         variants={shouldAnimate ? bottomSectionVariants : {}}
       >
         <motion.div
-          className="flex items-center justify-between mb-3"
+          className="flex items-center justify-center gap-2 flex-wrap mb-3"
           variants={shouldAnimate ? contentVariants : {}}
         >
           <motion.div
-            className="flex items-center gap-2"
-            variants={shouldAnimate ? bottomSectionVariants : {}}
+            className={`${pills.left.color} ${pills.left.textColor} px-3 py-1 rounded-full text-sm font-medium`}
+            variants={shouldAnimate ? pillVariants : {}}
           >
-            <motion.div
-              className={`${pills.left.color} ${pills.left.textColor} px-3 py-1 rounded-full text-sm font-medium`}
-              variants={shouldAnimate ? pillVariants : {}}
-            >
-              {pills.left.text}
-            </motion.div>
-            {pills.sparkle?.show && (
-              <motion.div
-                className={`${pills.sparkle.color} p-2 rounded-full`}
-                variants={shouldAnimate ? pillVariants : {}}
-                whileHover={
-                  shouldAnimate
-                    ? { rotate: 15, scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 25 } }
-                    : {}
-                }
-              >
-                <Sparkles className="w-3 h-3" />
-              </motion.div>
-            )}
+            {pills.left.text}
           </motion.div>
+          {pills.sparkle?.show && (
+            <motion.div
+              className={`${pills.sparkle.color} p-2 rounded-full`}
+              variants={shouldAnimate ? pillVariants : {}}
+              whileHover={
+                shouldAnimate
+                  ? { rotate: 15, scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 25 } }
+                  : {}
+              }
+            >
+              <Sparkles className="w-3 h-3" />
+            </motion.div>
+          )}
           <motion.div
             className={`${pills.right.color} ${pills.right.textColor} px-3 py-1 rounded-full text-sm font-medium`}
             variants={shouldAnimate ? pillVariants : {}}

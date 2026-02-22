@@ -145,7 +145,7 @@ const Products = () => {
       <StructuredData data={productsStructuredData} />
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         {/* Minimal Header */}
-        <section className="py-8 md:py-12">
+        <section className="py-12 md:py-16">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 16 }}

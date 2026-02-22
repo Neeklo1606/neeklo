@@ -23,7 +23,7 @@ const principles = [
 
 export const Approach = () => {
   return (
-    <section className="py-12 sm:py-16 md:py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <SectionTitle
           title="Наш подход"

@@ -20,159 +20,145 @@ textarea:focus-visible {
 }
 
 /* ============================================
-   NEEKLO STUDIO DESIGN SYSTEM
-   Premium Dark Mode Foundation
-   All colors MUST be HSL format
+   NEEKLO STUDIO — Light-Tech Design System 2026
+   Светлая, технологичная, минималистичная палитра
    ============================================ */
 
 @layer base {
   :root {
-    /* ============================================
-       DESIGN TOKENS — единая палитра
-       primary, accent, muted, border, bg — использовать только эти токены.
-       WCAG AA: ink на bg ~12:1, primary на white ~4.5:1, muted-foreground на bg ~4.6:1.
-       Hover: primary-hover/primary-active; focus: ring (--ring); active: brightness/scale в компонентах.
-       ============================================ */
-    
-    --bg: 220 14% 98%; /* #F7F8FA */
+    /* ---------- Backgrounds (HSL for Tailwind) ---------- */
+    --background: 220 25% 97%;        /* #F6F8FB */
+    --background-soft: 220 25% 95%;   /* #EEF2F7 */
+    --background-muted: 220 22% 92%; /* #E6EBF2 */
+    --bg: 220 25% 97%;
+    --background-secondary: 220 22% 92%;
+
+    --surface: 0 0% 100%;             /* #FFFFFF */
+    --surface-elevated: 220 33% 99%;  /* #FAFBFD */
+    --surface-glass: 0 0% 100% / 0.65;
     --white: 0 0% 100%;
-    --ink: 222 47% 11%; /* #0F172A — foreground */
-    --secondary: 220 9% 46%; /* #6B7280 — muted-foreground */
-    --accent: 221 83% 53%; /* #2563EB — primary/accent */
-    
-    /* RGB для rgba() в тенях и градиентах */
-    --ink-rgb: 15, 23, 42;
-    --primary-rgb: 37, 99, 235;
-    --bg-rgb: 247, 248, 250;
-    --white-rgb: 255, 255, 255;
-    --border-rgb: 229, 231, 235;
-    
-    /* Background colors */
-    --background: var(--bg);
-    --background-secondary: 0 0% 96%;
-    --surface: 0 0% 100%;
-    --surface-elevated: 0 0% 100%;
-    
-    /* Foreground colors */
-    --foreground: var(--ink);
-    --foreground-muted: var(--secondary);
-    --foreground-subtle: 220 9% 56%;
-    
-    /* Primary/Accent — blue SaaS */
-    --primary: var(--accent);
+
+    /* ---------- Text ---------- */
+    --text-primary: 222 47% 11%;      /* #0F172A */
+    --text-secondary: 220 13% 40%;    /* #5B6474 */
+    --text-muted: 220 14% 60%;        /* #8B95A7 */
+    --text-invert: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --ink: 222 47% 11%;
+    --foreground-muted: 220 13% 40%;
+    --foreground-subtle: 220 14% 60%;
+    --secondary: 220 13% 40%;
+
+    /* ---------- Accent (cyan light-tech) ---------- */
+    --accent: 195 100% 62%;           /* #3FD2FF */
+    --accent-strong: 195 82% 48%;     /* #0FB6E8 */
+    --accent-soft: 195 100% 62% / 0.12;
+    --accent-glow: 195 100% 62% / 0.25;
+    --primary: 195 100% 62%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 221 83% 48%;
-    --primary-active: 221 83% 58%;
-    --primary-glow: 221 83% 53%;
-    
-    --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 220 9% 42%;
-    --secondary-active: 220 9% 50%;
-    
-    --accent: 221 83% 53%;
+    --primary-hover: 195 82% 48%;
+    --primary-active: 195 100% 58%;
+    --primary-glow: 195 100% 62%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 221 83% 48%;
-    --accent-active: 221 83% 58%;
-    
-    /* Semantic colors */
+    --accent-hover: 195 82% 48%;
+    --accent-active: 195 100% 58%;
+
+    --primary-rgb: 63, 210, 255;
+    --ink-rgb: 15, 23, 42;
+    --bg-rgb: 246, 248, 251;
+    --white-rgb: 255, 255, 255;
+    --border-rgb: 226, 232, 240;
+
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 220 13% 35%;
+    --secondary-active: 220 13% 45%;
+
+    /* ---------- Borders ---------- */
+    --border-light: 214 32% 91%;      /* #E2E8F0 */
+    --border-medium: 214 32% 81%;     /* #CBD5E1 */
+    --border: 214 32% 91%;
+    --border-hover: 195 100% 62% / 0.3;
+    --input: 0 0% 100%;
+    --ring: 195 100% 62% / 0.25;
+
+    /* ---------- Semantic ---------- */
     --success: 153 100% 40%;
     --success-foreground: 0 0% 100%;
     --warning: 40 100% 50%;
-    --warning-foreground: var(--ink);
+    --warning-foreground: 222 47% 11%;
     --error: 0 100% 60%;
     --error-foreground: 0 0% 100%;
     --destructive: 0 100% 60%;
     --destructive-foreground: 0 0% 100%;
-    --info: var(--accent);
+    --info: 195 100% 62%;
     --info-foreground: 0 0% 100%;
-    
-    /* UI colors */
-    --card: var(--white);
-    --card-foreground: var(--ink);
-    --popover: var(--white);
-    --popover-foreground: var(--ink);
-    --muted: 220 14% 96%;
-    --muted-foreground: var(--secondary);
-    
-    /* Border & Input — тонкие, мягкие */
-    --border: 220 13% 91%; /* ~#E5E7EB */
-    --border-hover: 220 9% 46% / 0.2;
-    --input: var(--white);
-    --ring: 221 83% 53% / 0.25;
-    
-    /* Sidebar */
-    --sidebar-background: var(--white);
-    --sidebar-foreground: var(--ink);
-    --sidebar-primary: var(--accent);
+
+    /* ---------- UI ---------- */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --muted: 220 22% 92%;
+    --muted-foreground: 220 13% 40%;
+
+    /* ---------- Sidebar ---------- */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 195 100% 62%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: var(--ink);
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: var(--accent);
-    
-    /* ============================================
-       SPACING & SIZING (8px Grid System)
-       ============================================ */
-    
-    --spacing-xs: 0.25rem; /* 4px */
-    --spacing-sm: 0.5rem;  /* 8px */
-    --spacing-md: 1rem;    /* 16px */
-    --spacing-lg: 1.5rem;  /* 24px */
-    --spacing-xl: 2rem;    /* 32px */
-    --spacing-2xl: 3rem;   /* 48px */
-    --spacing-3xl: 4rem;   /* 64px */
-    --spacing-4xl: 6rem;   /* 96px */
-    
-    /* Layout */
-    --nav-h: 72px; /* высота зоны nav (отступ top + высота шапки) для calc(100vh - var(--nav-h)) */
-    --scroll-offset: 90px; /* отступ скролла под sticky nav для якорей */
+    --sidebar-accent: 220 22% 92%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 195 100% 62%;
+
+    /* ---------- Spacing & Layout ---------- */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+    --spacing-4xl: 6rem;
+    --nav-h: 72px;
+    --scroll-offset: 90px;
     --container-max-width: 1440px;
-    --container-padding-desktop: 5rem; /* 80px */
-    --container-padding-mobile: 1.5rem; /* 24px */
-    --section-spacing-desktop: 7.5rem; /* 120px */
-    --section-spacing-mobile: 4rem; /* 64px */
-    --grid-gap: 1.5rem; /* 24px */
-    
-    /* Border radius */
-    --radius: 1rem; /* 16px */
-    --radius-sm: 0.5rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.25rem;
-    --radius-2xl: 1.5rem;
-    
-    /* ============================================
-       SHADOWS & EFFECTS (Premium Light SaaS)
-       ============================================ */
-    
-    --shadow-sm: 0 1px 2px rgba(var(--ink-rgb), 0.04);
-    --shadow-md: 0 4px 12px rgba(var(--ink-rgb), 0.06);
-    --shadow-lg: 0 12px 24px rgba(var(--ink-rgb), 0.08);
-    --shadow-xl: 0 20px 40px rgba(var(--ink-rgb), 0.08);
-    --shadow-card: 0 4px 24px rgba(var(--ink-rgb), 0.06);
-    
-    --glow-primary: 0 8px 24px rgba(var(--primary-rgb), 0.35);
-    --glow-accent: 0 8px 24px rgba(var(--primary-rgb), 0.3);
-    --glow-success: 0 4px 16px rgba(34, 197, 94, 0.25);
-    --glow-strong: 0 8px 32px rgba(var(--primary-rgb), 0.4);
-    
-    --hero-input-bg: linear-gradient(165deg, hsl(var(--white)) 0%, hsl(var(--bg)) 100%);
-    
-    /* ============================================
-       TRANSITIONS (Premium Easing)
-       ============================================ */
-    
+    --container-padding-desktop: 5rem;
+    --container-padding-mobile: 1.5rem;
+    --section-spacing-desktop: 7.5rem;
+    --section-spacing-mobile: 4rem;
+    --grid-gap: 1.5rem;
+
+    /* ---------- Radius (light-tech 2026) ---------- */
+    --radius: 14px;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --radius-2xl: 28px;
+
+    /* ---------- Shadows — мягкие, без чёрных ---------- */
+    --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.12);
+    --shadow-xl: 0 20px 60px rgba(15, 23, 42, 0.12);
+    --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --glow-primary: 0 6px 20px rgba(63, 210, 255, 0.25);
+    --glow-accent: 0 6px 20px rgba(63, 210, 255, 0.25);
+    --glow-success: 0 4px 16px rgba(34, 197, 94, 0.2);
+    --glow-strong: 0 12px 35px rgba(63, 210, 255, 0.35);
+    --hero-input-bg: linear-gradient(165deg, hsl(var(--surface)) 0%, hsl(var(--background)) 100%);
+
+    /* ---------- Transitions ---------- */
     --transition-fast: 150ms;
     --transition-base: 300ms;
     --transition-slow: 600ms;
     --transition-slowest: 900ms;
     --easing-premium: cubic-bezier(0.16, 1, 0.3, 1);
     --easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* ============================================
-       Z-INDEX SCALE
-       ============================================ */
-    
+
+    /* ---------- Z-Index ---------- */
     --z-base: 0;
     --z-dropdown: 10;
     --z-sticky: 20;
@@ -183,17 +169,13 @@ textarea:focus-visible {
     --z-tooltip: 70;
   }
 
-  /* ============================================
-     LIGHT THEME (alias — совпадает с :root SaaS)
-     ============================================ */
-  
   .light-mode {
-    --background: var(--bg);
-    --foreground: var(--ink);
-    --primary: 221 83% 53%;
-    --accent: 221 83% 53%;
-    --muted-foreground: var(--secondary);
-    --hero-input-bg: linear-gradient(165deg, hsl(var(--white)) 0%, hsl(var(--bg)) 100%);
+    --background: 220 25% 97%;
+    --foreground: 222 47% 11%;
+    --primary: 195 100% 62%;
+    --accent: 195 100% 62%;
+    --muted-foreground: 220 13% 40%;
+    --hero-input-bg: linear-gradient(165deg, hsl(var(--surface)) 0%, hsl(var(--background)) 100%);
   }
 }
 
@@ -206,7 +188,7 @@ textarea:focus-visible {
   /* Prevent FOUC — светлый SaaS фон по умолчанию */
   html {
     background-color: hsl(var(--background));
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; /* плавная прокрутка по якорям */
     /* Offset под sticky nav: якорь не прячется под шапкой */
     scroll-padding-top: var(--scroll-offset, 90px);
     /* Переносы: не оставлять предлог в конце строки. Для этого в контенте между
@@ -237,6 +219,18 @@ textarea:focus-visible {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Micro Noise Overlay — едва заметная текстура */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
+    background-size: 3px 3px;
+    opacity: 0.3;
+    z-index: 1;
+  }
   
   /* Ensure sections have proper scroll margin for anchors (sticky nav offset) */
   section[id],
@@ -244,38 +238,48 @@ textarea:focus-visible {
     scroll-margin-top: var(--scroll-offset, 90px);
   }
 
-  /* Typography - Premium Hierarchy with fallbacks */
+  /* Единый вес заголовков на страницах (переопределяет font-bold в контенте) */
+  main h1, main h2, main h3, main h4, main h5, main h6 {
+    font-weight: 600;
+  }
+
+  /* Typography - единые заголовки font-weight 600 */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 700;
+    font-weight: 600;
     /* Prevent CLS from font loading */
     font-display: swap;
   }
   
+  /* Размеры на 1–2px меньше, чтобы текст не выходил за границы на узких экранах */
   h1 {
-    font-size: clamp(32px, 4.5vw, 48px);
-    font-weight: 700;
+    font-size: clamp(30px, 4.5vw, 46px);
+    font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    overflow-wrap: break-word;
   }
   
   h2 {
-    font-size: clamp(28px, 3.5vw, 36px);
+    font-size: clamp(26px, 3.5vw, 34px);
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.2;
+    overflow-wrap: break-word;
   }
   
   h3 {
-    font-size: clamp(21px, 2.7vw, 28px);
+    font-size: clamp(19px, 2.7vw, 26px);
     font-weight: 600;
     line-height: 1.3;
+    overflow-wrap: break-word;
   }
   
   h4 {
-    font-size: clamp(18px, 2.2vw, 21px);
+    font-size: clamp(16px, 2.2vw, 19px);
     font-weight: 600;
     line-height: 1.4;
+    overflow-wrap: break-word;
   }
   
   p {
@@ -284,6 +288,13 @@ textarea:focus-visible {
     font-weight: 400;
     line-height: 1.6;
     @apply text-foreground/90;
+  }
+
+  /* CLS: резерв места под изображения — всегда задавайте width/height в разметке, height: auto сохраняет пропорции */
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
   }
   
   small {
@@ -346,6 +357,135 @@ textarea:focus-visible {
   *:focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
+
+  /* Forms and inputs — surface, border-light, focus accent */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border-light));
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: hsl(var(--accent));
+    box-shadow: 0 0 0 3px hsl(var(--accent-soft));
+    outline: none;
+  }
+
+  /* ========== Единая система отступов (mobile, max-width: 768px) ========== */
+  @media (max-width: 768px) {
+    /* 1. Контейнер: единый горизонтальный padding 20px */
+    .container-mobile,
+    main .container-mobile,
+    [class*="max-w-"] .container-mobile {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+    /* Секции: 64px сверху и снизу */
+    main section {
+      padding-top: 64px !important;
+      padding-bottom: 64px !important;
+    }
+    /* Исключение: первый блок после hero = 24px сверху (видео → следующий блок) */
+    main section#cases,
+    main section:nth-of-type(2) {
+      margin-top: 0 !important;
+      padding-top: 24px !important;
+    }
+    /* 3. Внутри карточек: padding 20px */
+    .glass-card,
+    .glass-effect,
+    .services-teaser-card,
+    [class*="rounded-2xl"][class*="border"].bg-card,
+    main [class*="rounded-2xl"].border.bg-card,
+    main section [class*="rounded-xl"].border,
+    main section [class*="rounded-2xl"].border {
+      padding: 20px !important;
+    }
+    /* FAQ: карточки и контент */
+    main section#faq [class*="rounded-xl"].border,
+    main section#faq button[class*="py-5"] {
+      padding: 20px !important;
+    }
+    /* Карточки с p-6/p-8 (услуги, кейсы, прайс, детальные страницы) */
+    main [class*="rounded-2xl"][class*="p-6"],
+    main [class*="rounded-2xl"][class*="p-8"],
+    main [class*="rounded-xl"][class*="p-6"],
+    main [class*="rounded-xl"][class*="p-8"],
+    .glass-effect[class*="p-6"],
+    .glass-effect[class*="p-8"] {
+      padding: 20px !important;
+    }
+    /* Убрать отступы 80px+ и случайные большие margin */
+    main section[class*="pt-32"],
+    main section[class*="pt-28"],
+    main section[class*="pt-24"] {
+      padding-top: 64px !important;
+    }
+    main section[class*="mt-28"],
+    main section[class*="mt-32"] {
+      margin-top: 0 !important;
+    }
+    main section[class*="pb-28"],
+    main section[class*="pb-24"] {
+      padding-bottom: 64px !important;
+    }
+    /* 4. Между элементами: выровнять gap (16–20px между карточками, убрать gap-10/12/28) */
+    main section [class*="gap-10"] { gap: 16px !important; }
+    main section [class*="gap-12"] { gap: 20px !important; }
+    main section [class*="gap-28"] { gap: 20px !important; }
+    /* Footer: убрать избыточный pb-28 на mobile */
+    footer [class*="pb-28"] { padding-bottom: 64px !important; }
+  }
+
+  /* Mobile: отключить тяжёлые анимации, единый лёгкий transition */
+  @media (max-width: 767px) {
+    /* Единый transition для контента */
+    main section *,
+    .glass-card,
+    .card-hover,
+    .btn-primary,
+    .button-interactive,
+    [class*="transition-all"],
+    [class*="transition-transform"] {
+      transition: opacity 0.3s ease, transform 0.3s ease !important;
+    }
+    /* Убрать translateY и scale на hover на mobile */
+    .glass-card:hover,
+    .card-hover:hover,
+    .btn-primary:hover,
+    .button-interactive:hover {
+      transform: none !important;
+    }
+    /* Убрать тяжёлые blur (декоративные подложки), не трогать blur-[12px] и т.п. */
+    .blur-2xl,
+    .blur-3xl,
+    .blur-xl,
+    [class*="blur-[60"],
+    [class*="blur-[80"],
+    [class*="blur-[100"],
+    [class*="blur-[120"],
+    [class*="blur-[128"],
+    [class*="blur-[140"],
+    [class*="blur-[160"] {
+      filter: none !important;
+    }
+    /* box-shadow: не больше 40px blur */
+    .shadow-lg,
+    .shadow-xl,
+    main .shadow-lg,
+    main .shadow-xl,
+    .holographic-card {
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1) !important;
+    }
+    /* Меньший translateY для scroll-анимаций (не > 20px) */
+    .scroll-fade,
+    .scroll-stagger > * {
+      transform: translateY(12px);
+    }
+  }
 }
 
 @layer utilities {
@@ -373,10 +513,32 @@ textarea:focus-visible {
     border: 1px solid hsl(var(--border));
     box-shadow: var(--shadow-card);
   }
+
+  /* Glass Card — карточки услуг, AI, преимущества, кейсы */
+  .glass-card {
+    background: hsl(var(--surface-glass));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-md);
+    transition: 0.4s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  /* Sticky nav — светлый glass */
+  .nav-bar-glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid hsl(var(--border-light));
+  }
   
   /* Gradient utilities */
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-strong)));
   }
   
   .gradient-secondary {
@@ -384,19 +546,19 @@ textarea:focus-visible {
   }
   
   .gradient-cyan-purple {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-strong)));
   }
   
-  /* Text gradients */
+  /* Text gradients — accent only, без кислотных цветов */
   .text-gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-strong)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .text-gradient-cyan-purple {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-strong)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -480,25 +642,61 @@ textarea:focus-visible {
   min-height: 100dvh;
 }
 .hero-minimal {
-  padding-top: 32px;
+  position: relative;
+  padding-top: 36px;
   padding-bottom: 24px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow-x: hidden;
-  background:
-    radial-gradient(600px 400px at 15% 25%, rgba(var(--primary-rgb), 0.028) 0%, transparent 55%),
-    linear-gradient(180deg, hsl(var(--bg)) 0%, hsl(210 20% 99%) 45%, hsl(var(--white)) 100%);
+  background: hsl(var(--background));
 }
-/* Background grid — always behind text, never overlaps */
+/* Мягкая радиальная виньетка (accent) — скрыта на mobile, чтобы не мешать тексту */
+.hero-minimal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 60% 30%,
+    hsl(var(--accent-soft)),
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+@media (max-width: 768px) {
+  .hero-minimal::before {
+    display: none;
+  }
+}
+/* Тонкая анимированная сетка — сниженная opacity, не перекрывает текст */
 .hero-minimal__grid {
   z-index: 0;
-  opacity: 0.009;
-  mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 85%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 85%);
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridMove 25s linear infinite;
+  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 75%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 75%);
   mask-size: cover;
   -webkit-mask-size: cover;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  .hero-minimal__grid {
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 38%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 15%, transparent 38%);
+    opacity: 0.85;
+  }
+}
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to { background-position: 40px 40px; }
 }
 /* B) Общий контейнер двух колонок: grid, items-stretch — одинаковая высота */
 .hero-minimal .hero-minimal__inner {
@@ -580,10 +778,19 @@ textarea:focus-visible {
     content: " ";
   }
 }
+/* Mobile: h1 32–34px, line-height 1.15, font-weight 600 */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(32px, 4.5vw, 34px);
+    line-height: 1.15;
+    font-weight: 600;
+  }
+}
 @media (max-width: 640px) {
   .hero-title {
-    font-size: 28px;
-    line-height: 1.25;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 600;
   }
   .hero-line + .hero-line {
     margin-top: 0.15em;
@@ -626,8 +833,8 @@ textarea:focus-visible {
 @media (max-width: 1023px) {
   .hero-minimal {
     min-height: auto;
-    padding-top: 48px;
-    padding-bottom: 48px;
+    padding-top: 36px;
+    padding-bottom: 24px;
   }
   .hero-minimal .hero-minimal__inner {
     display: flex;
@@ -656,14 +863,14 @@ textarea:focus-visible {
     justify-content: center;
   }
 }
-/* Mobile <768px — 34px title, line-height 1.2 */
+/* Mobile <768px — отступы: 36px сверху от header, 24px подзаголовок→видео, 24px снизу */
 @media (max-width: 767px) {
   .hero-minimal {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 36px;
+    padding-bottom: 24px;
   }
   .hero-minimal .hero-minimal__inner {
-    gap: 36px;
+    gap: 24px;
   }
   .hero-minimal .hero-minimal__left .hero-badge {
     padding: 6px 12px;
@@ -674,14 +881,14 @@ textarea:focus-visible {
     line-height: 1.55;
   }
 }
-/* Small mobile: компактные отступы, CTA на всю ширину */
+/* Small mobile: те же вертикальные отступы (36px сверху, 24px подзаголовок→видео, 24px снизу) */
 @media (max-width: 639px) {
   .hero-minimal {
-    padding-top: 28px;
-    padding-bottom: 32px;
+    padding-top: 36px;
+    padding-bottom: 24px;
   }
   .hero-minimal .hero-minimal__inner {
-    gap: 28px;
+    gap: 24px;
   }
   .hero-minimal .hero-minimal__left .hero-badge {
     padding: 5px 10px;
@@ -697,17 +904,45 @@ textarea:focus-visible {
     padding: 10px 18px;
     min-height: 42px;
   }
-  .hero-minimal .hero-video-container {
-    border-radius: 0;
+}
+
+/* Mobile Hero: видео — главный элемент, 100% × 56vw, скругление 20px, без лишних отступов */
+@media (max-width: 768px) {
+  .hero-minimal .hero-minimal__inner {
+    gap: 24px;
+  }
+  .hero-minimal .hero-right.hero-video-wrap {
+    order: 1;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+  .hero-minimal .hero-minimal__left {
+    order: 2;
+  }
+  .hero-minimal .hero-video-wrap .hero-video-container {
+    width: 100% !important;
+    min-height: 220px;
+    max-height: 260px;
+    height: 56vw;
+    border-radius: 20px;
   }
 }
 .hero-minimal .hero-minimal__left .hero-cta-primary {
   padding: 10px 20px;
   font-size: 15px;
   gap: 6px;
+  background: hsl(var(--accent));
+  color: white;
+  box-shadow: 0 6px 20px rgba(63, 210, 255, 0.25);
+  transition: 0.3s ease;
 }
 .hero-minimal .hero-minimal__left .hero-cta-primary:hover {
-  box-shadow: var(--glow-primary);
+  background: hsl(var(--accent-strong));
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(63, 210, 255, 0.35);
 }
 .hero-minimal .hero-minimal__left .hero-cta-primary:focus-visible {
   outline: 2px solid hsl(var(--primary));
@@ -736,69 +971,35 @@ textarea:focus-visible {
     max-height: 85vh;
   }
 }
-/* Отдельный слой для видео — меньше подлагиваний при скролле */
+/* Отдельный слой для видео — меньше подлагиваний при скролле; один лёгкий drop-shadow */
 .hero-minimal .hero-video-container {
   transform: translateZ(0);
   backface-visibility: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
-/* Light radial glow behind video container */
+/* Видео на всю область */
+.hero-minimal .hero-video-container video {
+  object-fit: cover;
+}
+/* Убрать оверлей и иконку play поверх видео (autoplay + muted + playsInline) */
+.hero-minimal .hero-video-container video::-webkit-media-controls-start-playback-button,
+.hero-minimal .hero-video-container video::-webkit-media-controls-overlay-play-button,
+.hero-minimal .hero-video-container video::-webkit-media-controls-panel,
+.hero-minimal .hero-video-container video::-webkit-media-controls-enclosure {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.hero-minimal .hero-video-container video[poster]::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+/* Убрать лишние тени: glow за контейнером скрыт */
 .hero-minimal .hero-video-glow {
-  position: absolute;
-  inset: -24px;
-  z-index: -1;
-  border-radius: 32px;
-  background: radial-gradient(
-    ellipse 80% 70% at 50% 50%,
-    rgba(var(--primary-rgb), 0.08) 0%,
-    rgba(var(--primary-rgb), 0.03) 50%,
-    transparent 75%
-  );
-  filter: blur(14px);
-  pointer-events: none;
+  display: none;
 }
-/* Мягкий radial glow позади правой колонки (primary token) */
+/* Убрать большой radial glow позади колонки с видео */
 .hero-minimal .hero-right::before {
-  content: '';
-  position: absolute;
-  inset: -80px;
-  z-index: -1;
-  background: radial-gradient(
-    ellipse 120% 100% at 50% 50%,
-    rgba(var(--primary-rgb), 0.12) 0%,
-    rgba(var(--primary-rgb), 0.06) 35%,
-    rgba(var(--primary-rgb), 0.03) 55%,
-    transparent 75%
-  );
-  filter: blur(48px);
-  opacity: 0.9;
-  pointer-events: none;
-}
-@media (min-width: 1024px) {
-  .hero-minimal .hero-right::before {
-    inset: -100px;
-    background: radial-gradient(
-      ellipse 130% 110% at 50% 50%,
-      rgba(var(--primary-rgb), 0.14) 0%,
-      rgba(var(--primary-rgb), 0.07) 32%,
-      rgba(var(--primary-rgb), 0.03) 52%,
-      transparent 72%
-    );
-    filter: blur(56px);
-    opacity: 0.95;
-  }
-}
-@media (max-width: 767px) {
-  .hero-minimal .hero-right::before {
-    inset: -48px;
-    background: radial-gradient(
-      ellipse 100% 85% at 50% 50%,
-      rgba(var(--primary-rgb), 0.1) 0%,
-      rgba(var(--primary-rgb), 0.05) 40%,
-      transparent 70%
-    );
-    filter: blur(40px);
-    opacity: 0.8;
-  }
+  display: none;
 }
 
 /* Marquee */
@@ -850,6 +1051,17 @@ textarea:focus-visible {
   }
   50% {
     filter: drop-shadow(0 0 30px hsl(var(--primary) / 0.5));
+  }
+}
+
+@media (max-width: 767px) {
+  @keyframes glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.25));
+    }
+    50% {
+      filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.35));
+    }
   }
 }
 
@@ -983,23 +1195,43 @@ textarea:focus-visible {
     animation: marquee-24s 24s linear infinite;
   }
 
-  /* Button hover/active effects - scale with soft glow */
+  /* Primary button — accent, glow, hover lift */
+  .btn-primary {
+    background: hsl(var(--accent));
+    color: white;
+    box-shadow: 0 6px 20px rgba(63, 210, 255, 0.25);
+    transition: 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: hsl(var(--accent-strong));
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(63, 210, 255, 0.35);
+  }
+  /* Secondary button */
+  .btn-secondary {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border-light));
+    color: hsl(var(--text-primary));
+    transition: 0.3s ease;
+  }
+  .btn-secondary:hover {
+    border-color: hsl(var(--accent));
+  }
+  /* Button hover/active effects */
   .button-interactive {
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     will-change: transform, box-shadow;
   }
-
   .button-interactive:hover {
-    transform: scale(1.02);
+    transform: translateY(-2px);
     box-shadow: var(--glow-accent);
   }
   .button-interactive:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
   }
-
   .button-interactive:active {
-    transform: scale(0.98);
+    transform: translateY(0);
   }
 
   /* Prevent flicker and transform jumps */

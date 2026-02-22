@@ -37,7 +37,7 @@ export const ServicesTeaser = () => {
     .sort((a, b) => a.order - b.order);
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-[120px] bg-card/30">
+    <section className="py-12 sm:py-16 md:py-16 bg-card/30">
       <Container>
         <SectionTitle
           title="Наши услуги"

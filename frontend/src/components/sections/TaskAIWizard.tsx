@@ -92,7 +92,7 @@ export function TaskAIWizard() {
 
   return (
     <>
-      <section className="py-16 md:py-24 lg:py-32 relative overflow-hidden">
+      <section className="py-12 md:py-16 relative overflow-hidden">
         <Container>
           <motion.div
             initial="hidden"

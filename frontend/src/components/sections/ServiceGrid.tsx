@@ -115,7 +115,7 @@ export const ServiceGrid = memo(function ServiceGrid() {
                 className="flex flex-col items-center justify-center gap-2 sm:gap-2.5 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-card hover:bg-accent/50 border border-border/40 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group h-[88px] sm:h-[100px]"
               >
                 {/* Icon Container */}
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-200`}>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-md md:group-hover:scale-110 transition-transform duration-200`}>
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 

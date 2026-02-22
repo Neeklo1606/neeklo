@@ -4,7 +4,7 @@ import logosData from "@/data/logos.json";
 
 export const ProofStrip = () => {
   return (
-    <section className="py-16 border-y border-border/50">
+    <section className="py-12 md:py-16 border-y border-border/50">
       <Container>
         <motion.div
           initial={{ opacity: 0 }}

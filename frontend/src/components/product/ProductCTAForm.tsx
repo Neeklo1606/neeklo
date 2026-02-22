@@ -39,7 +39,7 @@ export const ProductCTAForm = ({
 
   return (
     <>
-      <section className="py-10 sm:py-12 md:py-16">
+      <section className="py-12 md:py-16">
       <Container>
         <motion.div
           className="max-w-lg mx-auto"
@@ -119,7 +119,7 @@ export const ProductCTAForm = ({
               <motion.button
                 type="submit"
                 whileTap={{ scale: 0.98 }}
-                className="w-full h-12 md:h-14 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                className="w-full h-12 md:h-14 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg md:hover:shadow-xl md:hover:scale-[1.02]"
               >
                 <Send size={18} />
                 Обсудить проект

@@ -101,27 +101,30 @@ export const CTAForm = () => {
     <>
       <Confetti isActive={showConfetti} />
       <section id="contact" className="py-12 md:py-16 relative overflow-hidden bg-gradient-to-br from-background via-background-secondary to-background">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1200px] mx-auto container-mobile px-5 sm:px-6 lg:px-8">
+        {/* Заголовок секции — как у Услуги / Кейсы / Полезно для бизнеса */}
+        <div className="flex flex-col items-center text-center mb-8 md:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
+            Свяжитесь с нами
+          </h2>
+          <p className="text-muted-foreground mt-1 text-sm sm:text-base max-w-xl">
+            Получите бесплатный аудит и расчёт сроков за 24 часа
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-16 items-center">
-          {/* Left Column */}
+          {/* Left Column - benefits */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
-            className="lg:col-span-3 text-center lg:text-left"
+            className="lg:col-span-3 text-center"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">Начните сейчас</span>
             </div>
-            
-            <h2 className="text-3xl md:text-4xl lg:text-[48px] font-bold mb-4">
-              Готовы начать?
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground mb-8">
-              Получите бесплатный аудит за 24 часа
-            </p>
 
             {/* Benefits List */}
             <div className="space-y-3 md:space-y-4">
@@ -135,7 +138,7 @@ export const CTAForm = () => {
                     duration: shouldReduceMotion ? 0 : 0.4, 
                     delay: shouldReduceMotion ? 0 : index * 0.1 
                   }}
-                  className="flex items-center gap-3 justify-center lg:justify-start"
+                  className="flex items-center gap-3 justify-center"
                 >
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                     <Check size={14} className="text-primary" />
@@ -150,11 +153,11 @@ export const CTAForm = () => {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true }}
             transition={{ duration: shouldReduceMotion ? 0 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
             className="lg:col-span-2"
           >
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 p-5 md:p-8 rounded-2xl shadow-xl">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 p-6 rounded-2xl shadow-xl">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 {/* Service Selection - Game Style Buttons */}
                 <div>
@@ -258,7 +261,7 @@ export const CTAForm = () => {
                   className={`w-full h-12 md:h-14 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${
                     isSuccess
                       ? "bg-green-500 text-white shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-                      : "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-[0_4px_20px_rgba(var(--primary-rgb),0.4)] hover:shadow-[0_4px_30px_rgba(var(--primary-rgb),0.6)] hover:scale-[1.02]"
+                      : "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-[0_4px_20px_rgba(var(--primary-rgb),0.4)] md:hover:shadow-[0_4px_30px_rgba(var(--primary-rgb),0.6)] md:hover:scale-[1.02]"
                   } disabled:opacity-70 disabled:cursor-not-allowed`}
                 >
                   {isSubmitting ? (

@@ -63,7 +63,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0 pt-24 md:pt-28">
+      <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0 pt-24">
         <Container>
           <header className="mb-8 md:mb-10">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
@@ -186,7 +186,7 @@ export default function Blog() {
           </div>
 
           {filtered.length === 0 && (
-            <div className="text-center py-16 text-muted-foreground">
+            <div className="text-center py-12 md:py-16 text-muted-foreground">
               <p>По выбранным фильтрам статей не найдено</p>
               <button
                 type="button"

@@ -74,7 +74,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
 
   if (isIconLayout) {
     return (
-      <section id="services" className="py-6 md:py-20 bg-card text-foreground">
+      <section id="services" className="py-12 md:py-16 bg-card text-foreground">
         <Container className="max-w-[1200px]">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight tracking-tight mb-3">
@@ -130,7 +130,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
   }
 
   return (
-    <section id="services" className="py-6 md:py-20 bg-card text-foreground">
+    <section id="services" className="py-12 md:py-16 bg-card text-foreground">
       <Container className="max-w-[1200px]">
         {(d.section_title || showShopMode) && (
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
@@ -160,7 +160,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
               className={cn(
                 "rounded-[20px] border-[1.5px] border-border overflow-hidden",
                 "bg-card cursor-pointer transition-all duration-250",
-                "hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1",
+                "hover:border-primary/30 md:hover:shadow-lg md:hover:shadow-primary/5 md:hover:-translate-y-1",
                 "relative focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
               )}
             >
@@ -177,7 +177,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
                       height={360}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover md:group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
                     <span className="text-4xl opacity-60">📦</span>

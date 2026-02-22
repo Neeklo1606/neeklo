@@ -25,7 +25,7 @@ const ServiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-24 md:pt-32 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-20">
+      <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container>
           {/* Back button */}
           <motion.div
@@ -48,7 +48,7 @@ const ServiceDetail = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-10 md:mb-16"
+            className="mb-8 md:mb-10"
           >
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4">
               {service.title}

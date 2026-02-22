@@ -103,13 +103,14 @@ export default {
         },
       },
       borderRadius: {
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
         xl: "var(--radius-xl)",
         "2xl": "var(--radius-2xl)",
       },
       boxShadow: {
+        xs: "var(--shadow-xs)",
         sm: "var(--shadow-sm)",
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
@@ -177,8 +178,8 @@ export default {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-down": "accordion-down 0.25s ease-out",
+        "accordion-up": "accordion-up 0.25s ease-out",
         "fade-in": "fadeIn 0.6s ease-out forwards",
         "slide-up": "slideUp 0.8s ease-out forwards",
         "glow": "glow 3s ease-in-out infinite",

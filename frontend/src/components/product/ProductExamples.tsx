@@ -48,7 +48,7 @@ export function ProductExamples({ category, maxItems = 6 }: ProductExamplesProps
     
     return (
       <section id="examples" className="py-10 md:py-14">
-        <div className="container max-w-6xl mx-auto px-4">
+        <div className="container max-w-6xl mx-auto container-mobile px-5">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl md:text-2xl font-bold text-foreground">
               Примеры работ
@@ -73,7 +73,7 @@ export function ProductExamples({ category, maxItems = 6 }: ProductExamplesProps
 
   return (
     <section id="examples" className="py-10 md:py-14">
-      <div className="container max-w-6xl mx-auto px-4">
+      <div className="container max-w-6xl mx-auto container-mobile px-5">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-foreground">

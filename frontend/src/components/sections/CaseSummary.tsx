@@ -12,7 +12,7 @@ interface CaseSummaryProps {
 
 export const CaseSummary = ({ client, role, duration, stack, results }: CaseSummaryProps) => {
   return (
-    <section className="py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

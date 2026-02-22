@@ -175,7 +175,7 @@ export const MainNav = () => {
             "rounded-lg md:rounded-xl",
             "px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-2",
             "min-h-10 md:min-h-11",
-            "bg-card/95 backdrop-blur-[16px] border border-border shadow-sm text-foreground"
+            "nav-bar-glass border-0 border-b border-border shadow-sm text-foreground"
           )}
         >
             {/* Logo — левая колонка */}
@@ -208,9 +208,9 @@ export const MainNav = () => {
                   const className = cn(
                     "relative text-sm font-medium rounded-full transition-all duration-300 ease-out overflow-hidden cursor-pointer",
                     "px-4 py-2",
-                    active ? "text-white" : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                    active ? "text-primary" : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                   );
-                  const pillClass = "absolute inset-0 rounded-full bg-black";
+                  const pillClass = "absolute inset-0 rounded-full bg-primary/15";
                   return (
                     <li key={item.href + (item.sectionId ?? "")} className="relative">
                       <Link to={item.href} className={className} aria-current={active ? "page" : undefined}>
@@ -361,7 +361,7 @@ export const MainNav = () => {
                         className={cn(
                           "block px-5 py-4 rounded-xl min-h-[48px] flex items-center cursor-pointer",
                           "text-base md:text-lg font-medium transition-all duration-200",
-                          item.active ? "bg-black text-white" : "text-foreground hover:bg-foreground/5 active:scale-[0.98]"
+                          item.active ? "text-primary bg-primary/10" : "text-foreground hover:bg-foreground/5 active:scale-[0.98]"
                         )}
                         aria-current={item.active ? "page" : undefined}
                       >
@@ -381,9 +381,9 @@ export const MainNav = () => {
                   }}
                   className={cn(
                     "flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl min-h-[48px]",
-                    "bg-gradient-to-r from-cyan-400 to-cyan-500 text-black font-bold",
+                    "bg-primary text-primary-foreground font-bold",
                     "text-base md:text-lg",
-                    "transition-all duration-200 hover:shadow-lg hover:shadow-cyan-500/30"
+                    "btn-primary"
                   )}
                   aria-label="Узнать стоимость проекта"
                 >

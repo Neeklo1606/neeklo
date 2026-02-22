@@ -22,7 +22,7 @@ export const CaseStory = ({ challenge, approach, solution, outcome }: CaseStoryP
   ];
 
   return (
-    <section className="py-20 bg-card/30">
+    <section className="py-12 md:py-16 bg-card/30">
       <Container>
         <div className="max-w-4xl mx-auto space-y-16">
           {sections.map((section, index) => (

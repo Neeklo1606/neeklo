@@ -19,7 +19,7 @@ const tools = [
 
 export const TechStack = () => {
   return (
-    <section className="py-20 bg-card/30">
+    <section className="py-12 md:py-16 bg-card/30">
       <Container>
         <SectionTitle
           title="Инструменты и технологии"
@@ -43,7 +43,7 @@ export const TechStack = () => {
               transition={{ duration: 0.4, delay: index * 0.05 }}
               className="group"
             >
-              <div className="bg-card border border-border rounded-xl p-6 text-center hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+              <div className="glass-card rounded-xl p-6 text-center hover:border-primary/50 transition-all duration-300">
                 <div className="text-2xl font-heading font-bold text-foreground/90 group-hover:text-primary transition-colors mb-2">
                   {tool.name}
                 </div>

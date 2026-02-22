@@ -25,7 +25,7 @@ export const CaseCard = memo(function CaseCard({
   return (
     <Link
       to={`/portfolio/${slug}`}
-      className={`group block overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${className}`}
+      className={`group block overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 md:hover:-translate-y-1 md:hover:shadow-lg ${className}`}
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         {!imageError && image ? (
@@ -37,7 +37,7 @@ export const CaseCard = memo(function CaseCard({
             loading={priority ? "eager" : "lazy"}
             decoding={priority ? "sync" : "async"}
             fetchPriority={priority ? "high" : "auto"}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 md:group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         ) : (

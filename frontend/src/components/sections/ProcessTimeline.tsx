@@ -96,7 +96,7 @@ export const ProcessTimeline = () => {
       </div>
 
       {/* Content Container */}
-      <div className="relative h-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+      <div className="relative h-full max-w-[1400px] mx-auto container-mobile px-5 sm:px-6 lg:px-8 flex items-center">
         <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-16 items-center">
           
           {/* Left Column - Content */}

@@ -279,7 +279,7 @@ export const BriefForm = () => {
           type="submit"
           disabled={isSubmitting}
           className="w-full md:w-auto md:min-w-[240px] h-14 text-base font-semibold
-            bg-gradient-to-r from-primary to-secondary hover:scale-[1.02] active:scale-[0.98]
+            bg-gradient-to-r from-primary to-secondary md:hover:scale-[1.02] active:scale-[0.98]
             transition-all duration-300 shadow-glow-primary
             hover:shadow-[0_0_32px_hsl(var(--primary)/0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
         >

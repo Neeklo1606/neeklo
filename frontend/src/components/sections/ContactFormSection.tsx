@@ -169,7 +169,7 @@ export const ContactFormSection = () => {
   }
 
   return (
-    <section id="brief-form" className="relative py-8 sm:py-12 md:py-24 overflow-hidden bg-muted/30 dark:bg-background">
+    <section id="brief-form" className="relative py-12 md:py-16 overflow-hidden bg-muted/30 dark:bg-background">
       {/* Background Effects - Light themed */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/5 dark:bg-primary/8 rounded-full blur-[120px]" />

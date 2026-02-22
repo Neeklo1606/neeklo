@@ -140,7 +140,7 @@ const WorkDetail = () => {
     <div className="min-h-screen bg-background">
       <StructuredData data={creativeWorkSchema} />
       
-      <main className="pt-20 md:pt-24 lg:pt-28 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
+      <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container className="py-3 md:py-4">
           <Breadcrumbs
             items={[
@@ -214,7 +214,7 @@ const WorkDetail = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
             >
               {caseData.client && (
                 <div className="glass-effect rounded-xl p-4 md:p-6">
@@ -253,7 +253,7 @@ const WorkDetail = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mb-16"
+              className="mb-10"
             >
               <h2 className="text-2xl md:text-3xl font-heading font-semibold mb-6">Результаты</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -272,7 +272,7 @@ const WorkDetail = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mb-16"
+              className="mb-10"
             >
               <h2 className="text-2xl md:text-3xl font-heading font-semibold mb-6">Метрики</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -291,7 +291,7 @@ const WorkDetail = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="mb-16"
+            className="mb-10"
           >
             <h2 className="text-2xl md:text-3xl font-heading font-semibold mb-6">Технологии</h2>
             <div className="flex flex-wrap gap-3">
@@ -314,7 +314,7 @@ const WorkDetail = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className="mb-16"
+              className="mb-10"
             >
               <div className="glass-effect rounded-2xl p-8 md:p-10">
                 <p className="text-xl md:text-2xl font-medium mb-6 leading-relaxed">

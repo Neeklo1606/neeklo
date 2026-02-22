@@ -25,7 +25,7 @@ export const CaseMediaGallery = memo(function CaseMediaGallery({
   if (!items || items.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-20">
+    <section className="py-12 md:py-16">
       <Container>
         <motion.h2
           className="text-2xl md:text-3xl font-heading font-bold mb-8"

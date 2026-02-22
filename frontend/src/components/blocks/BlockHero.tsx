@@ -14,10 +14,11 @@ interface HeroData {
   poster_src?: string;
 }
 
-/** Всегда новый светлый hero (HeroMinimal). Старые поля (cta_text, scroll_target) маппятся в новые. */
+/** Всегда новый светлый hero (HeroMinimal). Старые поля (cta_text, scroll_target) маппятся в новые. Отступ 48px до следующего блока. */
 export function BlockHero({ block }: { block: CmsBlock }) {
   const d = (block.data || {}) as HeroData;
   return (
+    <div className="mb-12">
     <HeroMinimal
       title={d.title}
       subtitle={d.subtitle}
@@ -28,5 +29,6 @@ export function BlockHero({ block }: { block: CmsBlock }) {
       videoSrc={d.video_src}
       posterSrc={d.poster_src}
     />
+    </div>
   );
 }

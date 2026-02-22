@@ -17,7 +17,7 @@ interface CaseExamplesProps {
 
 export const CaseExamples = ({ title, cases }: CaseExamplesProps) => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
+    <section className="py-12 md:py-16 relative overflow-hidden">
       <Container>
         <motion.h2
           className="text-3xl md:text-4xl font-heading font-bold text-center mb-16"
