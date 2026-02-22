@@ -1,7 +1,9 @@
 #!/bin/bash
 # Развёртывание на сервере (Beget: dsc23ytp@dragon.beget.ru)
-# Запуск: после SSH выполнить: bash ~/neeklo/deploy-server.sh
-# Либо: ssh dsc23ytp@dragon.beget.ru 'cd ~/neeklo/public_html && bash ../deploy-server.sh'
+# ВАЖНО: скрипт нужно запускать НА СЕРВЕРЕ по SSH — иначе изменения на сайт не попадут.
+# Запуск: ssh на сервер, затем:
+#   cd ~/neeklo && git pull origin main && bash deploy-server.sh
+# После деплоя проверьте: https://neeklo.ru/frontend/deploy-date.txt (должна быть сегодняшняя дата).
 
 set -e
 
@@ -31,6 +33,8 @@ if [ -d "frontend" ]; then
   npm ci 2>/dev/null || npm install
   npm run build
   cd "$PROJECT_DIR"
+  # Метка деплоя: по ней можно проверить, что на сервере свежая сборка (откройте https://ваш-домен/frontend/deploy-date.txt)
+  echo "Deploy: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > public/frontend/deploy-date.txt
 fi
 
 echo "==> Migrate fresh + seed"
