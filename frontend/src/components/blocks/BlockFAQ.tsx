@@ -9,6 +9,8 @@ import type { CmsBlock } from "./BlockRenderer";
 interface FAQItem {
   question: string;
   answer: string;
+  /** Показывается справа в строке (например: "от 120 000 ₽, 7–10 дней") */
+  meta?: string;
 }
 
 interface BlockFAQData {
@@ -92,20 +94,27 @@ export function BlockFAQ({ block }: { block: CmsBlock }) {
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
                 >
-                  <span className="text-sm sm:text-base md:text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300 pr-2">
+                  <span className="text-sm sm:text-base md:text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300 pr-2 min-w-0">
                     {faq.question}
                   </span>
-                  <motion.div
-                    animate={{ rotate: openIndex === index ? 180 : 0 }}
-                    transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
-                    className="flex-shrink-0 w-8 h-8 sm:w-auto sm:h-auto flex items-center justify-center"
-                    aria-hidden
-                  >
-                    <ChevronDown
-                      size={22}
-                      className="text-muted-foreground group-hover:text-primary transition-colors duration-300 sm:w-5 sm:h-5"
-                    />
-                  </motion.div>
+                  <span className="flex items-center gap-2 flex-shrink-0">
+                    {faq.meta && (
+                      <span className="text-xs sm:text-sm text-muted-foreground tabular-nums hidden sm:inline">
+                        {faq.meta}
+                      </span>
+                    )}
+                    <motion.div
+                      animate={{ rotate: openIndex === index ? 180 : 0 }}
+                      transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
+                      className="w-8 h-8 sm:w-auto sm:h-auto flex items-center justify-center"
+                      aria-hidden
+                    >
+                      <ChevronDown
+                        size={22}
+                        className="text-muted-foreground group-hover:text-primary transition-colors duration-300 sm:w-5 sm:h-5"
+                      />
+                    </motion.div>
+                  </span>
                 </button>
 
                 <AnimatePresence>
