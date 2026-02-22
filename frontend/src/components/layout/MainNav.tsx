@@ -171,17 +171,17 @@ export const MainNav = () => {
             ease: [0.16, 1, 0.3, 1],
           }}
           className={cn(
-            "flex items-center justify-between transition-all duration-500 ease-out",
+            "grid grid-cols-[1fr_auto_1fr] items-center gap-4 transition-all duration-500 ease-out",
             "rounded-lg md:rounded-xl",
             "px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-2",
             "min-h-10 md:min-h-11",
             "bg-card/95 backdrop-blur-[16px] border border-border shadow-sm text-foreground"
           )}
         >
-            {/* Logo */}
+            {/* Logo — левая колонка */}
             <Link 
               to="/" 
-              className="relative z-50 flex items-center flex-shrink-0 transition-all duration-500 cursor-pointer"
+              className="relative z-50 flex items-center justify-start transition-all duration-500 cursor-pointer"
             >
               <motion.div
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
@@ -190,18 +190,18 @@ export const MainNav = () => {
                 <img
                   src={logoDark}
                   alt="Neeklo Studio"
-                  width={160}
-                  height={46}
+                  width={200}
+                  height={58}
                   loading="eager"
                   decoding="sync"
                   fetchPriority="high"
-                  className="w-auto h-7 md:h-8 transition-all duration-500 ease-out [transform:scale(1.04)]"
+                  className="w-auto h-9 sm:h-10 md:h-11 transition-all duration-500 ease-out"
                 />
               </motion.div>
             </Link>
 
-            {/* Desktop Navigation - Center: якоря на главной + ссылки на страницы */}
-            <nav className="hidden md:flex items-center justify-center flex-1 transition-all duration-500">
+            {/* Desktop Navigation — центр, ровно посередине */}
+            <nav className="hidden md:flex items-center justify-center transition-all duration-500">
               <ul className="flex items-center gap-1">
                 {navItems.map((item) => {
                   const active = isActive(item.href, item.sectionId);
@@ -228,8 +228,8 @@ export const MainNav = () => {
               </ul>
             </nav>
 
-            {/* Right Side */}
-            <div className="flex items-center flex-shrink-0 gap-2">
+            {/* Right Side — правая колонка */}
+            <div className="flex items-center justify-end gap-2">
               {/* Cart - Desktop */}
               <motion.button
                 type="button"

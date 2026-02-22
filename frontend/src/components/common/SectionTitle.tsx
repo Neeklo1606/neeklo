@@ -28,7 +28,7 @@ export const SectionTitle = ({
       className={cn("mb-14 md:mb-16", alignmentClass, className)}
       {...props}
     >
-      <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-5 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent leading-tight">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5 leading-tight">
         {title}
       </h2>
       {subtitle && (

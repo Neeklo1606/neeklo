@@ -62,7 +62,7 @@ export function DirectionsSection() {
             transition={{ duration: 0.4 }}
             className="text-center space-y-2"
           >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
               Направления
             </h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">

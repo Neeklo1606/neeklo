@@ -77,7 +77,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
       <section id="services" className="py-6 md:py-20 bg-card text-foreground">
         <Container className="max-w-[1200px]">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-            <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight tracking-tight mb-3">
               {(d.section_title || "Услуги").split("\n").map((line, i) => (
                 <span key={i}>
                   {i > 0 && <br />}
@@ -134,7 +134,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
       <Container className="max-w-[1200px]">
         {(d.section_title || showShopMode) && (
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-[2.75rem] leading-tight tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight tracking-tight mb-3">
               {(d.section_title || "Выберите услугу").split("\n").map((line, i) => (
                 <span key={i}>
                   {i > 0 && <br />}

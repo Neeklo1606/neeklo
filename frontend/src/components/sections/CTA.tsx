@@ -40,7 +40,7 @@ export const CTA = () => {
             variants={variants.fadeInUp}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 sm:mb-6 bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
               Готовы обсудить
               <br />
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">

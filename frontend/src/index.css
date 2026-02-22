@@ -736,6 +736,11 @@ textarea:focus-visible {
     max-height: 85vh;
   }
 }
+/* Отдельный слой для видео — меньше подлагиваний при скролле */
+.hero-minimal .hero-video-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
 /* Light radial glow behind video container */
 .hero-minimal .hero-video-glow {
   position: absolute;
@@ -1070,6 +1075,7 @@ textarea:focus-visible {
   .io-visible {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
+    will-change: auto; /* снимаем слой после анимации — убирает подлагивание скролла */
   }
 }
 

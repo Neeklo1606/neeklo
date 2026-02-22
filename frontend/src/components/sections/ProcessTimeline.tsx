@@ -110,7 +110,7 @@ export const ProcessTimeline = () => {
                 Этап {activeStep + 1}
               </div>
               
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
                 {steps[activeStep].title}
               </h2>
               

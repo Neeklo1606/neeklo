@@ -137,7 +137,7 @@ export const ContactFormSection = () => {
               <Check className="w-10 h-10 text-primary" />
             </div>
             
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3">
               Заявка отправлена!
             </h2>
             <p className="text-muted-foreground mb-8">
@@ -184,7 +184,7 @@ export const ContactFormSection = () => {
           viewport={{ once: true }}
           className="text-center mb-10 md:mb-14"
         >
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
             Давайте познакомимся
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">

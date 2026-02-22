@@ -49,7 +49,7 @@ export function BlockProcessSteps({ block }: { block: CmsBlock }) {
   return (
     <section id="process" className="py-6 md:py-20 bg-white text-[#0a0a0a]">
       <Container className="max-w-[1200px]">
-        <h2 className="font-serif text-3xl md:text-4xl lg:text-[2.75rem] leading-tight tracking-tight mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight tracking-tight mb-12">
           {title.split("\n").map((line, i) => (
             <span key={i}>
               {i > 0 && <br />}

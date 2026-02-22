@@ -154,8 +154,8 @@ const About = () => {
               }}
               className="w-full h-full object-cover"
             />
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/80 pointer-events-none" />
+            {/* Тёмный оверлей для читаемости текста, без засвета */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/65 pointer-events-none" />
             {/* Кнопка play на мобильных, когда видео не идёт */}
             {isMobile && !videoPlaying && (
               <button
@@ -181,7 +181,7 @@ const About = () => {
             >
               {/* Glass surface for readability */}
               <div className="glass-effect rounded-2xl md:rounded-3xl p-6 md:p-10">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
                   О студии{" "}
                   <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     neeklo
@@ -227,7 +227,7 @@ const About = () => {
         </section>
 
         {/* ========== VALUE CARDS ========== */}
-        <section className="py-12 md:py-20 scroll-mt-20">
+        <section id="values" className="py-12 md:py-20 scroll-mt-24">
           <Container>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               {valueCards.map((card, index) => (
@@ -244,7 +244,7 @@ const About = () => {
                       <card.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-base md:text-lg font-heading font-semibold mb-1">{card.title}</h3>
+                      <h3 className="text-base md:text-lg font-semibold text-foreground mb-1">{card.title}</h3>
                       <p className="text-sm text-muted-foreground">{card.description}</p>
                     </div>
                   </div>
@@ -255,7 +255,7 @@ const About = () => {
         </section>
 
         {/* ========== WHAT WE DO ========== */}
-        <section className="py-12 md:py-20 bg-muted/20 scroll-mt-20">
+        <section id="what-we-do" className="py-12 md:py-20 bg-muted/20 scroll-mt-24">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -263,7 +263,7 @@ const About = () => {
               viewport={{ once: true }}
               className="text-center mb-8 md:mb-10"
             >
-              <h2 className="text-2xl md:text-3xl font-heading font-bold">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
                 Что делаем
               </h2>
             </motion.div>
@@ -299,7 +299,7 @@ const About = () => {
         </section>
 
         {/* ========== HOW WE WORK ========== */}
-        <section className="py-12 md:py-20 scroll-mt-20">
+        <section id="how-we-work" className="py-12 md:py-20 scroll-mt-24">
           <Container>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -307,7 +307,7 @@ const About = () => {
               viewport={{ once: true }}
               className="text-center mb-8 md:mb-10"
             >
-              <h2 className="text-2xl md:text-3xl font-heading font-bold">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
                 Как работаем
               </h2>
             </motion.div>
@@ -325,7 +325,7 @@ const About = () => {
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4">
                     <span className="text-lg md:text-xl font-bold text-primary-foreground">{item.step}</span>
                   </div>
-                  <h3 className="text-base md:text-lg font-heading font-semibold mb-2">{item.title}</h3>
+                  <h3 className="text-base md:text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
                 </motion.div>
               ))}
@@ -334,7 +334,7 @@ const About = () => {
         </section>
 
         {/* ========== FINAL CTA ========== */}
-        <section className="py-12 md:py-20 scroll-mt-20 mb-16 md:mb-0">
+        <section id="cta" className="py-12 md:py-20 scroll-mt-24 mb-16 md:mb-0">
           <Container size="md">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -342,14 +342,14 @@ const About = () => {
               viewport={{ once: true }}
               className="glass-effect p-6 md:p-10 rounded-2xl md:rounded-3xl text-center border-primary/20"
             >
-              <h2 className="text-2xl md:text-3xl font-heading font-bold mb-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
                 Готовы начать?
               </h2>
               <p className="text-muted-foreground mb-6 md:mb-8 text-sm md:text-base">
                 Напишите в Telegram — ответим за 15 минут
               </p>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 flex-wrap">
                 <motion.a
                   href="https://t.me/neeekn"
                   target="_blank"
@@ -358,10 +358,9 @@ const About = () => {
                   whileTap={{ scale: 0.97 }}
                   className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-4 min-h-[48px] rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all text-sm md:text-base"
                 >
-                  <Send className="mr-2 w-4 h-4 md:w-5 md:h-5" />
+                  <Send className="mr-2 w-4 h-4 md:w-5 md:h-5 shrink-0" />
                   Написать в Telegram
                 </motion.a>
-                
                 <motion.button
                   onClick={() => setIsOrderFormOpen(true)}
                   whileHover={{ scale: 1.03 }}
@@ -370,6 +369,13 @@ const About = () => {
                 >
                   Оставить заявку
                 </motion.button>
+                <Link
+                  to="/contacts"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-4 min-h-[48px] rounded-full border border-border text-foreground font-medium hover:bg-muted/50 transition-all text-sm md:text-base"
+                >
+                  Контакты
+                  <ArrowRight className="ml-2 w-4 h-4 shrink-0" />
+                </Link>
               </div>
             </motion.div>
           </Container>

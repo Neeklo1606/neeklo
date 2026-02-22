@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { BlockHero } from "./BlockHero";
 import { BlockVideoCasesSlider } from "./BlockVideoCasesSlider";
-import { BlockReadySolutions } from "./BlockReadySolutions";
 import { BlockNewsSection } from "./BlockNewsSection";
 import { BlockContactForm } from "./BlockContactForm";
 import { BlockServicesGrid } from "./BlockServicesGrid";
@@ -20,11 +19,35 @@ export interface CmsBlock {
   data: Record<string, unknown>;
 }
 
+/** Блок "Готовые решения" удалён — всегда показываем "Частые вопросы" (в т.ч. для старых записей в БД с type ready_solutions). */
+function normalizeBlock(block: CmsBlock): CmsBlock {
+  if (block.type !== "ready_solutions") return block;
+  const d = (block.data || {}) as {
+    title?: string;
+    subtitle?: string;
+    solutions?: Array<{ title?: string; price?: string; duration?: string; description?: string }>;
+  };
+  const solutions = Array.isArray(d.solutions) ? d.solutions : [];
+  const items = solutions.map((s) => ({
+    question: s.title ?? "",
+    answer: s.description ?? "Обсудим задачу и сроки — ответим в тот же день. Напишите в Telegram или оставьте заявку ниже.",
+    meta: [s.price, s.duration].filter(Boolean).join(", "),
+  }));
+  return {
+    ...block,
+    type: "faq",
+    data: {
+      title: d.title ?? "Частые вопросы",
+      subtitle: d.subtitle ?? "Цена и сроки по каждому решению. Ответим в тот же день.",
+      items,
+    },
+  };
+}
+
 const BLOCK_MAP: Record<string, (props: { block: CmsBlock }) => ReactNode> = {
   hero: (props) => <BlockHero {...props} />,
   services_teaser: (props) => <BlockServicesTeaser {...props} />,
   video_cases_slider: (props) => <BlockCasesHoverSection {...props} />,
-  ready_solutions: (props) => <BlockReadySolutions {...props} />,
   news_section: (props) => <BlockNewsSection {...props} />,
   contact_form: (props) => <BlockContactForm {...props} />,
   services_grid: (props) => <BlockServicesGrid {...props} />,
@@ -43,9 +66,10 @@ export function BlockRenderer({ blocks }: { blocks?: CmsBlock[] | null }) {
     <>
       {sorted.map((block) => {
         if (!block.is_enabled) return null;
-        const Component = BLOCK_MAP[block.type];
+        const normalized = normalizeBlock(block);
+        const Component = BLOCK_MAP[normalized.type];
         if (!Component) return null;
-        return <Component key={block.id} block={block} />;
+        return <Component key={block.id} block={normalized} />;
       })}
     </>
   );

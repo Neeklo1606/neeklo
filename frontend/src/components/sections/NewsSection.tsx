@@ -82,7 +82,7 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
         {/* Header */}
         <div className={`io-animate io-slide-right flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 md:mb-10 ${isVisible ? "io-visible" : ""}`}>
           <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
               {title ?? "Полезно для бизнеса"}
             </h2>
             <p className="text-muted-foreground text-sm md:text-base">

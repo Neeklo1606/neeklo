@@ -77,7 +77,7 @@ export function ProductFilters() {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-12">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground text-center mb-8">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground text-center mb-6">
         Выберите продукт
       </h2>
 
