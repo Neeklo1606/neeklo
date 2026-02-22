@@ -24,7 +24,7 @@ export function ProductHeroCompact({
   priceFrom,
   duration,
   chips,
-  telegramLink = "https://t.me/neeklo",
+  telegramLink = "https://t.me/neeekn",
   onScrollToPackages,
 }: ProductHeroCompactProps) {
   const handleTelegram = () => {

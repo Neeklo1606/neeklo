@@ -145,7 +145,7 @@ export const ContactFormSection = () => {
             </p>
 
             <a
-              href="https://t.me/neeklo"
+              href="https://t.me/neeekn"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-lg
@@ -169,7 +169,7 @@ export const ContactFormSection = () => {
   }
 
   return (
-    <section id="brief-form" className="relative py-16 md:py-24 overflow-hidden bg-muted/30 dark:bg-background">
+    <section id="brief-form" className="relative py-8 sm:py-12 md:py-24 overflow-hidden bg-muted/30 dark:bg-background">
       {/* Background Effects - Light themed */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/5 dark:bg-primary/8 rounded-full blur-[120px]" />
@@ -472,7 +472,7 @@ export const ContactFormSection = () => {
           <p className="text-center mt-6 text-sm text-muted-foreground">
             Или напишите нам в{" "}
             <a
-              href="https://t.me/neeklo"
+              href="https://t.me/neeekn"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

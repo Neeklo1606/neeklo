@@ -77,7 +77,7 @@ export const BriefFormSection = () => {
             <p className="text-sm text-muted-foreground">
               Или свяжитесь с нами напрямую в{" "}
               <a
-                href="https://t.me/neeklo"
+                href="https://t.me/neeekn"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline transition-colors"

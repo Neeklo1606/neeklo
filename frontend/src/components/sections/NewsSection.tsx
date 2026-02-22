@@ -77,7 +77,7 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
   const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section ref={ref} className="py-6 sm:py-12 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
         {/* Header */}
         <div className={`io-animate io-slide-right flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 md:mb-10 ${isVisible ? "io-visible" : ""}`}>

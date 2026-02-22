@@ -348,7 +348,7 @@ export default function WorkBySlug() {
                     size="lg"
                     variant="outline"
                     className="w-full group"
-                    onClick={() => window.open("https://t.me/neeklo", "_blank")}
+                    onClick={() => window.open("https://t.me/neeekn", "_blank")}
                   >
                     <MessageCircle className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                     Написать в Telegram

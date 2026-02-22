@@ -13,7 +13,7 @@ interface StickyCTAProps {
 
 export function StickyCTA({
   priceFrom,
-  telegramLink = "https://t.me/neeklo",
+  telegramLink = "https://t.me/neeekn",
   productTitle,
 }: StickyCTAProps) {
   const [isVisible, setIsVisible] = useState(false);

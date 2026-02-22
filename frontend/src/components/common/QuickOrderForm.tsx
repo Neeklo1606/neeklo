@@ -270,12 +270,12 @@ export const QuickOrderForm = ({ isOpen, onClose, preselectedProduct }: QuickOrd
               <p className="text-center text-xs text-muted-foreground">
                 Или напишите напрямую:{" "}
                 <a
-                  href="https://t.me/neeklo"
+                  href="https://t.me/neeekn"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"
                 >
-                  @neeklo
+                  @neeekn
                 </a>
               </p>
             </form>

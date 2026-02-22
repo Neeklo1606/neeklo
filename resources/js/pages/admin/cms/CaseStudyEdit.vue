@@ -80,6 +80,7 @@
             </div>
 
             <div v-if="!isCreate && caseStudyId" class="rounded-lg bg-card border border-border p-6 mb-6">
+                <p class="text-sm text-muted-foreground mb-4">Обложка, фото для карточки на главной, видео и галерея. Нажмите «Добавить» — можно выбрать из медиатеки или загрузить новые файлы.</p>
                 <MediaManager
                     entity-type="case-studies"
                     :entity-id="caseStudyId"

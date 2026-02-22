@@ -10,6 +10,7 @@ import { BlockCasesHoverSection } from "./BlockCasesHoverSection";
 import { BlockPostsGrid } from "./BlockPostsGrid";
 import { BlockProcessSteps } from "./BlockProcessSteps";
 import { BlockServicesTeaser } from "./BlockServicesTeaser";
+import { BlockFAQ } from "./BlockFAQ";
 
 export interface CmsBlock {
   id: number;
@@ -31,6 +32,7 @@ const BLOCK_MAP: Record<string, (props: { block: CmsBlock }) => ReactNode> = {
   cases_hover: (props) => <BlockCasesHoverSection {...props} />,
   posts_grid: (props) => <BlockPostsGrid {...props} />,
   process_steps: (props) => <BlockProcessSteps {...props} />,
+  faq: (props) => <BlockFAQ {...props} />,
 };
 
 export function BlockRenderer({ blocks }: { blocks?: CmsBlock[] | null }) {

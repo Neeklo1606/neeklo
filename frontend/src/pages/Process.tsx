@@ -266,7 +266,7 @@ const Process = () => {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <a
-                  href="https://t.me/neeklo"
+                  href="https://t.me/neeekn"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full border border-border text-foreground font-medium hover:bg-muted active:bg-muted/80 transition-all hover:scale-105"

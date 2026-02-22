@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 const TELEGRAM_BOT_URL = "https://t.me/neeklo_studio_bot";
-const TELEGRAM_DIRECT_URL = "https://t.me/neeklo_studio";
+const TELEGRAM_DIRECT_URL = "https://t.me/neeekn";
 const MAX_FILES = 5;
 
 const inputBase =

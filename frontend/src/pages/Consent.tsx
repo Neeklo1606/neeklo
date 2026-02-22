@@ -174,7 +174,7 @@ const Consent = () => {
               <p>
                 По всем вопросам, связанным с обработкой персональных данных:<br />
                 Email: <a href="mailto:klochkonikita@mail.ru" className="text-primary hover:underline">klochkonikita@mail.ru</a><br />
-                Telegram: <a href="https://t.me/neeklo" className="text-primary hover:underline">@neeklo</a>
+                Telegram: <a href="https://t.me/neeekn" className="text-primary hover:underline">@neeekn</a>
               </p>
             </section>
           </div>

@@ -21,7 +21,11 @@ git pull origin main || true
 echo "==> Composer install"
 composer install --no-interaction --no-dev --optimize-autoloader 2>/dev/null || composer install --no-interaction
 
-echo "==> NPM install + build (frontend)"
+echo "==> NPM install + build (Vue admin → public/build/)"
+npm ci 2>/dev/null || npm install
+npm run build
+
+echo "==> NPM install + build (React frontend → public/frontend/)"
 if [ -d "frontend" ]; then
   cd frontend
   npm ci 2>/dev/null || npm install
@@ -36,6 +40,7 @@ echo "==> Create user (user:create)"
 php artisan user:create --email="${ADMIN_EMAIL:-dsc-23@yandex.ru}" --password="${ADMIN_PASSWORD:-}" --name="${ADMIN_NAME:-Admin}" 2>/dev/null || php artisan user:create
 
 echo "==> Cache clear (then cache for production)"
+php artisan cache:clear
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear

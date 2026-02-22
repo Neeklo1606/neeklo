@@ -18,7 +18,7 @@ export const ProductCTAForm = ({
   productName,
   packages,
   selectedPackage,
-  telegramLink = "https://t.me/neeklo",
+  telegramLink = "https://t.me/neeekn",
 }: ProductCTAFormProps) => {
   const [formData, setFormData] = useState({
     package: selectedPackage || packages[0]?.id || "",

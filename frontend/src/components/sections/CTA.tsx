@@ -74,7 +74,7 @@ export const CTA = () => {
                 </Button>
               </motion.div>
               <motion.a 
-                href="https://t.me/neeklo" 
+                href="https://t.me/neeekn" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}

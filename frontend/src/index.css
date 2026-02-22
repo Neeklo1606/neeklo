@@ -717,21 +717,23 @@ textarea:focus-visible {
   filter: brightness(0.95);
 }
 
-/* C) Правая колонка (видео): высота через aspect-ratio + max-height — источник для выравнивания */
+/* C) Правая колонка (видео): пол экрана, практически во всю высоту (референс bellahasias.ru) */
 .hero-minimal .hero-right.hero-video-wrap {
   position: relative;
   min-height: 0;
   min-width: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
 }
 @media (min-width: 1024px) {
   .hero-minimal .hero-right.hero-video-wrap {
-    max-height: min(65vh, 520px);
+    min-height: 70vh;
+    align-self: stretch;
   }
   .hero-minimal .hero-video-container {
-    max-height: min(65vh, 520px);
+    min-height: 70vh;
+    max-height: 85vh;
   }
 }
 /* Light radial glow behind video container */
@@ -807,7 +809,7 @@ textarea:focus-visible {
   to { transform: translateX(-50%); }
 }
 .animate-hero-marquee {
-  animation: hero-marquee-scroll 30s linear infinite;
+  animation: hero-marquee-scroll 48s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-marquee {

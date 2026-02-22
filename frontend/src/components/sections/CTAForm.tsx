@@ -290,7 +290,7 @@ export const CTAForm = () => {
                 {/* Alternative CTA */}
                 <div className="text-center pt-2">
                   <a
-                    href="https://t.me/neeklo"
+                    href="https://t.me/neeekn"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm text-primary hover:underline"

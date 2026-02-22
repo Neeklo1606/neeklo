@@ -61,7 +61,7 @@ export function BlockServicesTeaser({ block }: { block: CmsBlock }) {
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="bg-background py-10 min-[1024px]:py-20" aria-label="Услуги">
+    <section ref={ref} className="bg-background py-6 sm:py-10 min-[1024px]:py-20" aria-label="Услуги">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 min-[768px]:grid-cols-4 gap-4 sm:gap-6">
           {ITEMS.map((card, index) => (

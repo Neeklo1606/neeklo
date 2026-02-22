@@ -13,7 +13,7 @@ export function BlockContactForm({ block }: { block: CmsBlock }) {
   const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
 
   return (
-    <section ref={ref} id={d.section_id ?? "contact"} className="py-16 md:py-24">
+    <section ref={ref} id={d.section_id ?? "contact"} className="py-6 sm:py-12 md:py-24">
       <Container>
         <div className={`io-animate io-fade-up ${isVisible ? "io-visible" : ""}`}>
           <ContactFormModern title={d.title} />

@@ -93,7 +93,7 @@ export const MobileMenu = ({ isOpen, onClose, navItems, isActive }: MobileMenuPr
 
             {/* CTA Button at Bottom */}
             <div className="absolute bottom-0 left-0 right-0 p-5 border-t border-border/20 bg-card">
-              <a href="https://t.me/neeklo" target="_blank" rel="noopener noreferrer" className="block">
+              <a href="https://t.me/neeekn" target="_blank" rel="noopener noreferrer" className="block">
                 <motion.button
                   whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                   className="w-full py-4 px-6 rounded-lg font-medium text-sm transition-all duration-300 bg-gradient-to-r from-primary to-accent text-primary-foreground flex items-center justify-center gap-2 shadow-lg min-h-[40px]"

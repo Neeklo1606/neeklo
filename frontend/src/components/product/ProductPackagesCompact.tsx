@@ -21,7 +21,7 @@ interface ProductPackagesCompactProps {
 
 export function ProductPackagesCompact({
   packages,
-  telegramLink = "https://t.me/neeklo",
+  telegramLink = "https://t.me/neeekn",
   productTitle,
 }: ProductPackagesCompactProps) {
   const [activeIndex, setActiveIndex] = useState(1); // Default to middle package

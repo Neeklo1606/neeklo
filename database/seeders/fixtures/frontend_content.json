@@ -42,9 +42,15 @@
           }
         },
         {
-          "type": "ready_solutions",
+          "type": "services_teaser",
           "is_enabled": true,
           "position": 2,
+          "data": {}
+        },
+        {
+          "type": "ready_solutions",
+          "is_enabled": true,
+          "position": 3,
           "data": {
             "title": "Частые вопросы",
             "subtitle": "Цена и сроки по каждому решению. Ответим в тот же день.",
@@ -61,7 +67,7 @@
         {
           "type": "news_section",
           "is_enabled": true,
-          "position": 3,
+          "position": 4,
           "data": {
             "title": "Полезно для бизнеса",
             "subtitle": "Разборы, кейсы и практические советы",
@@ -72,7 +78,7 @@
         {
           "type": "contact_form",
           "is_enabled": true,
-          "position": 4,
+          "position": 5,
           "data": {
             "section_id": "contact",
             "title": "Свяжитесь с нами"

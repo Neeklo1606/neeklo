@@ -10,7 +10,7 @@
                     <h3 class="text-lg font-semibold">Выбор медиа</h3>
                     <button @click="$emit('close')" class="p-1 rounded hover:bg-muted">✕</button>
                 </div>
-                <div class="p-4 border-b border-border">
+                <div class="p-4 border-b border-border space-y-3">
                     <input
                         v-model="search"
                         @input="debouncedFetch"
@@ -18,6 +18,20 @@
                         placeholder="Поиск по имени..."
                         class="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground"
                     />
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <label class="px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-sm cursor-pointer inline-flex items-center gap-2">
+                            <span>📤 Загрузить файлы</span>
+                            <input
+                                type="file"
+                                multiple
+                                accept="image/*,video/*,.pdf,application/pdf"
+                                class="hidden"
+                                @change="onUploadFiles"
+                            />
+                        </label>
+                        <span v-if="uploading" class="text-sm text-muted-foreground">Загрузка...</span>
+                        <span v-if="uploadError" class="text-sm text-destructive">{{ uploadError }}</span>
+                    </div>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4">
                     <div v-if="loading" class="text-center py-8 text-muted-foreground">Загрузка...</div>
@@ -119,6 +133,8 @@ export default {
             pagination: null,
             selectedIds: [],
             searchTimeout: null,
+            uploading: false,
+            uploadError: null,
         };
     },
     watch: {
@@ -186,6 +202,37 @@ export default {
         confirmSelect() {
             this.$emit('selected', this.mode === 'single' ? (this.selectedIds[0] ?? null) : [...this.selectedIds]);
             this.$emit('close');
+        },
+        async onUploadFiles(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            this.uploadError = null;
+            this.uploading = true;
+            try {
+                for (let i = 0; i < files.length; i++) {
+                    const formData = new FormData();
+                    formData.append('file', files[i]);
+                    const { data } = await axios.post('/api/v1/media', formData, {
+                        headers: { 'Accept': 'application/json' },
+                    });
+                    if (data && data.data) {
+                        this.mediaList.unshift(data.data);
+                        const id = data.data.id;
+                        if (this.mode === 'single') {
+                            this.selectedIds = [id];
+                        } else {
+                            if (!this.selectedIds.includes(id)) this.selectedIds.push(id);
+                        }
+                    }
+                }
+                this.uploadError = null;
+            } catch (err) {
+                const msg = err.response?.data?.message || err.response?.data?.error || 'Ошибка загрузки';
+                this.uploadError = msg;
+            } finally {
+                this.uploading = false;
+                event.target.value = '';
+            }
         },
     },
 };

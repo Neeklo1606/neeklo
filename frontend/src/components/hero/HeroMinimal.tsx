@@ -1,9 +1,28 @@
 import { ProjectTypeModal } from "./ProjectTypeModal";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { smoothScrollToId } from "@/lib/smoothScroll";
 
-const MARQUEE_ITEMS = ["NKO", "NEWFRONT", "ROUTABLE", "DANONE", "TECHSTART", "GROWTHCO", "DELIVERECT"];
+const MARQUEE_ITEMS = [
+  "BatNorton",
+  "СОЮЗ Девелопмент",
+  "Акрихин",
+  "Первый Медицинский",
+  "ПОВУЗАМ",
+  "MNKA",
+  "Sogu",
+  "Свой Хлеб",
+  "ANCARS",
+  "Bravo Motors",
+  "Event-Театр",
+  "LiveGrid",
+  "МЧС",
+  "Суды Санкт-Петербурга",
+  "РОСТПОЛИПЛАСТ",
+  "ТРК Гулливер",
+  "Петроград",
+  "arerecase",
+];
 
 interface HeroMinimalProps {
   title?: string;
@@ -27,6 +46,8 @@ export function HeroMinimal({
   posterSrc,
 }: HeroMinimalProps) {
   const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const videoCandidates = useMemo(
     () =>
       [
@@ -68,6 +89,30 @@ export function HeroMinimal({
     };
   }, [resolvedVideoSrc, posterSrc]);
 
+  // Autoplay: ensure video plays when in view (and on resize/adaptation)
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const play = () => {
+      el.muted = true;
+      el.play().catch(() => {});
+    };
+    play();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) play();
+      },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    const onResize = () => play();
+    window.addEventListener("resize", onResize);
+    return () => {
+      obs.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
+  }, [resolvedVideoSrc]);
+
   const scrollToSection = (id: string) => {
     smoothScrollToId(id);
   };
@@ -76,11 +121,11 @@ export function HeroMinimal({
 
   return (
     <>
-      <div className="hero-viewport min-h-screen flex flex-col">
+      <div className="hero-viewport min-h-0 md:min-h-screen flex flex-col">
         <section
           ref={heroRef}
           id="hero"
-          className={`hero-minimal io-animate io-fade-up relative overflow-x-hidden text-foreground flex-1 flex flex-col justify-center isolate min-h-0 ${heroVisible ? "io-visible" : ""}`}
+          className={`hero-minimal io-animate io-fade-up relative overflow-x-hidden text-foreground flex-1 flex flex-col justify-center isolate min-h-0 max-h-[72vh] md:max-h-none ${heroVisible ? "io-visible" : ""}`}
         >
           {/* Background grid — behind content, no overlap */}
           <div
@@ -92,7 +137,7 @@ export function HeroMinimal({
             }}
             aria-hidden
           />
-          <div className="hero-minimal__inner relative z-10 flex flex-col lg:grid lg:grid-cols-[1fr_1fr] lg:items-center gap-6 lg:gap-10 max-w-[1200px] mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-0 flex-1 lg:flex-initial justify-center">
+          <div className="hero-minimal__inner relative z-10 flex flex-col lg:grid lg:grid-cols-[1fr_1fr] lg:items-stretch gap-6 lg:gap-10 max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 min-h-0 flex-1 lg:flex-initial justify-center">
             <div className="hero-minimal__left hero-left w-full max-w-[520px] flex flex-col items-center lg:items-start text-center lg:text-left order-1 min-w-0 gap-5 sm:gap-6 lg:gap-6 lg:justify-center">
               <div className="hero-top flex flex-col gap-6 shrink-0 w-full min-w-0">
                 <span className="badge hero-badge inline-flex items-center gap-1.5 rounded-full border text-xs font-medium uppercase tracking-wider text-foreground w-fit shrink-0 hero-badge-high">
@@ -110,7 +155,7 @@ export function HeroMinimal({
                 {subtitle}
               </p>
             </div>
-            <div className="hero-bottom flex flex-wrap gap-3 flex-shrink-0 w-full sm:w-auto" role="group" aria-label="Действия">
+            <div className="hero-bottom hidden md:flex flex-wrap gap-3 flex-shrink-0 w-full sm:w-auto" role="group" aria-label="Действия">
               <button
                 type="button"
                 onClick={() => setIsProjectTypeOpen(true)}
@@ -121,12 +166,13 @@ export function HeroMinimal({
               </button>
             </div>
           </div>
-          <div className="hero-right hero-video-wrap relative flex justify-center lg:justify-end order-2 px-0 sm:px-2 lg:px-0 -mx-4 sm:mx-0 w-full sm:max-w-full lg:min-h-0">
+          <div className="hero-right hero-video-wrap relative flex justify-center lg:justify-end order-2 px-0 sm:px-2 lg:px-0 -mx-4 sm:mx-0 w-full sm:max-w-full lg:min-h-[70vh]">
             <div className="hero-video-glow" aria-hidden />
-            <div className="h-full w-full min-w-0">
-              <div className="hero-video-container aspect-video w-full max-w-full min-h-[180px] sm:min-h-[220px] overflow-hidden rounded-none sm:rounded-2xl lg:rounded-3xl bg-muted shadow-[var(--shadow-lg)]">
+            <div className="h-full w-full min-w-0 flex flex-col min-h-[200px] sm:min-h-[280px] lg:min-h-[70vh]">
+              <div className="hero-video-container w-full max-w-full flex-1 min-h-[200px] sm:min-h-[280px] lg:min-h-[70vh] overflow-hidden rounded-none sm:rounded-2xl lg:rounded-3xl bg-muted shadow-[var(--shadow-lg)]">
                 {resolvedVideoSrc ? (
                   <video
+                    ref={videoRef}
                     className="h-full w-full object-cover"
                     src={resolvedVideoSrc}
                     poster={posterSrc}
@@ -166,12 +212,12 @@ export function HeroMinimal({
         </div>
       </section>
 
-      <div className="hero-marquee flex-shrink-0 border-t border-border border-b bg-card overflow-hidden h-[33.333vh] min-h-[56px] flex items-center">
+      <div className="hero-marquee flex-shrink-0 border-t border-border border-b bg-card overflow-hidden h-12 min-h-[44px] flex items-center">
         <div className="hero-marquee-track flex w-max animate-hero-marquee">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((name, i) => (
             <div
               key={i}
-              className="hero-marquee-item flex items-center gap-2 px-8 py-3.5 text-[11.5px] font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap border-r border-border last:border-r-0"
+              className="hero-marquee-item flex items-center gap-2 px-6 py-2 text-[11px] font-semibold tracking-wide text-muted-foreground whitespace-nowrap border-r border-border last:border-r-0"
             >
               <span className="opacity-40" aria-hidden>◆</span>
               {name}

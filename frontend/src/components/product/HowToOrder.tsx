@@ -10,7 +10,7 @@ interface HowToOrderProps {
 }
 
 export function HowToOrder({
-  telegramLink = "https://t.me/neeklo",
+  telegramLink = "https://t.me/neeekn",
   productTitle,
 }: HowToOrderProps) {
   const handleTelegram = () => {

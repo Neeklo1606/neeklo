@@ -66,6 +66,7 @@
             </div>
 
             <div v-if="!isCreate && serviceId" class="rounded-lg bg-card border border-border p-6 mb-6">
+                <p class="text-sm text-muted-foreground mb-4">Обложка, иконка и галерея услуги. Нажмите «Добавить» — можно выбрать из медиатеки или загрузить новые файлы.</p>
                 <MediaManager
                     entity-type="services"
                     :entity-id="serviceId"

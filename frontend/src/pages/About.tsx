@@ -352,7 +352,7 @@ const About = () => {
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
                 <motion.a
-                  href="https://t.me/neeklo"
+                  href="https://t.me/neeekn"
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.03 }}

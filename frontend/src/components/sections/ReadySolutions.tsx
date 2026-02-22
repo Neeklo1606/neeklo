@@ -180,7 +180,7 @@ export function ReadySolutions({ title, subtitle, sectionId, variant, solutions:
   const isFaq = variant === "faq";
 
   return (
-    <section ref={ref} id={sectionId ?? "products"} className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+    <section ref={ref} id={sectionId ?? "products"} className="py-6 sm:py-12 md:py-20 lg:py-24 relative overflow-hidden">
       <Container>
         {/* Header */}
         <div className={cn(

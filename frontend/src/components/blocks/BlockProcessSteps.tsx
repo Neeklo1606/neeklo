@@ -47,7 +47,7 @@ export function BlockProcessSteps({ block }: { block: CmsBlock }) {
   const title = d.title ?? "Как это работает";
 
   return (
-    <section id="process" className="py-16 md:py-20 bg-white text-[#0a0a0a]">
+    <section id="process" className="py-6 md:py-20 bg-white text-[#0a0a0a]">
       <Container className="max-w-[1200px]">
         <h2 className="font-serif text-3xl md:text-4xl lg:text-[2.75rem] leading-tight tracking-tight mb-12">
           {title.split("\n").map((line, i) => (

@@ -301,7 +301,7 @@ export const SyntheticHero = () => {
             </p>
 
             <div ref={ctaRef}>
-              <a href="https://t.me/neeklo" target="_blank" rel="noopener noreferrer">
+              <a href="https://t.me/neeekn" target="_blank" rel="noopener noreferrer">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

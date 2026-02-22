@@ -74,7 +74,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
 
   if (isIconLayout) {
     return (
-      <section id="services" className="py-16 md:py-20 bg-card text-foreground">
+      <section id="services" className="py-6 md:py-20 bg-card text-foreground">
         <Container className="max-w-[1200px]">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
             <h2 className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">
@@ -130,7 +130,7 @@ export function BlockServicesGrid({ block }: { block: CmsBlock }) {
   }
 
   return (
-    <section id="services" className="py-16 md:py-20 bg-card text-foreground">
+    <section id="services" className="py-6 md:py-20 bg-card text-foreground">
       <Container className="max-w-[1200px]">
         {(d.section_title || showShopMode) && (
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">

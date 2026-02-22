@@ -41,7 +41,7 @@ export const BottomNav = memo(function BottomNav({ onMenuOpen }: BottomNavProps)
 
   const handleTabClick = (tab: NavTab) => {
     if (tab.action === "telegram") {
-      window.open("https://t.me/neeklo", "_blank");
+      window.open("https://t.me/neeekn", "_blank");
     } else if (tab.action === "menu" && onMenuOpen) {
       onMenuOpen();
     }

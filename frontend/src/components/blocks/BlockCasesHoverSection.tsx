@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@/components/common/Container";
@@ -51,14 +50,8 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
     taxonomies?: Array<{ title?: string }>;
   }>;
 
-  const scroll = (dir: "left" | "right") => {
-    if (!scrollRef.current) return;
-    const step = scrollRef.current.clientWidth * 0.8;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
-  };
-
   return (
-    <section ref={sectionRef} id={d.section_id ?? "cases"} className="py-8 sm:py-10 md:py-14">
+    <section ref={sectionRef} id={d.section_id ?? "cases"} className="py-6 sm:py-10 md:py-14">
       <Container className="px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 md:mb-8">
           <div>
@@ -71,30 +64,23 @@ export function BlockCasesHoverSection({ block }: { block: CmsBlock }) {
               </p>
             )}
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button
-              type="button"
-              onClick={() => scroll("left")}
-              className="p-2 rounded-full border border-border bg-background hover:bg-muted transition-colors touch-manipulation"
-              aria-label="Предыдущие кейсы"
-            >
-              <ChevronLeft className="w-5 h-5 text-foreground" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scroll("right")}
-              className="p-2 rounded-full border border-border bg-background hover:bg-muted transition-colors touch-manipulation"
-              aria-label="Следующие кейсы"
-            >
-              <ChevronRight className="w-5 h-5 text-foreground" />
-            </button>
+          <div className="flex items-center flex-shrink-0">
             <Link
               to="/work"
-              className="text-primary font-medium hover:underline ml-2 hidden sm:inline"
+              className="text-primary font-medium hover:underline hidden sm:inline-flex items-center gap-1"
             >
               Все кейсы →
             </Link>
           </div>
+        </div>
+
+        <div className="mt-3 md:hidden">
+          <Link
+            to="/work"
+            className="text-sm font-medium text-primary hover:underline shrink-0 inline-flex items-center gap-1 touch-manipulation min-h-[44px] items-center"
+          >
+            Все кейсы →
+          </Link>
         </div>
 
         <div
