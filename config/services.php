@@ -42,7 +42,7 @@ return [
     'siteaacess' => [
         'token' => env('SITEAACESS_TOKEN'),
         'api' => env('SITEAACESS_API', 'https://api.siteaacess.ru'),
-        'cdn' => env('SITEAACESS_CDN', 'https://cdn.siteaacess.ru/widget.v2.js'),
+        'cdn' => env('SITEAACESS_CDN', 'https://cdn.siteaacess.ru/widget.v3.js'),
     ],
 
 ];
