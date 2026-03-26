@@ -79,5 +79,13 @@
 
 <body>
     <div id="root"></div>
+    @php($siteaacessToken = config('services.siteaacess.token'))
+    @if(!empty($siteaacessToken))
+        <script
+          src="{{ config('services.siteaacess.cdn') }}"
+          data-token="{{ $siteaacessToken }}"
+          data-api="{{ config('services.siteaacess.api') }}"
+        ></script>
+    @endif
 </body>
 </html>
