@@ -79,18 +79,12 @@
 
 <body>
     <div id="root"></div>
-    @php
-        $aiApiKey = config('services.ai_widget.api_key');
-        $aiAssistantId = config('services.ai_widget.assistant_id');
-    @endphp
-    @if(!empty($aiApiKey) && !empty($aiAssistantId))
-        <script>
-        window.AI_WIDGET_CONFIG = @json([
-            'apiKey' => $aiApiKey,
-            'assistantId' => $aiAssistantId,
-        ]);
-        </script>
-        <script src="{{ config('services.ai_widget.script_url') }}"></script>
+    @php($aiWidgetKey = config('services.ai_widget.key'))
+    @if(!empty($aiWidgetKey))
+        <script
+            src="{{ config('services.ai_widget.script_url') }}"
+            data-key="{{ $aiWidgetKey }}"
+        ></script>
     @endif
 </body>
 </html>

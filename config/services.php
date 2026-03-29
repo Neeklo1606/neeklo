@@ -41,8 +41,7 @@ return [
 
     'ai_widget' => [
         'script_url' => env('AI_WIDGET_SCRIPT_URL', 'https://site-al.ru/widget.js'),
-        'api_key' => env('AI_WIDGET_API_KEY'),
-        'assistant_id' => env('AI_WIDGET_ASSISTANT_ID'),
+        'key' => env('AI_WIDGET_KEY') ?: env('AI_WIDGET_API_KEY'),
     ],
 
 ];
