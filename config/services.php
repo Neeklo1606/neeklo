@@ -39,10 +39,10 @@ return [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
     ],
 
-    'siteaacess' => [
-        'token' => env('SITEAACESS_TOKEN'),
-        'api' => env('SITEAACESS_API', 'https://api.siteaacess.ru'),
-        'cdn' => env('SITEAACESS_CDN', 'https://cdn.siteaacess.ru/widget.v3.js'),
+    'ai_widget' => [
+        'script_url' => env('AI_WIDGET_SCRIPT_URL', 'https://site-al.ru/widget.js'),
+        'api_key' => env('AI_WIDGET_API_KEY'),
+        'assistant_id' => env('AI_WIDGET_ASSISTANT_ID'),
     ],
 
 ];

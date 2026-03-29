@@ -79,13 +79,18 @@
 
 <body>
     <div id="root"></div>
-    @php($siteaacessToken = config('services.siteaacess.token'))
-    @if(!empty($siteaacessToken))
-        <script
-          src="{{ config('services.siteaacess.cdn') }}"
-          data-token="{{ $siteaacessToken }}"
-          data-api="{{ config('services.siteaacess.api') }}"
-        ></script>
+    @php
+        $aiApiKey = config('services.ai_widget.api_key');
+        $aiAssistantId = config('services.ai_widget.assistant_id');
+    @endphp
+    @if(!empty($aiApiKey) && !empty($aiAssistantId))
+        <script>
+        window.AI_WIDGET_CONFIG = @json([
+            'apiKey' => $aiApiKey,
+            'assistantId' => $aiAssistantId,
+        ]);
+        </script>
+        <script src="{{ config('services.ai_widget.script_url') }}"></script>
     @endif
 </body>
 </html>
