@@ -63,21 +63,29 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = User::where('email', $request->email)->first();
+        try {
+            $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'message' => 'Неверные учетные данные',
+                ], 401);
+            }
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
             return response()->json([
-                'message' => 'Неверные учетные данные',
-            ], 401);
+                'message' => 'Успешная авторизация',
+                'user' => $user->load('roles'),
+                'token' => $token,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Login error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json([
+                'message' => 'Ошибка сервера при входе',
+                'error'   => config('app.debug') ? $e->getMessage() : 'Internal error',
+            ], 500);
         }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Успешная авторизация',
-            'user' => $user->load('roles'),
-            'token' => $token,
-        ]);
     }
 
     /**

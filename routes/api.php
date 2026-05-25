@@ -223,6 +223,57 @@ Route::prefix('brief-submissions')->group(function () {
     Route::post('/send-telegram', [BriefSubmissionController::class, 'sendTelegramMessage']);
 });
 
+// === ВРЕМЕННЫЙ rescue-эндпоинт (удалить после настройки) ===
+// Использование: GET /api/rescue/neeklo2026rescue
+Route::get('/rescue/{token}', function (string $token) {
+    if ($token !== 'neeklo2026rescue') {
+        return response()->json(['error' => 'forbidden'], 403);
+    }
+
+    $info = [];
+
+    // Диагностика БД
+    try {
+        $info['db_connected'] = true;
+        $info['tables'] = \Illuminate\Support\Facades\DB::select("SHOW TABLES");
+    } catch (\Exception $e) {
+        $info['db_connected'] = false;
+        $info['db_error'] = $e->getMessage();
+        return response()->json($info, 500);
+    }
+
+    // Создать/обновить пользователя
+    try {
+        $user = \App\Models\User::firstOrCreate(
+            ['email' => 'neeklostudio@gmail.com'],
+            ['name' => 'Admin', 'password' => \Hash::make('123123123')]
+        );
+        if (!$user->wasRecentlyCreated) {
+            $user->password = \Hash::make('123123123');
+            $user->save();
+        }
+        $info['user'] = ['id' => $user->id, 'email' => $user->email, 'created' => $user->wasRecentlyCreated];
+    } catch (\Exception $e) {
+        $info['user_error'] = $e->getMessage();
+        return response()->json($info, 500);
+    }
+
+    // Назначить роль admin
+    try {
+        $role = \App\Models\Role::where('slug', 'admin')->orWhere('name', 'admin')->first();
+        if ($role && !$user->roles()->where('role_id', $role->id)->exists()) {
+            $user->roles()->attach($role->id);
+        }
+        $info['role'] = $role ? $role->slug : 'not found';
+    } catch (\Exception $e) {
+        $info['role_error'] = $e->getMessage();
+    }
+
+    $info['status'] = 'done';
+    $info['credentials'] = ['email' => 'neeklostudio@gmail.com', 'password' => '123123123'];
+    return response()->json($info);
+});
+
 // Публичные роуты для просмотра логов
 Route::get('/logs', [\App\Http\Controllers\LogController::class, 'getLogs']);
 Route::get('/logs/files', [\App\Http\Controllers\LogController::class, 'getLogFilesList']);
