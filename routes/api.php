@@ -23,6 +23,8 @@ use App\Http\Controllers\Api\Admin\Cms\MenuItemsController;
 use App\Http\Controllers\Api\Admin\Cms\SettingsController;
 use App\Http\Controllers\Api\Admin\Cms\LeadsController;
 use App\Http\Controllers\Api\Admin\Cms\MediaRelationsController;
+use App\Http\Controllers\Api\Admin\BriefSubmissionController as AdminBriefSubmissionController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Public\BootstrapController;
 use App\Http\Controllers\Api\Public\PageController;
 use App\Http\Controllers\Api\Public\ServiceController;
@@ -162,6 +164,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('leads/{lead}', [LeadsController::class, 'show']);
         Route::put('leads/{lead}', [LeadsController::class, 'update']);
     });
+
+    // Admin submissions CRM (brief-submissions management)
+    Route::middleware('admin')->prefix('admin/submissions')->group(function () {
+        Route::get('/', [AdminBriefSubmissionController::class, 'index']);
+        Route::get('/counts', [AdminBriefSubmissionController::class, 'counts']);
+        Route::get('/{id}', [AdminBriefSubmissionController::class, 'show']);
+        Route::put('/{id}', [AdminBriefSubmissionController::class, 'update']);
+        Route::delete('/{id}', [AdminBriefSubmissionController::class, 'destroy']);
+    });
+
+    // Admin dashboard stats
+    Route::middleware('admin')->get('/admin/dashboard/stats', [DashboardController::class, 'stats']);
 });
 
 // Integration API (protected by deploy.token middleware)
@@ -193,6 +207,14 @@ Route::get('/subscription/check', [\App\Http\Controllers\Api\SubscriptionCheckCo
 // Кейсы — публичные для сайта
 Route::get('/cases', [CaseController::class, 'index']);
 Route::get('/cases/slug/{slug}', [CaseController::class, 'showBySlug']);
+
+// Блог — публичный endpoint для React-фронтенда
+Route::get('/blog-posts', function () {
+    return \App\Models\Post::where('status', 'published')
+        ->orderBy('published_at', 'desc')
+        ->limit(20)
+        ->get(['id', 'slug', 'title', 'excerpt', 'seo_description', 'published_at', 'created_at']);
+});
 
 // Публичные роуты для brief submissions (формы на сайте)
 Route::prefix('brief-submissions')->group(function () {

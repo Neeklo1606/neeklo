@@ -21,10 +21,13 @@ class BriefSubmission extends Model
         'phone',
         'email',
         'files',
+        'status',
+        'notes',
     ];
 
     protected $attributes = [
         'files' => '[]',
+        'status' => 'new',
     ];
 
     protected $casts = [

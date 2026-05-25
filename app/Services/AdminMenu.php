@@ -15,8 +15,32 @@ class AdminMenu
      */
     public function getMenu(?User $user = null): Collection
     {
-        // Первые 5 пунктов по запросу: Медиа, Уведомления, Пользователи, Роли, Боты
         $menu = collect([
+            [
+                'title' => 'Дашборд',
+                'route' => 'admin.dashboard',
+                'icon' => 'chart-bar',
+                'roles' => ['admin', 'manager'],
+            ],
+            [
+                'title' => 'Заявки',
+                'route' => 'admin.submissions',
+                'icon' => 'inbox',
+                'roles' => ['admin', 'manager'],
+                'badge' => 'new',
+            ],
+            [
+                'title' => 'Кейсы',
+                'route' => 'admin.cases',
+                'icon' => 'briefcase',
+                'roles' => ['admin', 'manager'],
+            ],
+            [
+                'title' => 'Блог',
+                'route' => 'admin.blog',
+                'icon' => 'document-text',
+                'roles' => ['admin', 'manager'],
+            ],
             [
                 'title' => 'Медиа',
                 'route' => 'admin.media',

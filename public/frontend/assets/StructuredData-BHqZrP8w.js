@@ -1,0 +1,1 @@
+import{r as n}from"./react-vendor-B4wFRq8B.js";const d=({data:e})=>(n.useEffect(()=>{const t=document.createElement("script");return t.type="application/ld+json",t.text=JSON.stringify(e),t.id=`structured-data-${Date.now()}`,document.head.appendChild(t),()=>{const r=document.getElementById(t.id);r&&document.head.removeChild(r)}},[e]),null);export{d as S};

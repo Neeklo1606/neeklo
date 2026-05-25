@@ -41,6 +41,23 @@ const coverImages: Record<string, string> = {
   "ai-video": aiVideoCover,
 };
 
+type ApiCase = { id: number | string; slug: string; title: string; category: string; featured?: boolean; description?: string };
+
+function mapApiCase(c: ApiCase) {
+  const cat = c.category === "TG-Bot" || c.category === "Mini-App" ? "Telegram" :
+              c.category === "AI-Video" ? "Video" :
+              (c.category as CaseCategory);
+  return {
+    id: c.id,
+    slug: c.slug,
+    client: c.title,
+    category: cat,
+    result: c.description || "Успешный проект",
+    color: categoryColors[c.category] || "#00d4ff",
+    coverImage: coverImages[c.slug] || null,
+  };
+}
+
 export const FeaturedWork = () => {
   const [activeCategory, setActiveCategory] = useState<CaseCategory>("Все");
   const { shouldReduceMotion, variants } = useAnimationVariants();
@@ -52,26 +69,41 @@ export const FeaturedWork = () => {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 10]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 150);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Get featured cases and map categories
-  const featuredCases = casesData
+  // Static fallback cases
+  const staticFeatured = casesData
     .filter(c => c.featured)
     .slice(0, 6)
     .map(c => ({
       id: c.id,
       slug: c.slug,
       client: c.title,
-      category: c.category === "TG-Bot" || c.category === "Mini-App" ? "Telegram" : 
-                c.category === "AI-Video" ? "Video" :
-                c.category as CaseCategory,
+      category: (c.category === "TG-Bot" || c.category === "Mini-App" ? "Telegram" :
+                 c.category === "AI-Video" ? "Video" :
+                 c.category) as CaseCategory,
       result: c.results[0] || "Успешный проект",
       color: categoryColors[c.category] || "#00d4ff",
       coverImage: coverImages[c.slug] || null,
     }));
+
+  const [featuredCases, setFeaturedCases] = useState(staticFeatured);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Попытка загрузки из API; fallback — статические данные
+  useEffect(() => {
+    fetch("/api/cases")
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then((data: ApiCase[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const apiMapped = data.filter(c => c.featured !== false).slice(0, 6).map(mapApiCase);
+          if (apiMapped.length > 0) setFeaturedCases(apiMapped as typeof staticFeatured);
+        }
+      })
+      .catch(() => {/* keep static fallback */});
+  }, []);
 
   const filteredCases = activeCategory === "Все" 
     ? featuredCases 

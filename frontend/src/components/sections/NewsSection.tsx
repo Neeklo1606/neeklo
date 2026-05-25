@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@/components/common/Container";
 import { ArrowRight, Calendar } from "lucide-react";
@@ -71,9 +71,42 @@ interface NewsSectionProps {
   articles?: NewsArticle[];
 }
 
+/** Загрузить статьи из API. Fallback — статические ARTICLES. */
+function useBlogPosts(enabled: boolean): { articles: NewsArticle[]; loading: boolean } {
+  const [articles, setArticles] = useState<NewsArticle[]>(ARTICLES);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!enabled) return;
+    setLoading(true);
+    fetch("/api/blog-posts")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data: Array<{id:number|string;slug:string;title:string;excerpt?:string;seo_description?:string;published_at?:string;created_at?:string}>) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setArticles(
+            data.slice(0, 3).map((p) => ({
+              id: String(p.id),
+              slug: p.slug,
+              title: p.title,
+              excerpt: p.excerpt || p.seo_description || "",
+              date: p.published_at || p.created_at || new Date().toISOString(),
+              category: "Блог",
+            }))
+          );
+        }
+      })
+      .catch(() => {/* keep static fallback */})
+      .finally(() => setLoading(false));
+  }, [enabled]);
+
+  return { articles, loading };
+}
+
 export function NewsSection({ title, subtitle, blogLink, articles: articlesProp }: NewsSectionProps = {}) {
   const shouldReduceMotion = usePrefersReducedMotion();
-  const articles = articlesProp ?? ARTICLES;
+  // Если статьи переданы снаружи (CMS-блок) — используем их; иначе пробуем API
+  const { articles: apiArticles, loading } = useBlogPosts(!articlesProp);
+  const articles = articlesProp ?? apiArticles;
   const { ref, isVisible } = useScrollReveal<HTMLElement>({ threshold: 0.2 });
 
   return (
@@ -99,9 +132,18 @@ export function NewsSection({ title, subtitle, blogLink, articles: articlesProp 
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-          {articles.map((article, index) => (
+          {loading && articles === ARTICLES && [0,1,2].map((i) => (
+            <div key={i} className="rounded-[20px] p-5 bg-foreground/[0.02] border border-foreground/[0.06] animate-pulse min-h-[200px]">
+              <div className="h-3 bg-muted rounded w-1/3 mb-4"></div>
+              <div className="h-5 bg-muted rounded w-full mb-2"></div>
+              <div className="h-5 bg-muted rounded w-3/4 mb-4"></div>
+              <div className="h-3 bg-muted rounded w-full mb-2"></div>
+              <div className="h-3 bg-muted rounded w-2/3"></div>
+            </div>
+          ))}
+          {(!loading || articles !== ARTICLES) && articles.map((article, index) => (
             <article
-              key={article.id}
+              key={article.id ?? article.slug}
               className={`io-animate io-slide-right ${isVisible ? "io-visible" : ""}`}
               style={{ transitionDelay: `${100 + index * 100}ms` }}
             >

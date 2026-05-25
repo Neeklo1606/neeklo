@@ -617,10 +617,22 @@ const routes = [
                 meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Медиа' },
             },
             {
+                path: 'submissions',
+                name: 'admin.submissions',
+                component: () => import('./pages/admin/Submissions.vue'),
+                meta: { requiresAuth: true, requiresRole: ['admin', 'manager'], title: 'Заявки' },
+            },
+            {
                 path: 'cases',
                 name: 'admin.cases',
                 component: () => import('./pages/admin/Cases.vue'),
                 meta: { requiresAuth: true, requiresRole: ['admin'], title: 'Кейсы' },
+            },
+            {
+                path: 'blog',
+                name: 'admin.blog',
+                component: () => import('./pages/admin/Blog.vue'),
+                meta: { requiresAuth: true, requiresRole: ['admin', 'manager'], title: 'Блог' },
             },
             {
                 path: 'notifications',
