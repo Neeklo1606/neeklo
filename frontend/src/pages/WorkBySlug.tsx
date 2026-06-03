@@ -17,7 +17,11 @@ const PORTFOLIO_BASE = "/portfolio";
 export default function WorkBySlug() {
   const { slug } = useParams<{ slug: string }>();
   const location = useLocation();
-  const basePath = location.pathname.startsWith("/portfolio") ? PORTFOLIO_BASE : "/work";
+  const basePath = location.pathname.startsWith("/portfolio")
+    ? PORTFOLIO_BASE
+    : location.pathname.startsWith("/cases")
+    ? "/cases"
+    : "/work";
 
   const { data: response, isLoading, isError } = useQuery({
     queryKey: ["public", "case-study", slug],

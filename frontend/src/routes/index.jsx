@@ -5,6 +5,7 @@ const Index = lazy(() => import("@/pages/Index"));
 const Services = lazy(() => import("@/pages/Services"));
 const Work = lazy(() => import("@/pages/Work"));
 const WorkDetail = lazy(() => import("@/pages/WorkDetail"));
+const WorkBySlug = lazy(() => import("@/pages/WorkBySlug"));
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Process = lazy(() => import("@/pages/Process"));
@@ -20,6 +21,8 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminCasesList = lazy(() => import("@/pages/admin/AdminCasesList"));
 const AdminCaseEdit = lazy(() => import("@/pages/admin/AdminCaseEdit"));
+const AdminCaseStudiesList = lazy(() => import("@/pages/admin/AdminCaseStudiesList"));
+const AdminCaseStudyEdit = lazy(() => import("@/pages/admin/AdminCaseStudyEdit"));
 
 function Fallback() {
   return (
@@ -41,6 +44,7 @@ export default function AppRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/process" element={<Process />} />
         <Route path="/cases" element={<Cases />} />
+        <Route path="/cases/:slug" element={<WorkBySlug />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/privacy" element={<Privacy />} />
@@ -54,9 +58,12 @@ export default function AppRoutes() {
         <Route path="/documentation" element={<Admin />} />
         <Route path="/docs" element={<Admin />} />
 
-        {/* Admin cases inside React app */}
+        {/* Admin cases (old CaseModel) */}
         <Route path="/admin/cases" element={<AdminCasesList />} />
         <Route path="/admin/cases/:id" element={<AdminCaseEdit />} />
+        {/* Admin case-studies (CMS) */}
+        <Route path="/admin/case-studies" element={<AdminCaseStudiesList />} />
+        <Route path="/admin/case-studies/:id" element={<AdminCaseStudyEdit />} />
 
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />

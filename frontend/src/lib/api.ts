@@ -335,3 +335,54 @@ export async function reorderCaseMedia(caseId: number, order: number[]): Promise
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true };
 }
+
+// ── Admin: CMS Case Studies ────────────────────────────────────────────────
+const apiAdmin = (p: string) => (import.meta.env.VITE_API_URL || '/api').replace(/\/?$/, '') + '/v1/admin' + p;
+
+export async function adminGetCaseStudies(params?: { search?: string; status?: string; per_page?: number; page?: number }): Promise<{ success: boolean; data?: any[]; meta?: any; message?: string }> {
+  const q = params ? '?' + new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)])).toString() : '';
+  const r = await fetch(apiAdmin(`/cms/case-studies${q}`), { headers: { Accept: 'application/json', ...getAuthHeaders() } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data, meta: d.meta };
+}
+
+export async function adminGetCaseStudy(id: number): Promise<{ success: boolean; data?: any; message?: string }> {
+  const r = await fetch(apiAdmin(`/cms/case-studies/${id}`), { headers: { Accept: 'application/json', ...getAuthHeaders() } });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+export async function adminCreateCaseStudy(v: Record<string, unknown>): Promise<{ success: boolean; data?: any; message?: string }> {
+  const r = await fetch(apiAdmin('/cms/case-studies'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...getAuthHeaders() },
+    body: JSON.stringify(v),
+  });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || d.errors ? JSON.stringify(d.errors) : 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+export async function adminUpdateCaseStudy(id: number, v: Record<string, unknown>): Promise<{ success: boolean; data?: any; message?: string }> {
+  const r = await fetch(apiAdmin(`/cms/case-studies/${id}`), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...getAuthHeaders() },
+    body: JSON.stringify(v),
+  });
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true, data: d.data };
+}
+
+export async function adminDeleteCaseStudy(id: number): Promise<{ success: boolean; message?: string }> {
+  const r = await fetch(apiAdmin(`/cms/case-studies/${id}`), {
+    method: 'DELETE',
+    headers: { Accept: 'application/json', ...getAuthHeaders() },
+  });
+  if (r.status === 204) return { success: true };
+  const d = await r.json();
+  if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
+  return { success: true };
+}

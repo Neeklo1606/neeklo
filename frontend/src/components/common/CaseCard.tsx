@@ -9,6 +9,7 @@ export interface CaseCardProps {
   category: string;
   priority?: boolean;
   className?: string;
+  basePath?: string;
 }
 
 export const CaseCard = memo(function CaseCard({
@@ -19,12 +20,13 @@ export const CaseCard = memo(function CaseCard({
   category,
   priority = false,
   className = "",
+  basePath = "/portfolio",
 }: CaseCardProps) {
   const [imageError, setImageError] = useState(false);
 
   return (
     <Link
-      to={`/portfolio/${slug}`}
+      to={`${basePath}/${slug}`}
       className={`group block overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 md:hover:-translate-y-1 md:hover:shadow-lg ${className}`}
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">

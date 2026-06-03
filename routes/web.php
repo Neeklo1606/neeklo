@@ -264,19 +264,24 @@ Route::get('/videos/{path}', function (string $path) {
 
 Route::get('/cases/{path}', function (string $path) {
     $path = str_replace('..', '', $path);
-    foreach ([public_path('cases/' . $path), storage_path('app/public/cases/' . $path)] as $filePath) {
-        if (file_exists($filePath) && is_file($filePath)) {
-            $mime = match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
-                'jpg', 'jpeg' => 'image/jpeg',
-                'png' => 'image/png',
-                'webp' => 'image/webp',
-                'gif' => 'image/gif',
-                default => mime_content_type($filePath),
-            };
-            return response()->file($filePath, ['Content-Type' => $mime, 'Cache-Control' => 'public, max-age=31536000']);
+    // Only serve static files (paths with file extensions)
+    if (preg_match('/\.[a-zA-Z0-9]+$/', $path)) {
+        foreach ([public_path('cases/' . $path), storage_path('app/public/cases/' . $path)] as $filePath) {
+            if (file_exists($filePath) && is_file($filePath)) {
+                $mime = match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
+                    'jpg', 'jpeg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'webp' => 'image/webp',
+                    'gif' => 'image/gif',
+                    default => mime_content_type($filePath),
+                };
+                return response()->file($filePath, ['Content-Type' => $mime, 'Cache-Control' => 'public, max-age=31536000']);
+            }
         }
+        abort(404);
     }
-    abort(404);
+    // Slug route — serve React SPA
+    return view('react');
 })->where('path', '.*');
 
 // OG-изображение для соцсетей и прелоада (если нет файла — отдаём fallback, чтобы не было 404)
