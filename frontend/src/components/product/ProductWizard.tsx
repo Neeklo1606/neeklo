@@ -1,335 +1,58 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ChevronLeft, ChevronRight, Loader2, X, 
+import {
+  ChevronLeft, ChevronRight, Loader2, X,
   CheckCircle2, MessageCircle, Phone
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
-
-// Types
-interface WizardOption {
-  id: string;
-  emoji: string;
-  label: string;
-  description?: string;
-  priceModifier?: number;
-  timeModifier?: number;
-}
-
-interface WizardStep {
-  id: string;
-  title: string;
-  subtitle: string;
-  type: "single" | "multi" | "text" | "textarea";
-  options?: WizardOption[];
-  placeholder?: string;
-  required?: boolean;
-}
-
-interface Package {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  features: string[];
-}
+import { formatPrice } from "./wizardData";
+import { useWizardState } from "@/hooks/useWizardState";
+import type { WizardPackage } from "./wizardTypes";
 
 interface ProductWizardProps {
   isOpen: boolean;
   onClose: () => void;
   productTitle: string;
   productSlug: string;
-  packages: Package[];
+  packages: WizardPackage[];
   telegramLink: string;
 }
 
-// Extract base price from string like "от 65 000 ₽"
-const extractPrice = (priceStr: string): number => {
-  const match = priceStr.match(/[\d\s]+/);
-  if (match) {
-    return parseInt(match[0].replace(/\s/g, ''), 10);
-  }
-  return 0;
-};
-
-// Format price with spaces
-const formatPrice = (price: number): string => {
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-};
-
-// Product-specific features
-function getProductFeatures(slug: string): WizardOption[] {
-  const featureMap: Record<string, WizardOption[]> = {
-    "ai-agent": [
-      { id: "voice", emoji: "🎙️", label: "Голосовой бот", priceModifier: 25, timeModifier: 7 },
-      { id: "crm", emoji: "📊", label: "Интеграция CRM", priceModifier: 15, timeModifier: 3 },
-      { id: "analytics", emoji: "📈", label: "Аналитика", priceModifier: 10, timeModifier: 2 },
-      { id: "multilang", emoji: "🌐", label: "Мультиязычность", priceModifier: 20, timeModifier: 5 },
-    ],
-    "telegram-bot": [
-      { id: "payments", emoji: "💳", label: "Приём оплаты", priceModifier: 20, timeModifier: 3 },
-      { id: "catalog", emoji: "🛍️", label: "Каталог товаров", priceModifier: 15, timeModifier: 4 },
-      { id: "crm", emoji: "📊", label: "Интеграция CRM", priceModifier: 15, timeModifier: 3 },
-      { id: "broadcast", emoji: "📢", label: "Рассылки", priceModifier: 10, timeModifier: 2 },
-    ],
-    "website": [
-      { id: "cms", emoji: "✏️", label: "CMS-панель", priceModifier: 20, timeModifier: 5 },
-      { id: "seo", emoji: "🔍", label: "SEO-пакет", priceModifier: 15, timeModifier: 3 },
-      { id: "multilang", emoji: "🌐", label: "Мультиязычность", priceModifier: 25, timeModifier: 7 },
-      { id: "animation", emoji: "✨", label: "Анимации", priceModifier: 10, timeModifier: 3 },
-    ],
-    "ai-video": [
-      { id: "avatar", emoji: "🧑‍💼", label: "AI-аватар", priceModifier: 30, timeModifier: 5 },
-      { id: "voice", emoji: "🎤", label: "Озвучка", priceModifier: 15, timeModifier: 2 },
-      { id: "subtitles", emoji: "💬", label: "Субтитры", priceModifier: 10, timeModifier: 1 },
-      { id: "music", emoji: "🎵", label: "Музыка", priceModifier: 5, timeModifier: 1 },
-    ],
-    "default": [
-      { id: "support", emoji: "🛡️", label: "Поддержка", priceModifier: 15, timeModifier: 0 },
-      { id: "priority", emoji: "⚡", label: "Приоритет", priceModifier: 20, timeModifier: -5 },
-      { id: "training", emoji: "📚", label: "Обучение", priceModifier: 10, timeModifier: 2 },
-      { id: "docs", emoji: "📝", label: "Документация", priceModifier: 5, timeModifier: 1 },
-    ],
-  };
-
-  return featureMap[slug] || featureMap["default"];
-}
-
-// Generate wizard steps
-const generateSteps = (productSlug: string): WizardStep[] => {
-  return [
-    {
-      id: "need",
-      title: "Что нужно?",
-      subtitle: "Выберите тип задачи",
-      type: "single",
-      required: true,
-      options: [
-        { id: "new", emoji: "🚀", label: "Новый проект", description: "Создать с нуля" },
-        { id: "improve", emoji: "✨", label: "Улучшить", description: "Доработать существующее" },
-        { id: "fix", emoji: "🔧", label: "Исправить", description: "Починить или переделать" },
-        { id: "consult", emoji: "💡", label: "Консультация", description: "Обсудить идею" },
-      ],
-    },
-    {
-      id: "details",
-      title: "Детали проекта",
-      subtitle: "Расскажите о задаче",
-      type: "textarea",
-      placeholder: "Опишите что нужно сделать, какие функции важны, есть ли референсы...",
-      required: true,
-    },
-    {
-      id: "features",
-      title: "Дополнительные опции",
-      subtitle: "Выберите нужное (необязательно)",
-      type: "multi",
-      required: false,
-      options: getProductFeatures(productSlug),
-    },
-    {
-      id: "budget",
-      title: "Бюджет и сроки",
-      subtitle: "Ваши ожидания",
-      type: "single",
-      required: true,
-      options: [
-        { id: "minimal", emoji: "💰", label: "Минимальный", description: "Базовый функционал", priceModifier: -20, timeModifier: -5 },
-        { id: "standard", emoji: "💎", label: "Стандартный", description: "Оптимальное решение", priceModifier: 0, timeModifier: 0 },
-        { id: "premium", emoji: "👑", label: "Премиум", description: "Максимум возможностей", priceModifier: 40, timeModifier: 10 },
-        { id: "flexible", emoji: "🤝", label: "Обсудим", description: "Гибкий подход", priceModifier: 0, timeModifier: 0 },
-      ],
-    },
-    {
-      id: "contact",
-      title: "Как связаться?",
-      subtitle: "Telegram, WhatsApp или телефон",
-      type: "text",
-      placeholder: "@username или +7...",
-      required: true,
-    },
-  ];
-};
-
-export function ProductWizard({ 
-  isOpen, 
-  onClose, 
-  productTitle, 
-  productSlug, 
-  packages, 
-  telegramLink 
+export function ProductWizard({
+  isOpen,
+  onClose,
+  productTitle,
+  productSlug,
+  packages,
+  telegramLink,
 }: ProductWizardProps) {
-  const steps = useMemo(() => generateSteps(productSlug), [productSlug]);
-  
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
-  const [selectedPackage, setSelectedPackage] = useState<string>(packages[1]?.id || packages[0]?.id || "");
-  const [isSending, setIsSending] = useState(false);
-  const [showSummary, setShowSummary] = useState(false);
-
-  const step = steps[currentStep];
-  const progress = ((currentStep + 1) / steps.length) * 100;
-  const isLastStep = currentStep === steps.length - 1;
-
-  // Check if can proceed
-  const canProceed = useMemo(() => {
-    if (!step.required) return true;
-    const answer = answers[step.id];
-    if (Array.isArray(answer)) return answer.length > 0;
-    return answer && answer.toString().trim().length > 0;
-  }, [step, answers]);
-
-  // Calculate price
-  const calculatedPrice = useMemo(() => {
-    const pkg = packages.find(p => p.id === selectedPackage);
-    if (!pkg) return { base: 0, total: 0, modifiers: [] as string[] };
-
-    const basePrice = extractPrice(pkg.price);
-    let totalModifier = 0;
-    const modifiers: string[] = [];
-
-    Object.entries(answers).forEach(([stepId, value]) => {
-      const stepConfig = steps.find(s => s.id === stepId);
-      if (!stepConfig?.options) return;
-
-      const values = Array.isArray(value) ? value : [value];
-      values.forEach(v => {
-        const option = stepConfig.options?.find(o => o.id === v);
-        if (option?.priceModifier) {
-          totalModifier += option.priceModifier;
-          modifiers.push(`${option.label}: ${option.priceModifier > 0 ? '+' : ''}${option.priceModifier}%`);
-        }
-      });
-    });
-
-    const total = Math.round(basePrice * (1 + totalModifier / 100));
-    return { base: basePrice, total, modifiers };
-  }, [answers, selectedPackage, packages, steps]);
-
-  // Calculate timeline
-  const calculatedTimeline = useMemo(() => {
-    const pkg = packages.find(p => p.id === selectedPackage);
-    if (!pkg) return 14;
-
-    const timelineFeature = pkg.features.find(f => f.includes("дн") || f.includes("день"));
-    let baseDays = 14;
-    if (timelineFeature) {
-      const match = timelineFeature.match(/(\d+)/);
-      if (match) baseDays = parseInt(match[1], 10);
-    }
-
-    let modifier = 0;
-    Object.entries(answers).forEach(([stepId, value]) => {
-      const stepConfig = steps.find(s => s.id === stepId);
-      if (!stepConfig?.options) return;
-
-      const values = Array.isArray(value) ? value : [value];
-      values.forEach(v => {
-        const option = stepConfig.options?.find(o => o.id === v);
-        if (option?.timeModifier) {
-          modifier += option.timeModifier;
-        }
-      });
-    });
-
-    return Math.max(5, baseDays + modifier);
-  }, [answers, selectedPackage, packages, steps]);
-
-  const handleSingleSelect = useCallback((value: string) => {
-    setAnswers(prev => ({ ...prev, [step.id]: value }));
-    
-    setTimeout(() => {
-      if (currentStep < steps.length - 1) {
-        setCurrentStep(prev => prev + 1);
-      }
-    }, 300);
-  }, [step, currentStep, steps.length]);
-
-  const handleMultiSelect = useCallback((value: string) => {
-    setAnswers(prev => {
-      const current = (prev[step.id] as string[]) || [];
-      const updated = current.includes(value)
-        ? current.filter(v => v !== value)
-        : [...current, value];
-      return { ...prev, [step.id]: updated };
-    });
-  }, [step]);
-
-  const handleTextChange = useCallback((value: string) => {
-    setAnswers(prev => ({ ...prev, [step.id]: value }));
-  }, [step]);
-
-  const handleNext = () => {
-    if (canProceed && currentStep < steps.length - 1) {
-      setCurrentStep(prev => prev + 1);
-    } else if (isLastStep && canProceed) {
-      setShowSummary(true);
-    }
-  };
-
-  const handleBack = () => {
-    if (showSummary) {
-      setShowSummary(false);
-    } else if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    }
-  };
-
-  const handleSubmit = async () => {
-    setIsSending(true);
-    try {
-      const pkg = packages.find(p => p.id === selectedPackage);
-      
-      const summaryParts = [
-        `🎯 ${productTitle}`,
-        `📦 Тариф: ${pkg?.name}`,
-        `💰 Расчёт: от ${formatPrice(calculatedPrice.total)} ₽`,
-        `⏱️ Срок: ~${calculatedTimeline} дней`,
-        "",
-      ];
-
-      Object.entries(answers).forEach(([stepId, value]) => {
-        const stepConfig = steps.find(s => s.id === stepId);
-        if (!stepConfig) return;
-
-        if (stepConfig.type === "text" || stepConfig.type === "textarea") {
-          summaryParts.push(`• ${stepConfig.title}: ${value}`);
-        } else if (stepConfig.options) {
-          const values = Array.isArray(value) ? value : [value];
-          const labels = values.map(v => {
-            const opt = stepConfig.options?.find(o => o.id === v);
-            return opt ? `${opt.emoji} ${opt.label}` : v;
-          });
-          summaryParts.push(`• ${stepConfig.title}: ${labels.join(", ")}`);
-        }
-      });
-
-      const message = encodeURIComponent(summaryParts.join("\n"));
-      window.open(`${telegramLink}?text=${message}`, "_blank");
-
-      toast({
-        title: "Отлично!",
-        description: "Открываем Telegram для связи",
-      });
-
-      setTimeout(onClose, 1000);
-    } catch (error) {
-      console.error("Submit error:", error);
-      toast({
-        title: "Ошибка",
-        description: "Попробуйте ещё раз",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSending(false);
-    }
-  };
+  const {
+    steps,
+    step,
+    currentStep,
+    answers,
+    setAnswers,
+    selectedPackage,
+    setSelectedPackage,
+    isSending,
+    showSummary,
+    progress,
+    isLastStep,
+    canProceed,
+    calculatedPrice,
+    calculatedTimeline,
+    handleSingleSelect,
+    handleMultiSelect,
+    handleTextChange,
+    handleNext,
+    handleBack,
+    handleSubmit,
+  } = useWizardState({ productSlug, packages, telegramLink, productTitle, onClose });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey && step.type === "text") {
@@ -342,7 +65,7 @@ export function ProductWizard({
   const renderSummary = () => {
     const pkg = packages.find(p => p.id === selectedPackage);
     const contactValue = (answers.contact as string) || "";
-    
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -364,7 +87,7 @@ export function ProductWizard({
           <p className="text-muted-foreground text-xs sm:text-sm">Проверьте данные и свяжитесь с нами</p>
         </div>
 
-        {/* Price card - matching reference design */}
+        {/* Price card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -440,8 +163,8 @@ export function ProductWizard({
             disabled={isSending || !contactValue.trim()}
             className={cn(
               "flex items-center justify-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl text-white transition-colors text-sm sm:text-base",
-              contactValue.trim() 
-                ? "bg-[#0088cc] hover:bg-[#0088cc]/90" 
+              contactValue.trim()
+                ? "bg-[#0088cc] hover:bg-[#0088cc]/90"
                 : "bg-muted text-muted-foreground cursor-not-allowed"
             )}
           >
@@ -465,7 +188,7 @@ export function ProductWizard({
           </a>
         </div>
 
-        {/* Collapsible summary */}
+        {/* Collapsible details */}
         <details className="group">
           <summary className="text-xs sm:text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors list-none flex items-center gap-1">
             <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-open:rotate-90" />
@@ -475,7 +198,7 @@ export function ProductWizard({
             {Object.entries(answers).map(([stepId, value]) => {
               const stepConfig = steps.find(s => s.id === stepId);
               if (!stepConfig || !value || stepId === "contact") return null;
-              
+
               let displayValue = "";
               if (stepConfig.type === "text" || stepConfig.type === "textarea") {
                 displayValue = value.toString().slice(0, 40) + (value.toString().length > 40 ? "..." : "");
@@ -486,7 +209,7 @@ export function ProductWizard({
                   return opt ? `${opt.emoji} ${opt.label}` : v;
                 }).join(", ");
               }
-              
+
               return (
                 <div key={stepId} className="flex justify-between text-[11px] sm:text-sm gap-2">
                   <span className="text-muted-foreground shrink-0">{stepConfig.title}:</span>
@@ -534,7 +257,7 @@ export function ProductWizard({
           </div>
         );
 
-      case "multi":
+      case "multi": {
         const selected = (answers[step.id] as string[]) || [];
         return (
           <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3">
@@ -567,6 +290,7 @@ export function ProductWizard({
             ))}
           </div>
         );
+      }
 
       case "text":
         return (
@@ -628,7 +352,7 @@ export function ProductWizard({
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             {/* Progress */}
             {!showSummary && (
               <div className="space-y-2">
@@ -661,7 +385,7 @@ export function ProductWizard({
                     <h2 className="text-xl sm:text-2xl font-bold">{step.title}</h2>
                     <p className="text-muted-foreground">{step.subtitle}</p>
                   </div>
-                  
+
                   {renderStepContent()}
                 </motion.div>
               )}
