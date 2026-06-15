@@ -1,13 +1,4 @@
-import axios from "axios";
-
 const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    Accept: "application/json",
-  },
-});
 
 const resolveMediaUrl = (url) => {
   if (!url) return "";
@@ -41,8 +32,11 @@ const normalizeCase = (item = {}) => {
 };
 
 export async function fetchCases() {
-  const response = await api.get("/cases");
-  const payload = response?.data;
+  const response = await fetch(`${API_BASE_URL}/cases`, {
+    headers: { Accept: "application/json" },
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const payload = await response.json();
   const rawCases = Array.isArray(payload) ? payload : payload?.data || [];
   return rawCases.map(normalizeCase).filter((item) => item.slug && item.title);
 }
