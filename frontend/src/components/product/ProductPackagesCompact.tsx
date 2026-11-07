@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, MessageCircle, Currency, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 interface Package {
   id: string;
@@ -21,7 +22,7 @@ interface ProductPackagesCompactProps {
 
 export function ProductPackagesCompact({
   packages,
-  telegramLink = "https://t.me/neeekn",
+  telegramLink = TELEGRAM_PERSONAL,
   productTitle,
 }: ProductPackagesCompactProps) {
   const [activeIndex, setActiveIndex] = useState(1); // Default to middle package

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle, Send, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 interface HowToOrderProps {
   telegramLink?: string;
@@ -10,7 +11,7 @@ interface HowToOrderProps {
 }
 
 export function HowToOrder({
-  telegramLink = "https://t.me/neeekn",
+  telegramLink = TELEGRAM_PERSONAL,
   productTitle,
 }: HowToOrderProps) {
   const handleTelegram = () => {

@@ -1,6 +1,8 @@
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/common/Container";
 import { useMetaTags } from "@/hooks/useMetaTags";
+import { SectionHeading } from "@/components/common/SectionHeading";
+import { PageWrapper } from "@/components/common/PageWrapper";
 const Privacy = () => {
   useMetaTags(
     "Политика конфиденциальности | Neeklo Studio",
@@ -11,7 +13,7 @@ const Privacy = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-16">
         <Container size="md">
           <h1 className="text-4xl md:text-5xl font-heading font-bold mb-8">
@@ -24,9 +26,9 @@ const Privacy = () => {
             </p>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 1. Общие положения
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о физических лицах 
                 (далее — Пользователи), использующих сервисы, информацию, программы и продукты Neeklo Studio (далее — Сервисы).
@@ -34,9 +36,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 2. Сбор информации
-              </h2>
+              </SectionHeading>
               <p>
                 Мы собираем информацию, которую вы предоставляете нам напрямую при заполнении форм на сайте, 
                 включая, но не ограничиваясь:
@@ -50,9 +52,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 3. Использование информации
-              </h2>
+              </SectionHeading>
               <p>
                 Собранная информация используется для:
               </p>
@@ -66,9 +68,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 4. Защита информации
-              </h2>
+              </SectionHeading>
               <p>
                 Мы применяем необходимые технические и организационные меры для защиты персональной информации 
                 от несанкционированного доступа, изменения, раскрытия или уничтожения.
@@ -76,9 +78,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 5. Передача данных третьим лицам
-              </h2>
+              </SectionHeading>
               <p>
                 Мы не передаем ваши персональные данные третьим лицам, за исключением случаев, 
                 предусмотренных законодательством или с вашего явного согласия.
@@ -86,9 +88,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 6. Cookies
-              </h2>
+              </SectionHeading>
               <p>
                 Сайт использует файлы cookies для улучшения пользовательского опыта. 
                 Вы можете настроить свой браузер для отказа от cookies, но это может повлиять на функциональность сайта.
@@ -96,9 +98,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 7. Ваши права
-              </h2>
+              </SectionHeading>
               <p>
                 Вы имеете право:
               </p>
@@ -111,9 +113,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 8. Изменения в политике
-              </h2>
+              </SectionHeading>
               <p>
                 Мы оставляем за собой право вносить изменения в настоящую Политику конфиденциальности. 
                 Обновленная версия публикуется на этой странице с указанием даты последнего обновления.
@@ -121,9 +123,9 @@ const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 9. Контакты
-              </h2>
+              </SectionHeading>
               <p>
                 По всем вопросам, связанным с обработкой персональных данных, вы можете обратиться к нам:
               </p>
@@ -136,7 +138,7 @@ const Privacy = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

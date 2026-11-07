@@ -18,6 +18,10 @@ const Offer = lazy(() => import("@/pages/Offer"));
 const Consent = lazy(() => import("@/pages/Consent"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
+const WebsitesPage = lazy(() => import("@/pages/products/WebsitesPage"));
+const AIAgentsPage = lazy(() => import("@/pages/products/AIAgentsPage"));
+const VideoPage = lazy(() => import("@/pages/products/VideoPage"));
+
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminCasesList = lazy(() => import("@/pages/admin/AdminCasesList"));
 const AdminCaseEdit = lazy(() => import("@/pages/admin/AdminCaseEdit"));
@@ -51,6 +55,11 @@ export default function AppRoutes() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/offer" element={<Offer />} />
         <Route path="/consent" element={<Consent />} />
+
+        {/* Product pages */}
+        <Route path="/products/websites" element={<WebsitesPage />} />
+        <Route path="/products/ai-agents" element={<AIAgentsPage />} />
+        <Route path="/products/video" element={<VideoPage />} />
 
         {/* Legacy aliases */}
         <Route path="/portfolio" element={<Navigate to="/work" replace />} />

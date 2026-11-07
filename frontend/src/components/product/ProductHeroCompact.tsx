@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { MessageCircle, Home, Send } from "lucide-react";
 import { cn, scrollToElement } from "@/lib/utils";
 import { Container } from "@/components/common/Container";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 interface ProductHeroCompactProps {
   badge: string;
@@ -24,7 +25,7 @@ export function ProductHeroCompact({
   priceFrom,
   duration,
   chips,
-  telegramLink = "https://t.me/neeekn",
+  telegramLink = TELEGRAM_PERSONAL,
   onScrollToPackages,
 }: ProductHeroCompactProps) {
   const handleTelegram = () => {

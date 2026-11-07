@@ -9,6 +9,7 @@ import { StructuredData } from "@/components/common/StructuredData";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { getBlogArticle } from "@/data/blogArticles";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const BLOG_URL = "https://neeklo.ru/blog";
 
@@ -61,7 +62,7 @@ const BlogArticle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <StructuredData data={articleSchema} />
 
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
@@ -152,7 +153,7 @@ const BlogArticle = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

@@ -26,6 +26,7 @@ import batnorton1 from "@/assets/cases/batnorton-1.jpg";
 import batnorton2 from "@/assets/cases/batnorton-2.jpg";
 import batnorton3 from "@/assets/cases/batnorton-3.jpg";
 import batnorton4 from "@/assets/cases/batnorton-4.jpg";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 // Map slugs to cover images
 const coverImages: Record<string, string> = {
@@ -137,7 +138,7 @@ const WorkDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <StructuredData data={creativeWorkSchema} />
       
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
@@ -360,7 +361,7 @@ const WorkDetail = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

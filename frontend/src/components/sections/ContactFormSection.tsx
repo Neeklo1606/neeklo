@@ -7,6 +7,7 @@ import { Loader2, Paperclip, X, Check, Plus, Send, MessageCircle, CheckCircle2, 
 import { toast } from "sonner";
 import { uploadFiles, submitBriefSubmission } from "@/lib/api";
 import { Container } from "../common/Container";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 // Simplified schema
 const contactSchema = z.object({
@@ -145,7 +146,7 @@ export const ContactFormSection = () => {
             </p>
 
             <a
-              href="https://t.me/neeekn"
+              href={TELEGRAM_PERSONAL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-lg
@@ -472,7 +473,7 @@ export const ContactFormSection = () => {
           <p className="text-center mt-6 text-sm text-muted-foreground">
             Или напишите нам в{" "}
             <a
-              href="https://t.me/neeekn"
+              href={TELEGRAM_PERSONAL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

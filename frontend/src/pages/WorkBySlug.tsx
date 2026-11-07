@@ -11,6 +11,8 @@ import { getPublicCaseStudy, getPublicCaseStudyRelated } from "@/lib/api";
 import { setMetaTags } from "@/lib/seo";
 import { useEffect } from "react";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const PORTFOLIO_BASE = "/portfolio";
 
@@ -97,7 +99,7 @@ export default function WorkBySlug() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container>
           <motion.div
@@ -352,7 +354,7 @@ export default function WorkBySlug() {
                     size="lg"
                     variant="outline"
                     className="w-full group"
-                    onClick={() => window.open("https://t.me/neeekn", "_blank")}
+                    onClick={() => window.open(TELEGRAM_PERSONAL, "_blank")}
                   >
                     <MessageCircle className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                     Написать в Telegram
@@ -364,6 +366,6 @@ export default function WorkBySlug() {
         </Container>
       </main>
       <Footer />
-    </div>
+    </PageWrapper>
   );
 }

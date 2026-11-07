@@ -6,6 +6,7 @@ import { Container } from "@/components/common/Container";
 import { QuickOrderForm } from "@/components/common/QuickOrderForm";
 import { useAnimationVariants } from "@/hooks/useScrollAnimation";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 export const CTA = () => {
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
@@ -74,7 +75,7 @@ export const CTA = () => {
                 </Button>
               </motion.div>
               <motion.a 
-                href="https://t.me/neeekn" 
+                href={TELEGRAM_PERSONAL} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}

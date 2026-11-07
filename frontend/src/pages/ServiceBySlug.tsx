@@ -9,6 +9,8 @@ import { getPublicService } from "@/lib/api";
 import { setMetaTags } from "@/lib/seo";
 import { useEffect } from "react";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 export default function ServiceBySlug() {
   const { slug } = useParams<{ slug: string }>();
@@ -53,7 +55,7 @@ export default function ServiceBySlug() {
   const gallery = s.media_collections?.gallery ?? [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container>
           <motion.div
@@ -184,7 +186,7 @@ export default function ServiceBySlug() {
                     size="lg"
                     variant="outline"
                     className="w-full group"
-                    onClick={() => window.open("https://t.me/neeekn", "_blank")}
+                    onClick={() => window.open(TELEGRAM_PERSONAL, "_blank")}
                   >
                     <MessageCircle className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                     Написать в Telegram
@@ -196,6 +198,6 @@ export default function ServiceBySlug() {
         </Container>
       </main>
       <Footer />
-    </div>
+    </PageWrapper>
   );
 }

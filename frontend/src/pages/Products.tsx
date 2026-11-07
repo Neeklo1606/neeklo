@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Currency, Clock, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 // Product catalog - clean, price-first format
 const products = [
@@ -141,7 +142,7 @@ const Products = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <StructuredData data={productsStructuredData} />
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         {/* Minimal Header */}
@@ -241,7 +242,7 @@ const Products = () => {
         </section>
       </main>
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

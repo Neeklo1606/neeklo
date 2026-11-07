@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Send, Instagram, Mail } from "lucide-react";
 import logo from "@/assets/logo.webp";
 import { smoothScrollToId } from "@/lib/smoothScroll";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 const products = [
   { label: "Разработка сайтов", href: "/products/website" },
@@ -19,7 +20,7 @@ const company = [
 ];
 
 const INSTAGRAM_URL = "https://www.instagram.com/neeklo.studio";
-const TELEGRAM_URL = "https://t.me/neeekn";
+const TELEGRAM_URL = TELEGRAM_PERSONAL;
 const EMAIL = "klochkonikita@mail.ru";
 
 const socialLinks = [

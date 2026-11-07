@@ -8,6 +8,7 @@ import { getPublicServices } from "@/lib/api";
 import { getServiceIcon } from "@/components/services/ServiceIcon";
 import { ServiceDetailDrawer, type ServiceForDrawer } from "@/components/services/ServiceDetailDrawer";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 interface ServiceItem extends ServiceForDrawer {
   media_collections?: { cover?: Array<{ url: string }> };
@@ -41,7 +42,7 @@ const Services = () => {
   if (isLoading) return <PageSkeleton />;
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-16">
         <Container>
           <motion.header
@@ -133,7 +134,7 @@ const Services = () => {
         onClose={() => setSelectedService(null)}
       />
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

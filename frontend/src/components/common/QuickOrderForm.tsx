@@ -4,6 +4,7 @@ import { X, Send, Loader2, Check, Globe, MessageSquare, Video, Bot } from "lucid
 import { cn } from "@/lib/utils";
 // Removed unused import - redirecting directly to Telegram
 import { toast } from "@/hooks/use-toast";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 const products = [
   {
@@ -71,7 +72,7 @@ export const QuickOrderForm = ({ isOpen, onClose, preselectedProduct }: QuickOrd
     
     // Close modal and redirect to Telegram
     onClose();
-    window.open(`https://t.me/neeekn?text=${encodedMessage}`, '_blank');
+    window.open(`${TELEGRAM_PERSONAL}?text=${encodedMessage}`, '_blank');
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -270,7 +271,7 @@ export const QuickOrderForm = ({ isOpen, onClose, preselectedProduct }: QuickOrd
               <p className="text-center text-xs text-muted-foreground">
                 Или напишите напрямую:{" "}
                 <a
-                  href="https://t.me/neeekn"
+                  href={TELEGRAM_PERSONAL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"

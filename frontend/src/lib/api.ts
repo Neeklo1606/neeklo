@@ -4,7 +4,55 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
-interface ApiResponse<T = any> {
+// ── Domain types ──────────────────────────────────────────────────────────────
+
+export interface CaseMedia {
+  id: number;
+  type: 'image' | 'video';
+  url: string;
+  order?: number;
+}
+
+export interface Case {
+  id: number;
+  slug: string;
+  title: string;
+  category?: string;
+  year?: number;
+  featured?: boolean;
+  description?: string;
+  meta?: Record<string, unknown>;
+  media?: CaseMedia[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CaseStudy {
+  id: number;
+  slug: string;
+  title: string;
+  status?: string;
+  category?: string;
+  year?: number;
+  description?: string;
+  content?: string;
+  cover_image?: string;
+  meta?: Record<string, unknown>;
+  media?: Array<{ id: number; url: string; type: string; collection?: string }>;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface PaginationMeta {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
@@ -14,7 +62,7 @@ interface ApiResponse<T = any> {
 /**
  * Make API request
  */
-async function apiRequest<T = any>(
+async function apiRequest<T = unknown>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
@@ -91,6 +139,29 @@ export async function uploadFiles(
 }
 
 /**
+ * Submit a lead from the product wizard to CRM
+ */
+export async function submitWizardLead(data: {
+  contact: string;
+  productSlug: string;
+  productTitle: string;
+  summaryText: string;
+}): Promise<{ success: boolean; message?: string }> {
+  const response = await apiRequest('/brief-submissions', {
+    method: 'POST',
+    body: JSON.stringify({
+      name: data.contact || 'Без контакта',
+      role: data.productTitle,
+      description: data.summaryText.slice(0, 2000),
+      phone: data.contact,
+      email: 'wizard.noreply@neeklo.ru',
+      project_name: data.productSlug,
+    }),
+  });
+  return { success: response.success, message: response.message };
+}
+
+/**
  * Submit brief submission
  */
 export async function submitBriefSubmission(data: {
@@ -151,7 +222,7 @@ export function resolveStorageUrl(url: string | null | undefined): string {
 }
 
 /** Список кейсов (публичный) */
-export async function getCases(): Promise<{ success: boolean; data?: any[]; message?: string }> {
+export async function getCases(): Promise<{ success: boolean; data?: Case[]; message?: string }> {
   const r = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/cases`, {
     headers: { Accept: 'application/json' },
   });
@@ -161,7 +232,7 @@ export async function getCases(): Promise<{ success: boolean; data?: any[]; mess
 }
 
 /** Кейс по slug (публичный) */
-export async function getCaseBySlug(slug: string): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function getCaseBySlug(slug: string): Promise<{ success: boolean; data?: Case; message?: string }> {
   const r = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/cases/slug/${encodeURIComponent(slug)}`, {
     headers: { Accept: 'application/json' },
   });
@@ -275,7 +346,7 @@ export async function getPublicService(slug: string): Promise<{ success: boolean
 }
 
 /** Кейс по id (админ) */
-export async function getCaseById(id: number): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function getCaseById(id: number): Promise<{ success: boolean; data?: Case; message?: string }> {
   const r = await fetch(apiV1(`/cases/${id}`), { headers: { Accept: 'application/json', ...getAuthHeaders() } });
   const d = await r.json();
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
@@ -283,7 +354,7 @@ export async function getCaseById(id: number): Promise<{ success: boolean; data?
 }
 
 /** Создать кейс (админ) */
-export async function createCase(v: { slug: string; title: string; category?: string; year?: number; featured?: boolean; description?: string; meta?: object }): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function createCase(v: { slug: string; title: string; category?: string; year?: number; featured?: boolean; description?: string; meta?: object }): Promise<{ success: boolean; data?: Case; message?: string }> {
   const r = await fetch(apiV1('/cases'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...getAuthHeaders() },
@@ -293,7 +364,7 @@ export async function createCase(v: { slug: string; title: string; category?: st
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true, data: d.data };
 }/** Обновить кейс (админ) */
-export async function updateCase(id: number, v: Partial<{ slug: string; title: string; category: string; year: number; featured: boolean; description: string; meta: object }>): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function updateCase(id: number, v: Partial<{ slug: string; title: string; category: string; year: number; featured: boolean; description: string; meta: object }>): Promise<{ success: boolean; data?: Case; message?: string }> {
   const r = await fetch(apiV1(`/cases/${id}`), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...getAuthHeaders() },
@@ -303,7 +374,7 @@ export async function updateCase(id: number, v: Partial<{ slug: string; title: s
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true, data: d.data };
 }/** Загрузить медиа (админ). type: 'image' | 'video' */
-export async function uploadCaseMedia(caseId: number, file: File, type: 'image' | 'video'): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function uploadCaseMedia(caseId: number, file: File, type: 'image' | 'video'): Promise<{ success: boolean; data?: CaseMedia; message?: string }> {
   const fd = new FormData();
   fd.append('file', file);
   fd.append('type', type);
@@ -339,7 +410,7 @@ export async function reorderCaseMedia(caseId: number, order: number[]): Promise
 // ── Admin: CMS Case Studies ────────────────────────────────────────────────
 const apiAdmin = (p: string) => (import.meta.env.VITE_API_URL || '/api').replace(/\/?$/, '') + '/v1/admin' + p;
 
-export async function adminGetCaseStudies(params?: { search?: string; status?: string; per_page?: number; page?: number }): Promise<{ success: boolean; data?: any[]; meta?: any; message?: string }> {
+export async function adminGetCaseStudies(params?: { search?: string; status?: string; per_page?: number; page?: number }): Promise<{ success: boolean; data?: CaseStudy[]; meta?: PaginationMeta; message?: string }> {
   const q = params ? '?' + new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)])).toString() : '';
   const r = await fetch(apiAdmin(`/cms/case-studies${q}`), { headers: { Accept: 'application/json', ...getAuthHeaders() } });
   const d = await r.json();
@@ -347,14 +418,14 @@ export async function adminGetCaseStudies(params?: { search?: string; status?: s
   return { success: true, data: d.data, meta: d.meta };
 }
 
-export async function adminGetCaseStudy(id: number): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function adminGetCaseStudy(id: number): Promise<{ success: boolean; data?: CaseStudy; message?: string }> {
   const r = await fetch(apiAdmin(`/cms/case-studies/${id}`), { headers: { Accept: 'application/json', ...getAuthHeaders() } });
   const d = await r.json();
   if (!r.ok) return { success: false, message: d.message || 'Ошибка' };
   return { success: true, data: d.data };
 }
 
-export async function adminCreateCaseStudy(v: Record<string, unknown>): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function adminCreateCaseStudy(v: Record<string, unknown>): Promise<{ success: boolean; data?: CaseStudy; message?: string }> {
   const r = await fetch(apiAdmin('/cms/case-studies'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...getAuthHeaders() },
@@ -365,7 +436,7 @@ export async function adminCreateCaseStudy(v: Record<string, unknown>): Promise<
   return { success: true, data: d.data };
 }
 
-export async function adminUpdateCaseStudy(id: number, v: Record<string, unknown>): Promise<{ success: boolean; data?: any; message?: string }> {
+export async function adminUpdateCaseStudy(id: number, v: Record<string, unknown>): Promise<{ success: boolean; data?: CaseStudy; message?: string }> {
   const r = await fetch(apiAdmin(`/cms/case-studies/${id}`), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...getAuthHeaders() },

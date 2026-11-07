@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Container } from "../common/Container";
 import { BriefForm } from "../BriefForm";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 export const BriefFormSection = () => {
   const ref = useRef(null);
@@ -77,7 +78,7 @@ export const BriefFormSection = () => {
             <p className="text-sm text-muted-foreground">
               Или свяжитесь с нами напрямую в{" "}
               <a
-                href="https://t.me/neeekn"
+                href={TELEGRAM_PERSONAL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline transition-colors"

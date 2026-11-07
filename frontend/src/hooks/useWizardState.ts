@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import {
   generateSteps,
@@ -6,9 +6,11 @@ import {
   calculateTimeline,
   buildTelegramMessage,
 } from "@/components/product/wizardData";
+import { submitWizardLead } from "@/lib/api";
 import type { WizardAnswers, WizardPackage } from "@/components/product/wizardTypes";
 
 interface UseWizardStateOptions {
+  isOpen: boolean;
   productSlug: string;
   packages: WizardPackage[];
   telegramLink: string;
@@ -17,6 +19,7 @@ interface UseWizardStateOptions {
 }
 
 export function useWizardState({
+  isOpen,
   productSlug,
   packages,
   telegramLink,
@@ -32,6 +35,19 @@ export function useWizardState({
   );
   const [isSending, setIsSending] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Reset state each time wizard opens
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentStep(0);
+      setAnswers({});
+      setSelectedPackage(packages[1]?.id ?? packages[0]?.id ?? "");
+      setShowSummary(false);
+      setShowSuccess(false);
+      setIsSending(false);
+    }
+  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const step = steps[currentStep];
   const progress = ((currentStep + 1) / steps.length) * 100;
@@ -114,15 +130,22 @@ export function useWizardState({
         calculatedPrice.total,
         calculatedTimeline
       );
+
+      // Open Telegram with pre-filled message
       window.open(`${telegramLink}?text=${message}`, "_blank");
 
-      toast({
-        title: "Отлично!",
-        description: "Открываем Telegram для связи",
-      });
+      // Submit to CRM (fire-and-forget — don't block on failure)
+      const contactValue = (answers.contact as string) || "";
+      const summaryText = decodeURIComponent(message);
+      submitWizardLead({
+        contact: contactValue,
+        productSlug,
+        productTitle,
+        summaryText,
+      }).catch((err) => console.error("CRM submit error:", err));
 
-      // onClose called here — 1 second after successful submit (same as original)
-      setTimeout(onClose, 1000);
+      setShowSuccess(true);
+      setTimeout(onClose, 1800);
     } catch (error) {
       console.error("Submit error:", error);
       toast({
@@ -139,6 +162,7 @@ export function useWizardState({
     packages,
     selectedPackage,
     productTitle,
+    productSlug,
     telegramLink,
     calculatedPrice.total,
     calculatedTimeline,
@@ -146,7 +170,6 @@ export function useWizardState({
   ]);
 
   return {
-    // state
     steps,
     step,
     currentStep,
@@ -156,13 +179,12 @@ export function useWizardState({
     setSelectedPackage,
     isSending,
     showSummary,
-    // derived
+    showSuccess,
     progress,
     isLastStep,
     canProceed,
     calculatedPrice,
     calculatedTimeline,
-    // handlers
     handleSingleSelect,
     handleMultiSelect,
     handleTextChange,

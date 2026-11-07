@@ -1,0 +1,1 @@
+import{j as n}from"./motion-vendor-OHsymAxR.js";import{a as e}from"./products-Bym-nQip.js";function s({children:t,className:o}){return n.jsx("h2",{className:e("text-2xl font-heading font-bold text-foreground mb-4",o),children:t})}export{s as S};

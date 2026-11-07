@@ -1,10 +1,7 @@
-"use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Progress } from "@/components/ui/progress";
 import { useWizardState } from "@/hooks/useWizardState";
 import { WizardStepContent } from "./WizardStepContent";
 import { WizardSummary } from "./WizardSummary";
@@ -27,6 +24,16 @@ export function ProductWizard({
   packages,
   telegramLink,
 }: ProductWizardProps) {
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    setIsMobile(!mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(!e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const {
     steps,
     step,
@@ -37,6 +44,7 @@ export function ProductWizard({
     setSelectedPackage,
     isSending,
     showSummary,
+    showSuccess,
     progress,
     isLastStep,
     canProceed,
@@ -48,7 +56,7 @@ export function ProductWizard({
     handleNext,
     handleBack,
     handleSubmit,
-  } = useWizardState({ productSlug, packages, telegramLink, productTitle, onClose });
+  } = useWizardState({ isOpen, productSlug, packages, telegramLink, productTitle, onClose });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey && step.type === "text") {
@@ -57,130 +65,187 @@ export function ProductWizard({
     }
   };
 
-  if (!isOpen) return null;
+  const canGoBack = currentStep > 0 || showSummary;
+
+  const mobileVariants = {
+    initial: { y: "100%" },
+    animate: { y: 0 },
+    exit: { y: "100%" },
+  };
+
+  const desktopVariants = {
+    initial: { opacity: 0, y: 24, scale: 0.97 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: 16, scale: 0.97 },
+  };
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm"
-        onClick={(e) => e.target === e.currentTarget && onClose()}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          className="absolute inset-x-2 top-2 bottom-2 sm:inset-x-4 sm:top-4 sm:bottom-4 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:max-w-lg md:w-full bg-background rounded-xl sm:rounded-2xl border shadow-2xl overflow-hidden flex flex-col"
-        >
-          {/* Header */}
-          <div className="p-3 sm:p-4 border-b shrink-0">
-            <div className="flex items-center justify-between mb-2 sm:mb-3">
-              <span className="text-sm font-medium text-muted-foreground">
-                {productTitle}
-              </span>
+    <>
+      {/* Backdrop */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="wizard-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[60] bg-black/50"
+            onClick={onClose}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="wizard-modal"
+            variants={isMobile ? mobileVariants : desktopVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={
+              isMobile
+                ? { type: "spring", damping: 30, stiffness: 300 }
+                : { duration: 0.22, ease: "easeOut" }
+            }
+            className={cn(
+              "fixed z-[61] flex flex-col bg-background overflow-hidden",
+              // Mobile: bottom sheet
+              "inset-x-0 bottom-0 h-[92vh] rounded-t-2xl",
+              // Desktop: centered modal
+              "md:inset-0 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2",
+              "md:h-auto md:max-h-[85vh] md:w-full md:max-w-[640px]",
+              "md:rounded-2xl md:border md:shadow-2xl"
+            )}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center gap-2 px-4 py-3 border-b shrink-0">
+              <button
+                onClick={handleBack}
+                disabled={!canGoBack}
+                className={cn(
+                  "p-2 rounded-full transition-colors shrink-0",
+                  canGoBack ? "hover:bg-muted" : "opacity-20 cursor-not-allowed"
+                )}
+                aria-label="Назад"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex-1 min-w-0">
+                {!showSummary && !showSuccess ? (
+                  <>
+                    {/* Mobile: progress bar */}
+                    <div className="md:hidden h-1.5 bg-muted rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-primary rounded-full"
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                      />
+                    </div>
+
+                    {/* Desktop: stepper dots */}
+                    <div className="hidden md:flex items-center justify-center gap-2">
+                      {steps.map((s, i) => (
+                        <motion.div
+                          key={s.id}
+                          animate={{
+                            width: i === currentStep ? 20 : 8,
+                            opacity: i <= currentStep ? 1 : 0.25,
+                          }}
+                          transition={{ duration: 0.2 }}
+                          className="h-2 rounded-full bg-primary"
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm font-medium text-center text-muted-foreground">
+                    {showSuccess ? "Отправлено" : "Итог"}
+                  </p>
+                )}
+              </div>
+
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-muted transition-colors"
+                className="p-2 rounded-full hover:bg-muted transition-colors shrink-0"
+                aria-label="Закрыть"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {!showSummary && (
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">
-                    Шаг {currentStep + 1} из {steps.length}
-                  </span>
-                  <span className="font-medium">{Math.round(progress)}%</span>
-                </div>
-                <Progress value={progress} className="h-2" />
-              </div>
-            )}
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-            <AnimatePresence mode="wait">
-              {showSummary ? (
-                <WizardSummary
-                  steps={steps}
-                  answers={answers}
-                  packages={packages}
-                  selectedPackage={selectedPackage}
-                  calculatedPrice={calculatedPrice}
-                  calculatedTimeline={calculatedTimeline}
-                  isSending={isSending}
-                  productTitle={productTitle}
-                  onContactChange={(v) => setAnswers((prev) => ({ ...prev, contact: v }))}
-                  onPackageChange={setSelectedPackage}
-                  onSubmit={handleSubmit}
-                />
-              ) : (
-                <motion.div
-                  key={step.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-4 sm:space-y-6"
-                >
-                  <div className="text-center space-y-1 sm:space-y-2">
-                    <h2 className="text-xl sm:text-2xl font-bold">{step.title}</h2>
-                    <p className="text-muted-foreground">{step.subtitle}</p>
-                  </div>
-
-                  <WizardStepContent
-                    step={step}
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto">
+              <AnimatePresence mode="wait">
+                {showSummary ? (
+                  <WizardSummary
+                    key="summary"
+                    steps={steps}
                     answers={answers}
-                    onSingleSelect={handleSingleSelect}
-                    onMultiSelect={handleMultiSelect}
-                    onTextChange={handleTextChange}
-                    onKeyDown={handleKeyDown}
+                    packages={packages}
+                    selectedPackage={selectedPackage}
+                    calculatedPrice={calculatedPrice}
+                    calculatedTimeline={calculatedTimeline}
+                    isSending={isSending}
+                    showSuccess={showSuccess}
+                    productTitle={productTitle}
+                    onContactChange={(v) => setAnswers((prev) => ({ ...prev, contact: v }))}
+                    onPackageChange={setSelectedPackage}
+                    onSubmit={handleSubmit}
                   />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                ) : (
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ duration: 0.22, ease: "easeInOut" }}
+                    className="p-4 sm:p-6 space-y-5"
+                  >
+                    <div className="space-y-1">
+                      <h2 className="text-xl font-bold leading-tight">{step.title}</h2>
+                      {step.subtitle && (
+                        <p className="text-sm text-muted-foreground">{step.subtitle}</p>
+                      )}
+                    </div>
 
-          {/* Footer */}
-          <div className="p-3 sm:p-4 border-t shrink-0">
-            <div className="flex gap-2 sm:gap-3">
-              <button
-                onClick={handleBack}
-                disabled={currentStep === 0 && !showSummary}
-                className={cn(
-                  "flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border transition-colors text-sm sm:text-base",
-                  currentStep === 0 && !showSummary
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-muted"
+                    <WizardStepContent
+                      step={step}
+                      answers={answers}
+                      onSingleSelect={handleSingleSelect}
+                      onMultiSelect={handleMultiSelect}
+                      onTextChange={handleTextChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                  </motion.div>
                 )}
-              >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="hidden xs:inline">Назад</span>
-              </button>
+              </AnimatePresence>
+            </div>
 
-              {!showSummary && (
+            {/* Footer: Далее button (hidden on summary/success) */}
+            {!showSummary && !showSuccess && (
+              <div className="px-4 py-4 border-t shrink-0">
                 <button
                   onClick={handleNext}
                   disabled={!canProceed}
                   className={cn(
-                    "flex-1 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all text-sm sm:text-base",
+                    "w-full h-14 rounded-xl font-semibold text-base transition-all",
                     canProceed
-                      ? "bg-primary text-primary-foreground hover:opacity-90"
+                      ? "bg-primary text-primary-foreground hover:opacity-90 active:scale-[0.98]"
                       : "bg-muted text-muted-foreground cursor-not-allowed"
                   )}
                 >
-                  <span>{isLastStep ? "Готово" : "Далее"}</span>
-                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  {isLastStep ? "Перейти к итогу" : "Далее"}
                 </button>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

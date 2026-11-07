@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 import { Plus, FileUp, X, File as FileIcon, ArrowUpRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { TELEGRAM_BOT, TELEGRAM_PERSONAL } from "@/constants";
 
-const TELEGRAM_BOT_URL = "https://t.me/neeklo_studio_bot";
-const TELEGRAM_DIRECT_URL = "https://t.me/neeekn";
 const MAX_FILES = 5;
 
 const inputBase =
@@ -68,7 +67,7 @@ export function ContactFormModern({ onSuccess, title, hideTitle }: ContactFormMo
 
   const handleSendRequest = () => {
     if (!canSubmit) return;
-    const url = `${TELEGRAM_BOT_URL}?text=${encodeURIComponent(buildTelegramMessage())}`;
+    const url = `${TELEGRAM_BOT}?text=${encodeURIComponent(buildTelegramMessage())}`;
     window.open(url, "_blank", "noopener,noreferrer");
     onSuccess?.();
   };
@@ -289,7 +288,7 @@ export function ContactFormModern({ onSuccess, title, hideTitle }: ContactFormMo
           <p className="text-sm text-white/60 !mt-0">
             Или{" "}
             <a
-              href={TELEGRAM_DIRECT_URL}
+              href={TELEGRAM_PERSONAL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-cyan-300 hover:underline"

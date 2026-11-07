@@ -7,6 +7,7 @@ import { Container } from "@/components/common/Container";
 import { Sparkles, ArrowRight, RotateCcw, ExternalLink, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { TELEGRAM_MANAGER } from "@/constants";
 
 // Types
 type Step = 1 | 2 | 3 | "result";
@@ -38,7 +39,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
         description: "Лендинг с формой захвата",
         price: "от 45 000 ₽",
         timeline: "5–14 дней",
-        telegramLink: "https://t.me/neeklo_manager",
+        telegramLink: TELEGRAM_MANAGER,
       };
     }
     return {
@@ -47,7 +48,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
       description: "Имиджевый сайт для бизнеса",
       price: "от 120 000 ₽",
       timeline: "10–21 день",
-      telegramLink: "https://t.me/neeklo_manager",
+      telegramLink: TELEGRAM_MANAGER,
     };
   }
 
@@ -59,7 +60,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
         description: "CRM + рассылки + оплата",
         price: "от 65 000 ₽",
         timeline: "7–14 дней",
-        telegramLink: "https://t.me/neeklo_manager",
+        telegramLink: TELEGRAM_MANAGER,
       };
     }
     return {
@@ -68,7 +69,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
       description: "Приём заказов 24/7",
       price: "от 35 000 ₽",
       timeline: "5–14 дней",
-      telegramLink: "https://t.me/neeklo_manager",
+      telegramLink: TELEGRAM_MANAGER,
     };
   }
 
@@ -80,7 +81,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
         description: "Reels и промо с AI",
         price: "от 25 000 ₽",
         timeline: "3–7 дней",
-        telegramLink: "https://t.me/neeklo_manager",
+        telegramLink: TELEGRAM_MANAGER,
       };
     }
     return {
@@ -89,7 +90,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
       description: "Контент для соцсетей",
       price: "от 25 000 ₽",
       timeline: "3–7 дней",
-      telegramLink: "https://t.me/neeklo_manager",
+      telegramLink: TELEGRAM_MANAGER,
     };
   }
 
@@ -99,7 +100,7 @@ const getRecommendation = (selection: Selection): ProductRecommendation => {
     description: "Подберём решение за вас",
     price: "от 65 000 ₽",
     timeline: "10–21 день",
-    telegramLink: "https://t.me/neeklo_manager",
+    telegramLink: TELEGRAM_MANAGER,
   };
 };
 

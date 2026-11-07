@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 // Removed unused imports - no longer sending to backend
 import { toast } from "@/hooks/use-toast";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 // Attachment type definition
 export interface Attachment {
@@ -154,13 +155,13 @@ export function BriefWizard({ isOpen, onClose, initialInput = "", attachments = 
       onClose();
       
       // Redirect to Telegram with pre-filled message
-      window.open(`https://t.me/neeekn?text=${encodedMessage}`, '_blank');
+      window.open(`${TELEGRAM_PERSONAL}?text=${encodedMessage}`, '_blank');
       
     } catch (error) {
       console.error('Error:', error);
       // Even on error, redirect to Telegram
       onClose();
-      window.open('https://t.me/neeekn', '_blank');
+      window.open(TELEGRAM_PERSONAL, '_blank');
     } finally {
       setIsSending(false);
     }

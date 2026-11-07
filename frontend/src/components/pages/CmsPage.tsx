@@ -7,6 +7,7 @@ import { StickyCtaButton } from "@/components/layout/StickyCtaButton";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 function getSeoDefaults(bootstrap: { settings?: Record<string, Array<{ key: string; value?: unknown[] }>> } | null | undefined) {
   const seoItems = bootstrap?.settings?.seo ?? [];
@@ -67,12 +68,12 @@ export function CmsPage({ slug, showStickyCta }: CmsPageProps) {
       : blocks;
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0 pt-0">
         <BlockRenderer blocks={blocksToRender} />
       </main>
       {showStickyCta && <StickyCtaButton />}
       <Footer />
-    </div>
+    </PageWrapper>
   );
 }

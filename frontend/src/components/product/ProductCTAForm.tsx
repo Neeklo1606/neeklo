@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/common/Container";
 import { Send, Check } from "lucide-react";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 interface ProductCTAFormProps {
   title?: string;
@@ -18,7 +19,7 @@ export const ProductCTAForm = ({
   productName,
   packages,
   selectedPackage,
-  telegramLink = "https://t.me/neeekn",
+  telegramLink = TELEGRAM_PERSONAL,
 }: ProductCTAFormProps) => {
   const [formData, setFormData] = useState({
     package: selectedPackage || packages[0]?.id || "",
@@ -34,7 +35,7 @@ export const ProductCTAForm = ({
     const encodedMessage = encodeURIComponent(message);
     
     // Redirect to Telegram
-    window.open(`https://t.me/neeekn?text=${encodedMessage}`, '_blank');
+    window.open(`${TELEGRAM_PERSONAL}?text=${encodedMessage}`, '_blank');
   };
 
   return (

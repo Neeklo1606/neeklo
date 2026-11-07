@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ArrowRight, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { blogArticles, type BlogArticleData } from "@/data/blogArticles";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const formatDate = (dateStr: string) =>
   new Date(dateStr).toLocaleDateString("ru-RU", {
@@ -62,7 +63,7 @@ export default function Blog() {
   }, [selectedTag, yearFilter, dateOrder]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0 pt-24">
         <Container>
           <header className="mb-8 md:mb-10">
@@ -203,6 +204,6 @@ export default function Blog() {
         </Container>
       </main>
       <Footer />
-    </div>
+    </PageWrapper>
   );
 }

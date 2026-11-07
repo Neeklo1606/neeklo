@@ -21,6 +21,8 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { QuickOrderForm } from "@/components/common/QuickOrderForm";
 import { useMobile } from "@/hooks/useMobile";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const aboutStructuredData = {
   "@context": "https://schema.org",
@@ -143,7 +145,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <StructuredData data={aboutStructuredData} />
       
       <main className="pb-[max(6rem,env(safe-area-inset-bottom)+4rem)] lg:pb-0">
@@ -367,7 +369,7 @@ const About = () => {
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 flex-wrap">
                 <motion.a
-                  href="https://t.me/neeekn"
+                  href={TELEGRAM_PERSONAL}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.03 }}
@@ -405,7 +407,7 @@ const About = () => {
         isOpen={isOrderFormOpen} 
         onClose={() => setIsOrderFormOpen(false)} 
       />
-    </div>
+    </PageWrapper>
   );
 };
 

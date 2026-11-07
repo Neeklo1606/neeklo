@@ -5,47 +5,23 @@
 
 ---
 
-## Готовый, но не подключённый компонент
+## ProductWizard — подключён и переработан ✓
 
-### ProductWizard
+**Статус:** Подключён к трём продуктовым страницам. Полностью переработан UI/UX.
 
-**Файлы:** `frontend/src/components/product/ProductWizard.tsx` и связанные:
-- `wizardTypes.ts` — типы (WizardOption, WizardStep, WizardPackage)
-- `wizardData.ts` — чистые функции (generateSteps, calculatePrice, buildTelegramMessage)
-- `useWizardState.ts` — хук состояния (5-шаговая state-машина)
-- `WizardStepContent.tsx` — рендер шагов
-- `WizardSummary.tsx` — финальный экран с расчётом цены
+**Страницы:** `WebsitesPage.tsx`, `AIAgentsPage.tsx`, `VideoPage.tsx` — каждая
+имеет кнопку "Рассчитать стоимость" + `<ProductWizard>` с собственными `WIZARD_PACKAGES`.
 
-**Статус:** Полностью реализован. Нигде не импортируется.
-
-Проверено командой:
-```
-grep -rn "ProductWizard" src/ --include="*.tsx" --include="*.ts"
-```
-Результат: только определение в самом файле. Реэкспортов нет.
-
-**Что это такое.** Судя по структуре — интерактивный мини-бриф для страниц
-продуктов. 5 шагов: тип задачи → детали → дополнительные опции (продукт-специфичные)
-→ бюджет/сроки → контакт. Финальный экран рассчитывает стоимость на основе
-выбранного тарифа (`packages`) и опций с `priceModifier`, строит сообщение
-для Telegram и открывает его через `window.open`.
-
-Props: `isOpen`, `onClose`, `productTitle`, `productSlug`, `packages`, `telegramLink`.
-`productSlug` используется в `generateSteps` для подбора продукт-специфичных опций.
-
-**Контекст в проекте.** В `HowItWorks.tsx:52` описан шаг процесса:
-_"Заполняете бриф — Отвечаете на 5 вопросов о бизнесе, целях и стиле"_ —
-это точное описание того, что делает ProductWizard. В проекте параллельно
-существует `BriefWizard` / `BriefModal` (hero-секция, подключён), но
-ProductWizard специализирован под страницы продуктов с расчётом цены.
-
-**Что нужно сделать (отдельная задача):**
-Подключить к страницам `/products/*` — в `WebsitesPage.tsx`, `AIAgentsPage.tsx`,
-`VideoPage.tsx` как кнопку "Рассчитать стоимость" или "Оставить заявку".
-Каждая страница уже содержит `packages` и `telegramLink` через
-`ProductPageCompactTemplate` — их нужно пробросить в `<ProductWizard>`.
-
-Не трогать в рамках рефакторинга state/структуры — это фича-задача.
+**Что изменено в рамках фича-задачи:**
+- Mobile: bottom sheet (92vh, rounded-t-2xl, spring animation, z-[61])
+- Desktop: centered modal (640px, 85vh, scale/opacity animation)
+- Header: прогресс-бар (mobile) / stepper dots (desktop)
+- Шаги: 56px touch targets, multi-select checkboxes, single-select auto-advance
+- Summary: package tabs, price card, contact auto-detect (phone vs telegram)
+- Submit: открывает Telegram + fire-and-forget CRM через `submitWizardLead()`
+- Success state: CheckCircle2 animation + auto-close через 1.8s
+- `useWizardState` принимает `isOpen` — сбрасывает всё при каждом открытии
+- `index.html`: исправлен `html.light` → `html.light-mode` в skeleton CSS
 
 ---
 
@@ -63,22 +39,3 @@ onContactChange={(v) => setAnswers((prev) => ({ ...prev, contact: v }))}
 управление контактом из summary фактически выходит за рамки ответственности
 WizardSummary. Если в будущем contact-шаг нужно будет валидировать или
 сохранять отдельно — это место потребует рефакторинга.
-
-Не исправлено: изменение архитектуры состояния выходит за рамки текущей задачи.
-
-### Жёстко заданный WhatsApp номер
-
-В `WizardSummary.tsx:133`:
-```tsx
-href={`https://wa.me/79999999999?text=...`}
-```
-Номер `79999999999` — заглушка. Должен быть вынесен в константы (`constants/index.ts`)
-или конфиг (`.env`), аналогично Telegram-ссылкам.
-
-### Тип `Package` vs `WizardPackage`
-
-Внешние вызывающие ProductWizard передают `packages: Package[]` (имя из
-старого кода). После рефакторинга тип стал `WizardPackage` из `wizardTypes.ts`.
-Поскольку форма объекта идентична, TypeScript принимает — но при подключении
-компонента к страницам стоит сверить, что тип пропса соответствует данным из
-`productPages.json` или откуда будет браться конфиг пакетов.

@@ -11,6 +11,7 @@ import { HowToOrder } from "./HowToOrder";
 import { StickyCTA } from "./StickyCTA";
 import { ProductFAQ } from "./ProductFAQ";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 interface Package {
   id: string;
@@ -75,7 +76,7 @@ export function ProductPageCompactTemplate({
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pb-24 lg:pb-0">
         {/* Hero - Compact */}
         <ProductHeroCompact
@@ -121,6 +122,6 @@ export function ProductPageCompactTemplate({
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 }

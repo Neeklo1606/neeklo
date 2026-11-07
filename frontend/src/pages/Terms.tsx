@@ -1,6 +1,9 @@
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/common/Container";
 import { useMetaTags } from "@/hooks/useMetaTags";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { SectionHeading } from "@/components/common/SectionHeading";
+import { PageWrapper } from "@/components/common/PageWrapper";
 const Terms = () => {
   useMetaTags(
     "Условия использования | Neeklo Studio",
@@ -11,7 +14,7 @@ const Terms = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-16">
         <Container size="md">
           <h1 className="text-4xl md:text-5xl font-heading font-bold mb-8">
@@ -24,9 +27,9 @@ const Terms = () => {
             </p>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 1. Принятие условий
-              </h2>
+              </SectionHeading>
               <p>
                 Используя веб-сайт и сервисы Neeklo Studio (далее — Сервисы), вы соглашаетесь с настоящими 
                 Условиями использования. Если вы не согласны с этими условиями, пожалуйста, не используйте наши Сервисы.
@@ -34,9 +37,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 2. Описание услуг
-              </h2>
+              </SectionHeading>
               <p>
                 Neeklo Studio предоставляет услуги в области:
               </p>
@@ -50,9 +53,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 3. Использование сайта
-              </h2>
+              </SectionHeading>
               <p>
                 Вы обязуетесь использовать сайт только в законных целях и таким образом, 
                 который не нарушает права других пользователей и не ограничивает их использование сайта.
@@ -69,9 +72,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 4. Интеллектуальная собственность
-              </h2>
+              </SectionHeading>
               <p>
                 Весь контент сайта, включая текст, графику, логотипы, изображения, видео и программное обеспечение, 
                 является интеллектуальной собственностью Neeklo Studio и защищен законодательством об авторском праве.
@@ -82,9 +85,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 5. Заказ услуг
-              </h2>
+              </SectionHeading>
               <p>
                 При заказе услуг через сайт:
               </p>
@@ -97,9 +100,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 6. Ограничение ответственности
-              </h2>
+              </SectionHeading>
               <p>
                 Neeklo Studio не несет ответственности за:
               </p>
@@ -112,9 +115,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 7. Конфиденциальность
-              </h2>
+              </SectionHeading>
               <p>
                 Использование персональных данных регулируется нашей{" "}
                 <a href="/privacy" className="text-primary hover:underline">
@@ -124,9 +127,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 8. Изменения условий
-              </h2>
+              </SectionHeading>
               <p>
                 Мы оставляем за собой право изменять настоящие Условия использования в любое время. 
                 Изменения вступают в силу с момента публикации на сайте. 
@@ -135,9 +138,9 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 9. Применимое право
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящие Условия регулируются законодательством Российской Федерации. 
                 Все споры разрешаются в соответствии с действующим законодательством РФ.
@@ -145,15 +148,15 @@ const Terms = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 10. Контакты
-              </h2>
+              </SectionHeading>
               <p>
                 По всем вопросам, связанным с Условиями использования, обращайтесь:
               </p>
               <p className="mt-2">
                 Email: <a href="mailto:klochkonikita@mail.ru" className="text-primary hover:underline">klochkonikita@mail.ru</a><br />
-                Telegram: <a href="https://t.me/neeekn" className="text-primary hover:underline">@neeekn</a>
+                Telegram: <a href={TELEGRAM_PERSONAL} className="text-primary hover:underline">@neeekn</a>
               </p>
             </section>
           </div>
@@ -161,7 +164,7 @@ const Terms = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

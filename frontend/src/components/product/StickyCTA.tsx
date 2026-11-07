@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 interface StickyCTAProps {
   priceFrom: string;
@@ -13,7 +14,7 @@ interface StickyCTAProps {
 
 export function StickyCTA({
   priceFrom,
-  telegramLink = "https://t.me/neeekn",
+  telegramLink = TELEGRAM_PERSONAL,
   productTitle,
 }: StickyCTAProps) {
   const [isVisible, setIsVisible] = useState(false);

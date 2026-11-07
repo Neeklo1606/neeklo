@@ -1,0 +1,1 @@
+import{j as s}from"./motion-vendor-OHsymAxR.js";import{a as e}from"./products-Bym-nQip.js";function m({children:r,className:a}){return s.jsx("div",{className:e("min-h-screen bg-background",a),children:r})}export{m as P};

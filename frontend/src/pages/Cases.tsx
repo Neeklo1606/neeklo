@@ -7,6 +7,7 @@ import { CaseCard } from "@/components/common/CaseCard";
 import { Button } from "@/components/common/Button";
 import { getPublicCaseStudies, resolveStorageUrl } from "@/lib/api";
 import { PageSkeleton } from "@/components/common/PageSkeleton";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const BASE_PATH = "/cases";
 const ITEMS_PER_PAGE = 12;
@@ -65,7 +66,7 @@ const Cases = () => {
   if (isLoading) return <PageSkeleton />;
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container>
           <motion.header
@@ -181,7 +182,7 @@ const Cases = () => {
         </Container>
       </main>
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

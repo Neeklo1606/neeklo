@@ -262,11 +262,9 @@ export default defineConfig(({ mode }) => {
           'query-vendor': ['@tanstack/react-query'],
           // Group product pages together for faster loading
           'products': [
-            './src/pages/products/Website.tsx',
-            './src/pages/products/TelegramBot.tsx', 
-            './src/pages/products/AIAgent.tsx',
-            './src/pages/products/AIVideo.tsx',
-            './src/pages/products/MiniApp.tsx',
+            './src/pages/products/WebsitesPage.tsx',
+            './src/pages/products/AIAgentsPage.tsx',
+            './src/pages/products/VideoPage.tsx',
           ],
         },
       },

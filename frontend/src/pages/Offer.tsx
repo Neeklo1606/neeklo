@@ -1,6 +1,9 @@
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/common/Container";
 import { useMetaTags } from "@/hooks/useMetaTags";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { SectionHeading } from "@/components/common/SectionHeading";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const Offer = () => {
   useMetaTags(
@@ -12,7 +15,7 @@ const Offer = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-16">
         <Container size="md">
           <h1 className="text-4xl md:text-5xl font-heading font-bold mb-8">
@@ -25,9 +28,9 @@ const Offer = () => {
             </p>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 1. Общие положения
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящий документ является официальным предложением (публичной офертой) 
                 индивидуального предпринимателя Клочко Никита Андреевич (далее — Исполнитель) 
@@ -41,9 +44,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 2. Термины и определения
-              </h2>
+              </SectionHeading>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li><strong>Оферта</strong> — настоящий документ, опубликованный на сайте neeklo.ru</li>
                 <li><strong>Акцепт</strong> — полное и безоговорочное принятие условий оферты путём оплаты услуг или подписания договора</li>
@@ -54,9 +57,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 3. Предмет оферты
-              </h2>
+              </SectionHeading>
               <p>
                 Исполнитель обязуется оказать Заказчику услуги, указанные в заявке, коммерческом 
                 предложении или ином документе, согласованном сторонами, а Заказчик обязуется 
@@ -79,9 +82,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 4. Порядок заключения договора
-              </h2>
+              </SectionHeading>
               <p>
                 Договор считается заключённым с момента:
               </p>
@@ -96,9 +99,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 5. Стоимость услуг и порядок оплаты
-              </h2>
+              </SectionHeading>
               <p>
                 Стоимость услуг определяется на основании:
               </p>
@@ -122,9 +125,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 6. Сроки оказания услуг
-              </h2>
+              </SectionHeading>
               <p>
                 Сроки выполнения работ определяются в коммерческом предложении или техническом 
                 задании. Исполнитель вправе досрочно выполнить работы. Срок начинает исчисляться 
@@ -133,9 +136,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 7. Права и обязанности сторон
-              </h2>
+              </SectionHeading>
               <h3 className="text-xl font-semibold text-foreground mt-4 mb-2">
                 Исполнитель обязуется:
               </h3>
@@ -158,9 +161,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 8. Интеллектуальная собственность
-              </h2>
+              </SectionHeading>
               <p>
                 Исключительные права на созданные в рамках договора результаты интеллектуальной 
                 деятельности переходят к Заказчику после полной оплаты услуг, если иное не 
@@ -172,9 +175,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 9. Ответственность сторон
-              </h2>
+              </SectionHeading>
               <p>
                 Стороны несут ответственность за неисполнение или ненадлежащее исполнение 
                 обязательств в соответствии с действующим законодательством Российской Федерации.
@@ -190,9 +193,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 10. Порядок расторжения
-              </h2>
+              </SectionHeading>
               <p>
                 Договор может быть расторгнут:
               </p>
@@ -208,9 +211,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 11. Конфиденциальность
-              </h2>
+              </SectionHeading>
               <p>
                 Стороны обязуются не разглашать конфиденциальную информацию, полученную в ходе 
                 сотрудничества, третьим лицам без письменного согласия другой стороны.
@@ -218,9 +221,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 12. Форс-мажор
-              </h2>
+              </SectionHeading>
               <p>
                 Стороны освобождаются от ответственности за частичное или полное неисполнение 
                 обязательств, если это явилось следствием обстоятельств непреодолимой силы.
@@ -228,9 +231,9 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 13. Применимое право и разрешение споров
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящая оферта регулируется законодательством Российской Федерации. 
                 Все споры разрешаются путём переговоров, а при недостижении согласия — 
@@ -239,22 +242,22 @@ const Offer = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 14. Реквизиты Исполнителя
-              </h2>
+              </SectionHeading>
               <p>
                 ИП Клочко Никита Андреевич<br />
                 ИНН: 773604709608<br />
                 ОГРНИП: 324774600553560<br />
                 Email: <a href="mailto:klochkonikita@mail.ru" className="text-primary hover:underline">klochkonikita@mail.ru</a><br />
-                Telegram: <a href="https://t.me/neeekn" className="text-primary hover:underline">@neeekn</a>
+                Telegram: <a href={TELEGRAM_PERSONAL} className="text-primary hover:underline">@neeekn</a>
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 15. Срок действия оферты
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящая оферта действует бессрочно до момента её отзыва Исполнителем. 
                 Исполнитель вправе в любое время внести изменения в условия оферты, которые 
@@ -266,7 +269,7 @@ const Offer = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

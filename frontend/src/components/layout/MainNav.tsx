@@ -11,10 +11,13 @@ import { BriefWizard } from "@/components/hero/BriefWizard";
 import { smoothScrollToId } from "@/lib/smoothScroll";
 import logoLight from "@/assets/logo.webp";
 import logoDark from "@/assets/logo-dark.webp";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 const DEFAULT_NAV_ITEMS = [
-  { label: "Услуги", href: "/services", sectionId: "services", hashId: "services" },
-  { label: "Кейсы", href: "/work", sectionId: "cases", hashId: "cases" },
+  { label: "Сайты", href: "/products/websites", sectionId: undefined, hashId: undefined },
+  { label: "AI-агенты", href: "/products/ai-agents", sectionId: undefined, hashId: undefined },
+  { label: "Видео", href: "/products/video", sectionId: undefined, hashId: undefined },
+  { label: "Кейсы", href: "/cases", sectionId: "cases", hashId: "cases" },
   { label: "Блог", href: "/blog", sectionId: "blog", hashId: undefined },
   { label: "Контакты", href: "/contact", sectionId: "contact", hashId: "contact" },
 ];
@@ -22,24 +25,13 @@ const DEFAULT_NAV_ITEMS = [
 type NavItem = { label: string; href: string; sectionId?: string; hashId?: string };
 
 function menuItemsToNav(items: Array<{ label: string; url?: string; children?: unknown[] }>): NavItem[] {
-  const urlToHash: Record<string, string> = { "/services": "services", "/work": "cases", "/contact": "contact" };
   const nav = items
     .filter((i) => !i.children?.length)
     .map((i) => {
       const url = i.url ?? "#";
-      return {
-        label: i.label,
-        href: url,
-        sectionId: urlToHash[url] ?? (url === "/services" ? "services" : url === "/work" ? "cases" : url === "/blog" ? "blog" : undefined),
-        hashId: urlToHash[url],
-      };
+      const sectionId = url === "/cases" ? "cases" : url === "/blog" ? "blog" : url === "/contact" ? "contact" : undefined;
+      return { label: i.label, href: url, sectionId, hashId: sectionId };
     });
-  const hasBlog = nav.some((i) => i.href === "/blog");
-  if (!hasBlog) {
-    const blogItem: NavItem = { label: "Блог", href: "/blog", sectionId: "blog", hashId: undefined };
-    const insertIndex = Math.min(2, nav.length);
-    nav.splice(insertIndex, 0, blogItem);
-  }
   return nav;
 }
 
@@ -67,11 +59,12 @@ export const MainNav = () => {
   // Active: на главной — по видимой секции (scroll-spy), на остальных — по маршруту
   const isActive = (href: string, sectionId?: string) => {
     if (location.pathname === '/' && sectionId && activeSection) return sectionId === activeSection;
-    if (href === '/services') return location.pathname === '/services' || location.pathname.startsWith('/services/');
-    if (href === '/work') return location.pathname === '/work' || location.pathname.startsWith('/work/') || location.pathname === '/portfolio' || location.pathname.startsWith('/portfolio/');
+    if (href === '/products/websites') return location.pathname === '/products/websites';
+    if (href === '/products/ai-agents') return location.pathname === '/products/ai-agents';
+    if (href === '/products/video') return location.pathname === '/products/video';
+    if (href === '/cases') return location.pathname === '/cases' || location.pathname.startsWith('/cases/');
     if (href === '/contact') return location.pathname === '/contact' || location.pathname === '/contacts';
     if (href === '/blog') return location.pathname === '/blog' || location.pathname.startsWith('/blog/');
-    if (href === '/about') return location.pathname === '/about';
     return location.pathname === href;
   };
 
@@ -254,26 +247,21 @@ export const MainNav = () => {
                 )}
               </motion.button>
               {/* CTA - Desktop */}
-              <motion.button
-                type="button"
-                onClick={() =>
-                  isHome
-                    ? smoothScrollToId("contact")
-                    : setIsBriefOpen(true)
-                }
+              <motion.a
+                href={TELEGRAM_PERSONAL}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
                 className={cn(
                   "relative z-10 flex items-center gap-1.5 rounded-[14px] font-bold transition-all duration-200 text-sm px-5 py-2.5 cursor-pointer",
                   "bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--glow-primary)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 )}
-                aria-label={isHome ? "Начать проект" : "Узнать стоимость проекта"}
+                aria-label="Хочу демо"
               >
-                <span className="hidden lg:inline">
-                  {isHome ? "Начать проект" : "Узнать стоимость"}
-                </span>
+                <span className="hidden lg:inline">Хочу демо</span>
                 <ArrowUpRight className="w-4 h-4" />
-              </motion.button>
+              </motion.a>
             </div>
           </motion.nav>
       </header>
@@ -374,22 +362,22 @@ export const MainNav = () => {
 
               {/* CTA */}
               <div className="p-5 border-t border-border/20">
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    setIsBriefOpen(true);
-                  }}
+                <a
+                  href={TELEGRAM_PERSONAL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
                     "flex items-center justify-center gap-2 w-full px-6 py-4 rounded-xl min-h-[48px]",
                     "bg-primary text-primary-foreground font-bold",
                     "text-base md:text-lg",
                     "btn-primary"
                   )}
-                  aria-label="Узнать стоимость проекта"
+                  aria-label="Хочу демо"
                 >
-                  <span>Узнать стоимость</span>
+                  <span>Хочу демо</span>
                   <ArrowUpRight className="w-4 h-4" />
-                </button>
+                </a>
               </div>
             </motion.div>
           </>

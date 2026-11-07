@@ -49,8 +49,8 @@ export function generateSteps(productSlug: string): WizardStep[] {
   return [
     {
       id: "need",
-      title: "Что нужно?",
-      subtitle: "Выберите тип задачи",
+      title: "Чем можем помочь?",
+      subtitle: "Выберите, что нужно сделать",
       type: "single",
       required: true,
       options: [
@@ -62,24 +62,24 @@ export function generateSteps(productSlug: string): WizardStep[] {
     },
     {
       id: "details",
-      title: "Детали проекта",
-      subtitle: "Расскажите о задаче",
+      title: "Расскажите о проекте",
+      subtitle: "Что нужно сделать, какие функции важны",
       type: "textarea",
-      placeholder: "Опишите что нужно сделать, какие функции важны, есть ли референсы...",
+      placeholder: "Опишите задачу, что важно, есть ли примеры или референсы...",
       required: true,
     },
     {
       id: "features",
-      title: "Дополнительные опции",
-      subtitle: "Выберите нужное (необязательно)",
+      title: "Что добавим сверху?",
+      subtitle: "Дополнительные опции — необязательно",
       type: "multi",
       required: false,
       options: getProductFeatures(productSlug),
     },
     {
       id: "budget",
-      title: "Бюджет и сроки",
-      subtitle: "Ваши ожидания",
+      title: "Какой бюджет и сроки?",
+      subtitle: "Ваши ожидания по стоимости",
       type: "single",
       required: true,
       options: [
@@ -91,8 +91,8 @@ export function generateSteps(productSlug: string): WizardStep[] {
     },
     {
       id: "contact",
-      title: "Как связаться?",
-      subtitle: "Telegram, WhatsApp или телефон",
+      title: "Как с вами связаться?",
+      subtitle: "Telegram или телефон — ответим в течение 2 часов",
       type: "text",
       placeholder: "@username или +7...",
       required: true,

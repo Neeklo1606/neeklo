@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Home, LayoutGrid, Send, Menu } from "lucide-react";
 import { useMobile } from "@/hooks/useMobile";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 interface NavTab {
   id: string;
@@ -39,7 +40,7 @@ export const BottomNav = memo(function BottomNav({ onMenuOpen }: BottomNavProps)
 
   const handleTabClick = (tab: NavTab) => {
     if (tab.action === "telegram") {
-      window.open("https://t.me/neeekn", "_blank");
+      window.open(TELEGRAM_PERSONAL, "_blank");
     } else if (tab.action === "menu" && onMenuOpen) {
       onMenuOpen();
     }

@@ -1,6 +1,9 @@
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/common/Container";
 import { useMetaTags } from "@/hooks/useMetaTags";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { SectionHeading } from "@/components/common/SectionHeading";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const Consent = () => {
   useMetaTags(
@@ -12,7 +15,7 @@ const Consent = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-16">
         <Container size="md">
           <h1 className="text-4xl md:text-5xl font-heading font-bold mb-8">
@@ -25,9 +28,9 @@ const Consent = () => {
             </p>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 1. Общие положения
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящим я даю своё согласие ИП Клочко Никита Андреевич (ИНН: 773604709608, 
                 ОГРНИП: 324774600553560), далее — Оператор, на обработку моих персональных данных 
@@ -36,9 +39,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 2. Перечень персональных данных
-              </h2>
+              </SectionHeading>
               <p>
                 Настоящее согласие предоставляется на обработку следующих персональных данных:
               </p>
@@ -53,9 +56,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 3. Цели обработки персональных данных
-              </h2>
+              </SectionHeading>
               <p>
                 Персональные данные обрабатываются в следующих целях:
               </p>
@@ -71,9 +74,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 4. Способы обработки персональных данных
-              </h2>
+              </SectionHeading>
               <p>
                 Обработка персональных данных осуществляется с использованием средств 
                 автоматизации и/или без использования таких средств и включает следующие действия:
@@ -96,9 +99,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 5. Передача персональных данных третьим лицам
-              </h2>
+              </SectionHeading>
               <p>
                 Оператор вправе передавать персональные данные третьим лицам в следующих случаях:
               </p>
@@ -110,9 +113,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 6. Срок обработки персональных данных
-              </h2>
+              </SectionHeading>
               <p>
                 Персональные данные обрабатываются до достижения целей обработки или до момента 
                 отзыва согласия субъектом персональных данных.
@@ -125,9 +128,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 7. Права субъекта персональных данных
-              </h2>
+              </SectionHeading>
               <p>
                 Субъект персональных данных имеет право:
               </p>
@@ -140,9 +143,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 8. Отзыв согласия
-              </h2>
+              </SectionHeading>
               <p>
                 Согласие может быть отозвано субъектом персональных данных путём направления 
                 письменного заявления на электронную почту Оператора:{' '}
@@ -157,9 +160,9 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 9. Заключительные положения
-              </h2>
+              </SectionHeading>
               <p>
                 Заполняя формы на сайте neeklo.ru и отправляя свои данные, пользователь 
                 подтверждает, что ознакомлен с настоящим документом и даёт согласие на 
@@ -168,13 +171,13 @@ const Consent = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-4">
+              <SectionHeading>
                 10. Контакты
-              </h2>
+              </SectionHeading>
               <p>
                 По всем вопросам, связанным с обработкой персональных данных:<br />
                 Email: <a href="mailto:klochkonikita@mail.ru" className="text-primary hover:underline">klochkonikita@mail.ru</a><br />
-                Telegram: <a href="https://t.me/neeekn" className="text-primary hover:underline">@neeekn</a>
+                Telegram: <a href={TELEGRAM_PERSONAL} className="text-primary hover:underline">@neeekn</a>
               </p>
             </section>
           </div>
@@ -182,7 +185,7 @@ const Consent = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

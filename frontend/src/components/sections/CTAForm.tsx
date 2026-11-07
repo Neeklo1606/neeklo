@@ -7,6 +7,7 @@ import { Check, Send, Loader2, Sparkles } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import Confetti from "@/components/ui/confetti";
+import { TELEGRAM_PERSONAL } from "@/constants";
 
 const contactSchema = z.object({
   name: z.string()
@@ -293,7 +294,7 @@ export const CTAForm = () => {
                 {/* Alternative CTA */}
                 <div className="text-center pt-2">
                   <a
-                    href="https://t.me/neeekn"
+                    href={TELEGRAM_PERSONAL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm text-primary hover:underline"

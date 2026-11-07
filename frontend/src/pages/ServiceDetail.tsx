@@ -6,6 +6,8 @@ import { Button } from "@/components/common/Button";
 import { useMetaTags } from "@/hooks/useMetaTags";
 import { ArrowLeft, Check, MessageCircle, Clock, CreditCard, AlertTriangle } from "lucide-react";
 import servicesData from "@/data/services.json";
+import { TELEGRAM_PERSONAL } from "@/constants";
+import { PageWrapper } from "@/components/common/PageWrapper";
 
 const ServiceDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -24,7 +26,7 @@ const ServiceDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <main className="pt-24 pb-[max(5rem,env(safe-area-inset-bottom)+3.5rem)] lg:pb-16">
         <Container>
           {/* Back button */}
@@ -199,7 +201,7 @@ const ServiceDetail = () => {
                       size="lg"
                       variant="outline"
                       className="w-full group"
-                      onClick={() => window.open('https://t.me/neeekn', '_blank')}
+                      onClick={() => window.open(TELEGRAM_PERSONAL, '_blank')}
                     >
                       <MessageCircle className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                       Написать в Telegram
@@ -219,7 +221,7 @@ const ServiceDetail = () => {
       </main>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 
